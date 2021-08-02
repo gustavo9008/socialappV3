@@ -3,14 +3,11 @@ import Head from "next/head";
 import { MongoClient } from "mongodb";
 
 import { Fragment } from "react";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import image from "next/image";
 
 import Card from "../components/ui/card";
 import AllPost from "../components/posts/allposts";
-import NavBar from "../components/layout/NavBar";
-import Script from "next/script";
+// import { useCurrentUser } from "@/hooks/index";
 
 function HomePage(props) {
   const styles = "min-h-screen dark-background text-gray-100 font-sans";

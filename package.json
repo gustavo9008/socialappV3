@@ -9,12 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "alpinejs": "^3.2.2",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.26.2",
+    "dotenv": "^10.0.0",
+    "draft-js": "^0.11.7",
     "html-react-parser": "^1.2.7",
+    "jodit-react": "^1.1.1",
     "mongodb": "^3.6.10",
-    "mongoose": "^5.13.2",
+    "multer": "^1.4.2",
+    "nanoid": "^3.1.23",
     "next": "11.0.1",
+    "next-auth": "^3.27.3",
+    "next-connect": "^0.10.1",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "swr": "^0.5.6",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "eslint": "7.30.0",
