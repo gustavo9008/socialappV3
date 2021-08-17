@@ -6,6 +6,26 @@ import { useSession } from "next-auth/client";
 
 import AlpineWidjet from "./ui/navdropdown";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+// import {
+//   faCheckSquare,
+//   faCoffee,
+//   faLaptopCode,
+//   faSolid,
+//   faCompass,
+//   faMap,
+//   faBirthdayCake,
+// } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLaptopCode,
+  faMap,
+  faBirthdayCake,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+library.add(fab, faLaptopCode, faMap, faBirthdayCake);
+
 export default function Layout({ children }) {
   const [session, loading] = useSession();
 
@@ -69,7 +89,10 @@ export default function Layout({ children }) {
                     role="menuitem"
                     aria-label="home page button"
                   >
-                    <i className="fas fa-laptop-code"></i>{" "}
+                    <i className="fas fa-laptop-code">
+                      <FontAwesomeIcon icon={faLaptopCode} />
+                    </i>
+
                     <span className="nav-logo font-medium antialiased">
                       Dev.me
                     </span>

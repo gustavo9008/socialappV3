@@ -14,19 +14,13 @@ export async function getServerSideProps(context) {
 
   const post = await response.json();
 
+  // console.log(post);
+
   const comments = await post.comments;
 
   return {
     props: {
-      post: {
-        title: post.title,
-        body: post.body,
-        image: post.image[0] ? post.image[0].url : null,
-        imageUrl: post.imageUrl ? post.imageUrl : null,
-        id: post._id,
-        created: post.created,
-        comments: comments ? comments : null,
-      },
+      post: post.data,
     },
   };
 }

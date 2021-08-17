@@ -1,21 +1,26 @@
 import { getSession } from "next-auth/client";
 import { MongoClient } from "mongodb";
 
-const handler = async (req, res) => {
+import Post from "../../../models/post";
+import Profile from "../../../models/profile";
+import connectDB from "../../../middleware/mongodb";
+
+const postHandler = async (req, res) => {
   // console.log(req.body);
 
-  const createNewPost = async () => {
+  const createNewPost = async (session) => {
+    console.log(session);
     if (req.method === "POST") {
       const { title, image, content } = req.body;
       console.log(title, image, content);
 
       //Connect with database
-      const client = await MongoClient.connect(process.env.MONGODB_LOCAL_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      const db = client.db(process.env.DB_NAME);
-      const postsCollection = db.collection("blogs");
+      // const client = await MongoClient.connect(process.env.MONGODB_LOCAL_URI, {
+      //   useNewUrlParser: true,
+      //   useUnifiedTopology: true,
+      // });
+      // const db = client.db(process.env.DB_NAME);
+      // const postsCollection = db.collection("posts");
       //Check existing
       // const checkExisting = await postsCollection.findOne({ email: email });
       //Send error response if duplicate user is found
@@ -25,15 +30,27 @@ const handler = async (req, res) => {
       //   return;
       // }
       //Hash password
-      const status = await postsCollection.insertOne({
+      const newPost = new Post({
         title,
         image: [],
-        body: content,
         imageUrl: image,
-        created: new Date(),
+        body: content,
+        userProfile: {
+          user: {
+            id: session.user.id,
+            name: session.user.name,
+          },
+          profile: {
+            id: session.user.profile._id,
+            image: session.user.image,
+            genericPic: session.user.genericImage,
+          },
+        },
       });
+      console.log(newPost);
+      const postCreated = await newPost.save();
       //Send success response
-      res.status(201).json({ message: "post created", ...status });
+      res.status(201).json(postCreated);
       //Close DB connection
       client.close();
     } else {
@@ -45,8 +62,9 @@ const handler = async (req, res) => {
   const session = await getSession({ req });
   if (session) {
     // Signed in
-    await createNewPost();
-    console.log("Session", JSON.stringify(session, null, 2));
+    // console.log(session);
+    await createNewPost(session);
+    // console.log("Session", JSON.stringify(session, null, 2));
   } else {
     // Not Signed in
     res.status(401).json({ message: "oh no you must be logged in" });
@@ -54,4 +72,4 @@ const handler = async (req, res) => {
   res.end();
 };
 
-export default handler;
+export default connectDB(postHandler);

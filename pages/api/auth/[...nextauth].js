@@ -3,17 +3,21 @@ import Providers from "next-auth/providers";
 import { MongoClient } from "mongodb";
 import { compare } from "bcryptjs";
 import jwt from "next-auth/jwt";
-async (req, res) => {
-  const token = await jwt.getToken({ req, secret });
-  if (token) {
-    // Signed in
-    console.log("JSON Web Token", JSON.stringify(token, null, 2));
-  } else {
-    // Not Signed in
-    res.status(401);
-  }
-  res.end();
-};
+// var profile;
+// async (req, res) => {
+//   const token = await jwt.getToken({ req, secret });
+//   if (token) {
+//     // Signed in
+//     console.log("JSON Web Token", JSON.stringify(token, null, 2));
+//   } else {
+//     // Not Signed in
+//     res.status(401);
+//   }
+//   res.end();
+// };
+
+// var profile;
+
 export default NextAuth({
   //Specify Provider
   providers: [
@@ -27,19 +31,19 @@ export default NextAuth({
         //Get all the users
         const users = await client.db().collection("users");
         //Find user with the email
-        const result = await users.findOne({
+        const userProfile = await users.findOne({
           email: credentials.email,
         });
-        console.log(result);
+        // profile = userProfile;
         //Not found - send error res
-        if (!result) {
+        if (!userProfile) {
           client.close();
           throw new Error("No user found with the email");
         }
         //Check hased password with DB password
         const checkPassword = await compare(
           credentials.password,
-          result.password
+          userProfile.password
         );
         //Incorrect password - send response
         if (!checkPassword) {
@@ -48,11 +52,17 @@ export default NextAuth({
         }
         //Else send success response
         client.close();
-        return { email: result.email, name: result.name, id: result._id };
+        return {
+          email: userProfile.email,
+          name: userProfile.name,
+          id: userProfile._id,
+          profile: userProfile.profile,
+          created: userProfile.createdAt,
+        };
       },
     }),
   ],
-  database: process.env.MONGODB_LOCAL_URI,
+  database: process.env.MONGODB_URI,
   secret: process.env.SECRET,
   session: {
     jwt: true,
@@ -70,5 +80,27 @@ export default NextAuth({
   },
   pages: {
     signIn: "/login", // Displays signin buttons
+  },
+  callbacks: {
+    async jwt(token, user) {
+      if (user) {
+        token.profile = user.profile;
+        token.id = user.id;
+        token.created = user.created
+        // console.log(token)
+      }
+      
+      // Add access_token to the token right after signin
+
+      return token;
+    },
+    session: async (session, token) => {
+      session.user.id = token.sub;
+      session.user.profile = token.profile;
+      session.user.genericImage = token.profile.image.genericPic;
+      session.user.created = token.created
+    //  console.log(session)
+      return Promise.resolve(session);
+    },
   },
 });

@@ -12,14 +12,14 @@ export default function TextComments(props) {
               href="/blogs/userprofile/<%= comments.profile %>"
               className="text-sm text-blue-300 hover:text-blue-400 font-semibold"
             >
-              {props.comment.author.username}
+              {props.comment.userProfile.user.name}
             </a>
             <span className="comment-dot"> {"\u00b7"} </span>
-            {props.comment.created}
+            {new Date(props.comment.created).toDateString()}
           </span>
         </div>
         <p className="py-2 text-gray-100" aria-label="user comment reply">
-          {props.comment.text}
+          {props.comment.comment}
         </p>
       </CommentCard>
       {props.comment.replies.map((reply) => (

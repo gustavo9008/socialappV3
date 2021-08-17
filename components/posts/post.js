@@ -1,16 +1,16 @@
 import React from "react";
-import CommentsSection from "../comments/commentsection";
+import CommentSection from "../comments/commentsection";
 // import Image from "next/image";
 import parse from "html-react-parser";
 
 function Post(props) {
-  // console.log(props);
+  // console.log(props.post);
   return (
     <main className="Psm:m-0 main-container Psm:mt-3 mt-3">
       <article className="Psm:w-full Psm:rounded-none Psm:border-none bg-gray-800 rounded-lg border-opacity-50 border border-indigo-900 main-article-card relative overflow-hidden">
         <div className="blog-content">
           <div className="w-full">
-            {props.post.image ? (
+            {props.post.image[0] ? (
               <img
                 className="object-cover m-auto"
                 src={props.post.image}
@@ -36,7 +36,7 @@ function Post(props) {
             </div>
           </section>
 
-          <CommentsSection post={props.post} />
+          <CommentSection post={props.post} />
         </div>
       </article>
     </main>

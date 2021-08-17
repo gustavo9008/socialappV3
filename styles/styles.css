@@ -32,7 +32,19 @@ main {
   box-shadow: 4px 4px 0px 0px #6b7280;
   z-index: 100;
 }
+.fa-laptop-code {
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+  /* display: inline-block;
+  font-size: 1.1rem;
+  padding-right: 10px;
+  width: 1.8em; */
+}
 .nav-logo {
+  padding-left: 5px;
   text-shadow: 0 0 10px #000000, 0 0 10px #000000;
 }
 .main-container {
@@ -269,8 +281,10 @@ main {
   color: #d1cccc;
 }
 .profile-card-loc_joined {
+  display: inline-block;
   font-size: 1.1rem;
   padding-right: 10px;
+  width: 1.8em;
 }
 iframe {
   top: 0;

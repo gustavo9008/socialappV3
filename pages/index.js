@@ -39,9 +39,11 @@ export async function getServerSideProps() {
   );
   const db = client.db();
 
-  const blogsCollection = db.collection("blogs");
+  const postsCollection = db.collection("posts");
 
-  const posts = await blogsCollection.find().sort({ created: -1 }).toArray();
+  const posts = await postsCollection.find().sort({ created: -1 }).toArray();
+
+  // console.log(posts);
 
   client.close();
 

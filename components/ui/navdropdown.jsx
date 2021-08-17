@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 import { signOut } from "next-auth/client";
 
 const AlpineWidjet = (props) => {
+  // console.log(props.user);
   // const handleLogout = async () => {
   //   await fetch("/api/auth", {
   //     method: "DELETE",
   //   });
   //   mutate(null);
   // };
+
+  const btnPic = `background-color: ${props.user.genericImage[0]};
+  background-image: linear-gradient(225deg, ${props.user.genericImage[0]} 0%, ${props.user.genericImage[1]} 50%, ${props.user.genericImage[2]} 100%);`;
 
   const AlpineDropdownBtn = `
 
@@ -25,7 +29,7 @@ const AlpineWidjet = (props) => {
       aria-haspopup="false"
       aria-label="profile button"
     >
-      <span class="h-12 w-12 rounded-full generic-noprofile-circle"></span>
+      <span class="h-12 w-12 rounded-full" style="${btnPic}}"></span>
     </button>
   </div>
   <div
@@ -41,7 +45,7 @@ const AlpineWidjet = (props) => {
     style="display: none;"
   >
     <a
-      href="/blogs/profile"
+      href="/user/profile"
       class="block h-12 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800 border-b border-gray-500 border-opacity-50"
       role="menuitem"
     >

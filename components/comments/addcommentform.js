@@ -1,6 +1,8 @@
 import React, { Fragment, useRef } from "react";
+import { getSession } from "next-auth/client";
 
-export default function Comments(props) {
+function Comments(props) {
+  console.log(props.context);
   const commentRef = useRef();
 
   const expandTextareaComment = (e) => {
@@ -10,8 +12,40 @@ export default function Comments(props) {
     hiddenBtn.style.display = "block";
     c_textContainer.classList.add("comment-submit-container");
   };
-  const handleCommentSubmit = (e) => {
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
+    const session = await getSession(props);
+    // console.log(session);
+
+    const res = await fetch("/api/comments/addcomment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        comment: commentRef.current.value,
+        userProfile: {
+          user: {
+            id: session.user.id,
+            name: session.user.name,
+          },
+          profile: {
+            id: session.user.profile._id,
+            image: session.user.image,
+            genericPic: session.user.genericImage,
+          },
+        },
+        postUrl: {
+          address: `/post/${props.postId}`,
+          title: props.title,
+        },
+        postId: props.postId,
+      }),
+    });
+    // Await for data for any desirable next steps
+    const data = await res.json();
+    // props.updateComponent();
+    // console.log(data);
 
     console.log(commentRef.current.value);
   };
@@ -42,3 +76,4 @@ export default function Comments(props) {
     </Fragment>
   );
 }
+export default Comments;
