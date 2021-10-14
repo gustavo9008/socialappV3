@@ -1,16 +1,20 @@
-import { createContext, useContext } from 'react';
+import React, { useState } from "react";
 
-const CommentContext = createContext();
+var CommentContext = React.createContext(null);
 
-export function CommentsWrapper({children}){
-    let commentState = false;
-    return (
-        <CommentContext.Provider value={commentState}>
-            {children}
-        </CommentContext.Provider>
-    )
+export function CommentsWrapper(props) {
+  //   console.log(props);
+  var [userDetails] = useState(props.user);
+  //   setUserDetails(props.user);
+  console.log(userDetails);
+
+  return (
+    <CommentContext.Provider value={userDetails}>
+      {props.children}
+    </CommentContext.Provider>
+  );
 }
 
-export function useCommentContext(){
-    return useContext(CommentContext);
+export function useCommentContext() {
+  return useContext(CommentContext);
 }

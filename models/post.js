@@ -16,21 +16,13 @@ let postSchema = new Schema({
   image: [ImageSchema],
   body: { type: String },
   userProfile: {
-    user: {
-      id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-      name: String,
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    profile: {
-      id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Profile",
-      },
-      image: String,
-      genericPic: [String, String, String],
-    },
+    name: String,
+    profileImage: String,
+    profileGenericPic: Array,
   },
   comments: [
     {

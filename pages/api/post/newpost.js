@@ -1,18 +1,16 @@
 import { getSession } from "next-auth/client";
-import { MongoClient } from "mongodb";
+// import { MongoClient } from "mongodb";
 
 import Post from "../../../models/post";
-import Profile from "../../../models/profile";
-import connectDB from "../../../middleware/mongodb";
+import User from "../../../models/user";
+import dbConnect from "../../../middleware/mongodb";
 
 const postHandler = async (req, res) => {
-  // console.log(req.body);
-
+  //===== create one post functionk =====
   const createNewPost = async (session) => {
-    console.log(session);
     if (req.method === "POST") {
+      await dbConnect();
       const { title, image, content } = req.body;
-      console.log(title, image, content);
 
       //Connect with database
       // const client = await MongoClient.connect(process.env.MONGODB_LOCAL_URI, {
@@ -36,35 +34,36 @@ const postHandler = async (req, res) => {
         imageUrl: image,
         body: content,
         userProfile: {
-          user: {
-            id: session.user.id,
-            name: session.user.name,
-          },
-          profile: {
-            id: session.user.profile._id,
-            image: session.user.image,
-            genericPic: session.user.genericImage,
-          },
+          id: session.user.id,
+          name: session.user.name,
+          profileImage: session.user.profile.image.url,
+          profileGenericPic: session.user.genericImage,
         },
       });
-      console.log(newPost);
+
+      const user = await User.findById(session.user.id);
+      await user.profile.posts.push(newPost._id);
+      await user.save();
+
       const postCreated = await newPost.save();
       //Send success response
-      res.status(201).json(postCreated);
+      res
+        .status(201)
+        .json({ message: "Yay! Your new post has been created!!" });
       //Close DB connection
-      client.close();
+      // client.close();
     } else {
       //Response for other than POST method
       res.status(500).json({ message: "Route not valid" });
     }
   };
 
+  //===== check if user is log in =====
   const session = await getSession({ req });
   if (session) {
     // Signed in
-    // console.log(session);
+    console.log(session.user);
     await createNewPost(session);
-    // console.log("Session", JSON.stringify(session, null, 2));
   } else {
     // Not Signed in
     res.status(401).json({ message: "oh no you must be logged in" });
@@ -72,4 +71,4 @@ const postHandler = async (req, res) => {
   res.end();
 };
 
-export default connectDB(postHandler);
+export default postHandler;

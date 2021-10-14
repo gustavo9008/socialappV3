@@ -1,21 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSolid,
-  faCompass,
-  faMap,
-  faBirthdayCake,
-} from "@fortawesome/free-solid-svg-icons";
 
 export default function Profile(props) {
   // console.log(props.user.created);
-  const css2obj = (css) => {
-    const r = /(?<=^|;)\s*([^:]+)\s*:\s*([^;]+)\s*/g,
-      o = {};
-    css.replace(r, (m, p, v) => (o[p] = v));
-    return o;
-  };
+  // const css2obj = (css) => {
+  //   const r = /(?<=^|;)\s*([^:]+)\s*:\s*([^;]+)\s*/g,
+  //     o = {};
+  //   css.replace(r, (m, p, v) => (o[p] = v));
+  //   return o;
+  // };
 
   const btnStyle = {
     backgroundColor: `${props.user.genericImage[0]}`,
@@ -37,7 +30,7 @@ export default function Profile(props) {
             ) : (
               <img
                 className="profile-circle-avatar w-32 h-32 md:w-48 md:h-auto md:rounded-none rounded-full Psm:mx-auto object-cover"
-                src={props.profile.image.url}
+                src={props.user.profile.image.url}
                 alt=""
                 width="384"
                 height="512"
@@ -51,13 +44,39 @@ export default function Profile(props) {
                 <aside className="mt-2 flex justify-around text-sm text-gray-400">
                   <span>
                     <i className="profile-card-loc_joined">
-                      <FontAwesomeIcon icon={faMap} />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                        />
+                      </svg>
                     </i>
                     Location: {props.profile.location}{" "}
                   </span>
                   <span>
                     <i className="profile-card-loc_joined">
-                      <FontAwesomeIcon icon={faBirthdayCake} />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"
+                        />
+                      </svg>
                     </i>
                     Joined on: {new Date(props.user.created).toDateString()}
                   </span>

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 import Link from "next/link";
 
 const SignupPage = () => {
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     //Getting value from useRef()
     const email = e.currentTarget.email.value;
     const name = e.currentTarget.name.value;
     const password = e.currentTarget.password.value;
-    console.log(email, name, password);
+    // console.log(email, name, password);
     //Validation
     if (!email || !email.includes("@") || !password) {
       alert("Invalid details");
@@ -31,8 +32,12 @@ const SignupPage = () => {
       }),
     });
     //Await for data for any desirable next steps
+    if (res.ok === true) {
+      console.log("success");
+      router.push("/login");
+    }
     const data = await res.json();
-    console.log(data);
+    // console.log(res);
   };
 
   return (

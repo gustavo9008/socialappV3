@@ -1,10 +1,21 @@
 import Post from "../../components/posts/post";
+import { useRouter } from "next/router";
 import { server } from "../../config/index";
+import { useSession, getSession } from "next-auth/client";
+// import useSWR from "swr";
+// import fetcher from "middleware/fetch/fetch";
+
 // import { MongoClient, ObjectID } from "mongodb";
 
 function SinglePost(props) {
-  // console.log(props);
-  return <Post post={props.post} />;
+  const [session, loading] = useSession();
+  // console.log(session);
+  return (
+    <>
+      {session && <Post user={session.user} post={props.post} />}
+      {!session && <Post post={props.post} />}
+    </>
+  );
 }
 
 export async function getServerSideProps(context) {
@@ -21,6 +32,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       post: post.data,
+      session: await getSession(context),
     },
   };
 }

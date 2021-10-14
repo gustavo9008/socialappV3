@@ -1,9 +1,12 @@
 import React from "react";
 import CommentCard from "../ui/commentcard";
 import TextComments from "./textcomments";
+// import { CommentContext } from "./commentsection";
 
 export default function Comments(props) {
-  //   console.log(props.comments);
+  // const { postComments } = React.useContext(CommentContext);
+  // console.log("comments from comment component");
+  // console.log(props.comments);
   return (
     <aside id="commentSection" className="edit-comment-container">
       {props.comments.map((comment) => (

@@ -1,13 +1,17 @@
 import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useSession } from "next-auth/client";
 
 const importJodit = () => import("jodit-react");
 const JoditEditor = dynamic(importJodit, {
   ssr: false,
 });
 
-export default function NewPost() {
+export default function NewPost(props) {
+  const [session, loading] = useSession();
+  console.log(props);
+
   const titleRef = useRef();
   const imageRef = useRef();
   const editor = useRef(null);

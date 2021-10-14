@@ -9,33 +9,39 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-brands-svg-icons": "^5.15.4",
-    "@fortawesome/free-regular-svg-icons": "^5.15.4",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.15",
-    "alpinejs": "^3.2.3",
-    "axios": "^0.21.1",
+    "@tailwindcss/aspect-ratio": "^0.2.1",
+    "alpinejs": "^3.3.2",
+    "axios": "^0.21.4",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.26.3",
+    "compressorjs": "^1.0.7",
     "dotenv": "^10.0.0",
-    "draft-js": "^0.11.7",
-    "html-react-parser": "^1.2.7",
+    "html-react-parser": "^1.3.0",
     "jodit-react": "^1.1.1",
-    "mongodb": "^4.1.0",
-    "mongoose": "^5.13.5",
-    "multer": "^1.4.2",
-    "nanoid": "^3.1.23",
-    "next": "11.0.1",
-    "next-auth": "^3.27.3",
+    "mongodb": "^4.1.1",
+    "mongoose": "^6.0.5",
+    "multer": "^1.4.3",
+    "multer-storage-cloudinary": "^4.0.0",
+    "next": "11.1.2",
+    "next-auth": "^3.29.0",
     "next-connect": "^0.10.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "swr": "^0.5.6",
+    "swr": "^1.0.0",
     "validator": "^13.6.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.3.4",
     "eslint": "7.32.0",
-    "eslint-config-next": "11.0.1"
+    "eslint-config-next": "11.1.2",
+    "postcss": "^8.3.6",
+    "tailwind-aspect-ratio": "^1.0.2",
+    "tailwindcss": "^2.2.15"
+  },
+  "workspaces": {
+    "nohoist": [
+      "**/tailwindcss",
+      "**/@tailwindcss/**"
+    ]
   }
 }

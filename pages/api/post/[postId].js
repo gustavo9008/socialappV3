@@ -4,6 +4,7 @@ import { ObjectId } from "bson";
 
 import Post from "../../../models/post";
 import Comment from "../../../models/comment";
+import Reply from "../../../models/replies";
 import dbConnect from "../../../middleware/mongodb";
 import mongoose from "mongoose";
 
@@ -23,9 +24,34 @@ export default async function findPostHandler(req, res) {
       path: "comments",
       options: { sort: { created: -1 } },
     });
-    // if (!post) {
-    //   return res.status(400).json({ success: false });
-    // }
+    //===== recursion function =====
+    async function deepIterator(comment) {
+      let commentReplies = comment;
+      for (const key in commentReplies) {
+        if (commentReplies[key].replies !== undefined) {
+          for (const com in commentReplies[key].replies) {
+            console.log(commentReplies[key].replies[com].toString());
+            const commentReply = await Reply.findById(
+              commentReplies[key].replies[com].toString()
+            );
+            commentReplies[key].repliesFound.push(commentReply);
+          }
+          if (commentReplies[key].repliesFound !== undefined) {
+            await deepIterator(commentReplies[key].repliesFound);
+          }
+        }
+      }
+
+      return commentReplies;
+    }
+    // console.log(post.comments);
+    if (post.comments !== undefined) {
+      const allReplies = await deepIterator(post.comments);
+      // const newReplies = await allReplies.repliesFound;
+      // console.log(allReplies);
+      post.comments = await allReplies;
+      console.log(post.comments);
+    }
     res.status(200).json({ success: true, data: post });
   } catch (error) {
     res.status(400).json({ success: false });

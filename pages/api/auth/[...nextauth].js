@@ -2,7 +2,8 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { MongoClient } from "mongodb";
 import { compare } from "bcryptjs";
-import jwt from "next-auth/jwt";
+import User from "../../../models/user";
+import dbConnect from "../../../middleware/mongodb";
 // var profile;
 // async (req, res) => {
 //   const token = await jwt.getToken({ req, secret });
@@ -84,22 +85,36 @@ export default NextAuth({
   callbacks: {
     async jwt(token, user) {
       if (user) {
-        token.profile = user.profile;
         token.id = user.id;
-        token.created = user.created
-        // console.log(token)
+        token.created = user.created;
       }
-      
+      if (token) {
+        await dbConnect();
+        const user = await User.findById(token.sub);
+        token.name = user.name;
+        token.email = user.email;
+        // console.log("this is from the token callback");
+        // console.log(user);
+        token.profile = user.profile;
+      }
+      // console.log(token);
+
       // Add access_token to the token right after signin
 
       return token;
     },
     session: async (session, token) => {
+      if (session.user.name !== token.name) {
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.profile.image.url;
+      }
       session.user.id = token.sub;
       session.user.profile = token.profile;
       session.user.genericImage = token.profile.image.genericPic;
-      session.user.created = token.created
-    //  console.log(session)
+      session.user.created = token.created;
+
+      // console.log(session);
       return Promise.resolve(session);
     },
   },

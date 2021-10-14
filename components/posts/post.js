@@ -4,7 +4,6 @@ import CommentSection from "../comments/commentsection";
 import parse from "html-react-parser";
 
 function Post(props) {
-  // console.log(props.post);
   return (
     <main className="Psm:m-0 main-container Psm:mt-3 mt-3">
       <article className="Psm:w-full Psm:rounded-none Psm:border-none bg-gray-800 rounded-lg border-opacity-50 border border-indigo-900 main-article-card relative overflow-hidden">
@@ -32,11 +31,11 @@ function Post(props) {
             </div>
 
             <div className="text-article text-base font-normal">
-              <div>{parse(props.post.body)}</div>
+              <div id="postContent">{parse(props.post.body)}</div>
             </div>
           </section>
 
-          <CommentSection post={props.post} />
+          <CommentSection user={props.user} post={props.post} />
         </div>
       </article>
     </main>

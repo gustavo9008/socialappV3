@@ -1,8 +1,12 @@
 import React, { Fragment, useRef } from "react";
 import { getSession } from "next-auth/client";
+import useFetch from "@/hooks/fetch";
+import { CommentContext } from "./commentsection";
 
 function Comments(props) {
-  console.log(props.context);
+  const addComment = useFetch;
+  const { setPostComments } = React.useContext(CommentContext);
+  // console.log(props.context);
   const commentRef = useRef();
 
   const expandTextareaComment = (e) => {
@@ -15,40 +19,63 @@ function Comments(props) {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     const session = await getSession(props);
-    // console.log(session);
-
-    const res = await fetch("/api/comments/addcomment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const type = `ADD_COMMENT`;
+    const data = {
+      comment: commentRef.current.value,
+      userProfile: {
+        id: session.user.id,
+        name: session.user.name,
+        profileImage: session.user.image,
+        profileGenericPic: session.user.genericImage,
       },
-      body: JSON.stringify({
-        comment: commentRef.current.value,
-        userProfile: {
-          user: {
-            id: session.user.id,
-            name: session.user.name,
-          },
-          profile: {
-            id: session.user.profile._id,
-            image: session.user.image,
-            genericPic: session.user.genericImage,
-          },
-        },
-        postUrl: {
-          address: `/post/${props.postId}`,
-          title: props.title,
-        },
-        postId: props.postId,
-      }),
-    });
-    // Await for data for any desirable next steps
-    const data = await res.json();
-    // props.updateComponent();
-    // console.log(data);
+      postUrl: {
+        address: `/post/${props.postId}`,
+        title: props.title,
+      },
+      postId: props.postId,
+      type,
+    };
 
-    console.log(commentRef.current.value);
+    const res = await addComment("POST", "/api/comments/addcomment", data);
+    if (res.data) {
+      setPostComments(res.data);
+      commentRef.current.value = "";
+    }
+    // console.log(res.data);
   };
+  //=====  =====
+  // const handleCommentSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const session = await getSession(props);
+  //   // console.log(session);
+
+  //   const res = await fetch("/api/comments/addcomment", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       comment: commentRef.current.value,
+  //       userProfile: {
+  //         id: session.user.id,
+  //         name: session.user.name,
+  //         profileImage: session.user.image,
+  //         profileGenericPic: session.user.genericImage,
+  //       },
+  //       postUrl: {
+  //         address: `/post/${props.postId}`,
+  //         title: props.title,
+  //       },
+  //       postId: props.postId,
+  //     }),
+  //   });
+  //   // Await for data for any desirable next steps
+  //   const data = await res.json();
+  //   // props.updateComponent();
+  //   // console.log(data);
+
+  //   console.log(commentRef.current.value);
+  // };
   return (
     <Fragment>
       <div id="comment-submit-container" className="mb-6">

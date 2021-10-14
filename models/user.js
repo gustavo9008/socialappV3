@@ -38,14 +38,15 @@ const profileSchema = new Schema({
   ],
   commentReplies: [
     {
-      replyId: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Replies",
     },
   ],
 });
 
 const userSchema = new Schema(
   {
-    name: String,
+    name: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
     password: String,
     profile: profileSchema,
