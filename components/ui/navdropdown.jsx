@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { signOut } from "next-auth/client";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useDetectOutsideClick } from "./useDetectClick";
 
 const AlpineWidjet = (props) => {
+  console.log(props.user);
   const handleLogout = async () => {
     signOut({ callbackUrl: "10.0.0.60:3000/" });
   };
@@ -145,48 +146,50 @@ const AlpineWidjet = (props) => {
             isActive ? "active" : "inactive"
           } origin-top-right absolute right-0 mt-2 w-56 rounded-md py-1 bg-gray-900 border-2 border-gray-500 nav-dropdown-content`}
         >
-          <Link href="/user/profile">
-            <a
-              className="block h-12 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800 border-b border-gray-500 border-opacity-50"
-              role="menuitem"
-              aria-label="login button"
-            >
-              {props.user ? props.user.name : null}
-            </a>
-          </Link>
-          <Link href="/post/newpost">
-            <a
-              className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
-              role="menuitem"
-            >
-              Write a post
-            </a>
-          </Link>
-          <Link href="/user/profile">
-            <a
-              className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
-              role="menuitem"
-            >
-              Reading list
-            </a>
-          </Link>
-          <Link href="/user/profile/settings">
-            <a
-              className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
-              role="menuitem"
-            >
-              Settings
-            </a>
-          </Link>
+          <div onClick={toggleMenu}>
+            <Link href="/user/profile">
+              <a
+                className="block h-12 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800 border-b border-gray-500 border-opacity-50"
+                role="menuitem"
+                aria-label="login button"
+              >
+                {props.user ? props.user.name : null}
+              </a>
+            </Link>
+            <Link href="/post/newpost">
+              <a
+                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                role="menuitem"
+              >
+                Write a post
+              </a>
+            </Link>
+            <Link href="/user/profile">
+              <a
+                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                role="menuitem"
+              >
+                Reading list
+              </a>
+            </Link>
+            <Link href="/user/profile/settings">
+              <a
+                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                role="menuitem"
+              >
+                Settings
+              </a>
+            </Link>
 
-          <a
-            onClick={handleLogout}
-            id="logoutbtn"
-            className="block h-12 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800 border-t border-gray-500 border-opacity-50"
-            role="menuitem"
-          >
-            Sign out
-          </a>
+            <a
+              onClick={handleLogout}
+              id="logoutbtn"
+              className="block h-12 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800 border-t border-gray-500 border-opacity-50"
+              role="menuitem"
+            >
+              Sign out
+            </a>
+          </div>
         </div>
       </div>
     </>

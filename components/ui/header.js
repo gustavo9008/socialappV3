@@ -2,14 +2,14 @@ import React from "react";
 
 import Head from "next/head";
 import Link from "next/link";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 import AlpineWidjet from "@/components/ui/navdropdown";
 
 export default function Header() {
   // console.log(children.props);
-  const [session, loading] = useSession();
-  // console.log(session);
+  const { data: session, status } = useSession();
+  console.log(session);
 
   const handleLogout = async () => {
     await fetch("/api/auth", {
@@ -99,9 +99,9 @@ export default function Header() {
               </div>
             </div>
             {/* {noUserBtns} */}
-            {!session ? (
-              noUserBtns
-            ) : (
+            {!session && status === "unauthenticated" && noUserBtns}
+            {status && <p className="text-black"></p>}
+            {status === "authenticated" && (
               <div className="flex ml-3 Psm:ml-2 relative">
                 <div className="flex items-center">
                   <Link href="/post/newpost">
@@ -116,16 +116,7 @@ export default function Header() {
                   <AlpineWidjet user={session.user} />
                 </div>
               </div>
-
-              // <a
-              //   onClick={handleLogout}
-              //   className="rounded font-medium text-black bg-red-600 hover:bg-red-700 p-2 Psm:mr-3 mr-1.5 tracking-wide"
-              //   aria-label="Sign out button"
-              // >
-              //   Sign out
-              // </a>
             )}
-            {loading && <p>{loading}</p>}
           </div>
         </div>
       </nav>

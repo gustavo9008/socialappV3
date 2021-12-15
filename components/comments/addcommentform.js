@@ -1,11 +1,13 @@
 import React, { Fragment, useRef } from "react";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import useFetch from "@/hooks/fetch";
 import { CommentContext } from "./commentsection";
+import { appToastContext } from "context/state";
 
 function Comments(props) {
   const addComment = useFetch;
   const { setPostComments } = React.useContext(CommentContext);
+  const { showToast } = React.useContext(appToastContext);
   // console.log(props.context);
   const commentRef = useRef();
 
@@ -38,6 +40,8 @@ function Comments(props) {
 
     const res = await addComment("POST", "/api/comments/addcomment", data);
     if (res.data) {
+      let message = "Comment has been added!";
+      showToast("success", message);
       setPostComments(res.data);
       commentRef.current.value = "";
     }

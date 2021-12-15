@@ -1,4 +1,5 @@
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
+
 import React, { Fragment } from "react";
 // import NavBar from "../components/layout/NavBar";
 import Layout from "@/components/layout";
@@ -7,17 +8,15 @@ import "../styles/custom.css";
 import "../styles/globals.css";
 
 import "../styles/jodit3.css";
+import { appToastContext } from "context/state";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <Provider
-      session={pageProps.session}
-      options={{ clientMaxAge: 60, keepAlive: 5 * 60 }}
-    >
+    <SessionProvider session={session} refetchInterval={5 * 60}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Provider>
+    </SessionProvider>
   );
 }
 

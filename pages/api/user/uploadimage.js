@@ -2,13 +2,13 @@
 import nextConnect from "next-connect";
 import multer from "multer";
 
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 import Post from "../../../models/post";
 import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
 
-import { storage, cloudinary } from "middleware/cloudinary";
+import { storage, cloudinary } from "middleware/cloudinary/index";
 
 const upload = multer({ storage });
 
@@ -22,14 +22,14 @@ handler.put(upload.array("file"), async (req, res) => {
     }
     await dbConnect();
     const user = await User.findById(session.user.id);
-
+    console.log(req.files);
     //===== updates user profile picture =====
     const updateUserProfilePic = async () => {
       const image = req.files.map((newImage) => ({
         url: newImage.path,
         filename: newImage.filename,
       }));
-
+      console.log(image);
       await changePostImage(image);
 
       user.profile.image.url = image[0].url;

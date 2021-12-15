@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 import Post from "../../../models/post";
 import User from "../../../models/user";

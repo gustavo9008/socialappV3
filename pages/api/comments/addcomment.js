@@ -1,6 +1,4 @@
-import { MongoClient } from "mongodb";
-import { ObjectId } from "bson";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 import Post from "../../../models/post";
 import Reply from "../../../models/replies";
@@ -12,12 +10,13 @@ const postHandler = async (req, res) => {
   async function addComment() {
     await dbConnect();
     const { comment, userProfile, postUrl, postId } = req.body;
-    // console.log(postId);
+    console.log(req.body.type);
 
     const newComment = new Comment({
       comment,
       userProfile,
       postUrl,
+      originalPostId: postId,
     });
     // console.log(newComment);
     // const commentCreated = await newComment.save();
@@ -53,13 +52,14 @@ const postHandler = async (req, res) => {
 
   async function addReplyComment() {
     const { reply, userProfile, postUrl, postId, commentId } = req.body;
-    // console.log(userProfile);
+    console.log(req.body.type);
     const comment = await Comment.findById(commentId);
     const newReply = new Reply({
       comment: reply,
       userProfile,
       postUrl,
       originalCommentId: commentId,
+      originalPostId: postId,
     });
     await comment.replies.push(newReply._id);
     await comment.save();
@@ -68,23 +68,24 @@ const postHandler = async (req, res) => {
     await user.save();
     const replyCreated = await newReply.save();
     console.log(newReply._id.toString());
-    console.log("this is from addReplayComment");
+    console.log("this is from addReplayComment 1");
 
     //===== reply search test =====
     // const replySearch = await Comment.findById(newReply._id.toString());
 
     // console.log(replySearch);
-    res.status(201).json(comment);
+    res.status(201).json(replyCreated);
   }
   async function addReply() {
     const { reply, userProfile, postUrl, postId, commentId } = req.body;
-    // console.log(userProfile);
+    console.log(req.body.type);
     const originalReply = await Reply.findById(commentId);
     const newReply = new Reply({
       comment: reply,
       userProfile,
       postUrl,
       originalCommentId: commentId,
+      originalPostId: postId,
     });
     originalReply.replies.push(newReply._id);
     originalReply.save();
@@ -93,13 +94,13 @@ const postHandler = async (req, res) => {
     await user.save();
     const replyCreated = await newReply.save();
     console.log(newReply._id.toString());
-    console.log("this is from addReplayComment");
+    console.log("this is from addReplayComment 2");
 
     //===== reply search test =====
     // const replySearch = await Comment.findById(newReply._id.toString());
 
     // console.log(replySearch);
-    res.status(201).json(originalReply);
+    res.status(201).json(replyCreated);
   }
 
   // }

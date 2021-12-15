@@ -31,7 +31,12 @@ export default function DeleteAccount(props) {
           >
             Delete
           </button>
-          <Modal showModal={showModal} setShowModal={setShowModal} />
+          <Modal
+            delete={props.delete}
+            user={props.user}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
         </div>
       </section>
     </>

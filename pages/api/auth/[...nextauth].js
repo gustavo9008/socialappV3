@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoClient } from "mongodb";
 import { compare } from "bcryptjs";
 import User from "../../../models/user";
@@ -22,30 +22,46 @@ import dbConnect from "../../../middleware/mongodb";
 export default NextAuth({
   //Specify Provider
   providers: [
-    Providers.Credentials({
-      async authorize(credentials) {
+    CredentialsProvider({
+      async authorize(credentials, req) {
+        // console.log(credentials);
         //Connect to DB
         const client = await MongoClient.connect(process.env.MONGODB_URI, {
           useNewUrlParser: true,
           useUnifiedTopology: true,
         });
         //Get all the users
-        const users = await client.db().collection("users");
+        const userProfile = await client.db().collection("users");
         //Find user with the email
-        const userProfile = await users.findOne({
+        const user = await userProfile.findOne({
           email: credentials.email,
         });
+        const checkPassword = await compare(
+          credentials.password,
+          user.password
+        );
+        // console.log(checkPassword);
         // profile = userProfile;
+        if (checkPassword) {
+          const loginUser = {
+            email: user.email,
+            name: user.name,
+            id: user._id,
+            profile: user.profile,
+            created: user.createdAt,
+          };
+          return loginUser;
+        }
         //Not found - send error res
-        if (!userProfile) {
+        if (!user) {
           client.close();
           throw new Error("No user found with the email");
         }
         //Check hased password with DB password
-        const checkPassword = await compare(
-          credentials.password,
-          userProfile.password
-        );
+        // const checkPassword = await compare(
+        //   credentials.password,
+        //   userProfile.password
+        // );
         //Incorrect password - send response
         if (!checkPassword) {
           client.close();
@@ -53,20 +69,20 @@ export default NextAuth({
         }
         //Else send success response
         client.close();
-        return {
-          email: userProfile.email,
-          name: userProfile.name,
-          id: userProfile._id,
-          profile: userProfile.profile,
-          created: userProfile.createdAt,
-        };
+        // return {
+        //   email: userProfile.email,
+        //   name: userProfile.name,
+        //   id: userProfile._id,
+        //   profile: userProfile.profile,
+        //   created: userProfile.createdAt,
+        // };
       },
     }),
   ],
   database: process.env.MONGODB_URI,
   secret: process.env.SECRET,
   session: {
-    jwt: true,
+    strategy: "jwt",
     // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: 30 * 24 * 60 * 60, // 30 days
 
@@ -83,27 +99,38 @@ export default NextAuth({
     signIn: "/login", // Displays signin buttons
   },
   callbacks: {
-    async jwt(token, user) {
-      if (user) {
-        token.id = user.id;
-        token.created = user.created;
-      }
-      if (token) {
-        await dbConnect();
-        const user = await User.findById(token.sub);
-        token.name = user.name;
-        token.email = user.email;
-        // console.log("this is from the token callback");
-        // console.log(user);
-        token.profile = user.profile;
-      }
+    async jwt({ token, user }) {
+      console.log(user);
+      console.log(token);
+      user &&
+        ((token.id = user.id),
+        (token.name = user.name),
+        (token.email = user.email),
+        (token.created = user.created),
+        (token.profile = {
+          about: user.profile.about,
+          image: user.profile.image,
+          links: user.profile.links,
+        }));
+
+      // if (token) {
+      //   await dbConnect();
+      //   const user = await User.findById(token.sub);
+      //   token.name = user.name;
+      //   token.email = user.email;
+      //   // console.log("this is from the token callback");
+      //   // console.log(user);
+
+      // }
       // console.log(token);
 
       // Add access_token to the token right after signin
 
       return token;
     },
-    session: async (session, token) => {
+    async session({ session, token }) {
+      console.log(session);
+
       if (session.user.name !== token.name) {
         session.user.name = token.name;
         session.user.email = token.email;
@@ -114,8 +141,8 @@ export default NextAuth({
       session.user.genericImage = token.profile.image.genericPic;
       session.user.created = token.created;
 
-      // console.log(session);
-      return Promise.resolve(session);
+      console.log(session);
+      return session;
     },
   },
 });

@@ -30,11 +30,20 @@ export default async function findPostHandler(req, res) {
       for (const key in commentReplies) {
         if (commentReplies[key].replies !== undefined) {
           for (const com in commentReplies[key].replies) {
-            console.log(commentReplies[key].replies[com].toString());
+            // console.log(commentReplies[key].replies[com].toString());
             const commentReply = await Reply.findById(
               commentReplies[key].replies[com].toString()
             );
-            commentReplies[key].repliesFound.push(commentReply);
+            if (commentReply === null) {
+              commentReplies[key].replies.splice(
+                commentReplies[key].replies[com]
+              );
+            }
+            // console.log(commentReply);
+            if (commentReply !== null) {
+              commentReplies[key].repliesFound.push(commentReply);
+            }
+            // commentReplies[key].repliesFound.push(commentReply);
           }
           if (commentReplies[key].repliesFound !== undefined) {
             await deepIterator(commentReplies[key].repliesFound);
@@ -50,7 +59,7 @@ export default async function findPostHandler(req, res) {
       // const newReplies = await allReplies.repliesFound;
       // console.log(allReplies);
       post.comments = await allReplies;
-      console.log(post.comments);
+      // console.log(post.comments);
     }
     res.status(200).json({ success: true, data: post });
   } catch (error) {

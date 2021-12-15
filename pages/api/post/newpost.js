@@ -1,37 +1,39 @@
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
+import nextConnect from "next-connect";
+import multer from "multer";
 // import { MongoClient } from "mongodb";
 
 import Post from "../../../models/post";
 import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
+import { storage } from "middleware/cloudinary/postStorage";
+const upload = multer({ storage });
+const handler = nextConnect();
 
-const postHandler = async (req, res) => {
-  //===== create one post functionk =====
+handler.post(upload.single("file"), async (req, res) => {
+  // console.log(req);
+  console.log(req.body.title);
+  //===== create one post function =====
   const createNewPost = async (session) => {
     if (req.method === "POST") {
+      const user = await User.findById(session.user.id);
+      // console.log(user);
+      console.log(session);
+      console.log("this is the post image route");
       await dbConnect();
-      const { title, image, content } = req.body;
+      const { title, imageUrl, content } = req.body;
+      console.log(title, imageUrl, content);
 
-      //Connect with database
-      // const client = await MongoClient.connect(process.env.MONGODB_LOCAL_URI, {
-      //   useNewUrlParser: true,
-      //   useUnifiedTopology: true,
-      // });
-      // const db = client.db(process.env.DB_NAME);
-      // const postsCollection = db.collection("posts");
-      //Check existing
-      // const checkExisting = await postsCollection.findOne({ email: email });
-      //Send error response if duplicate user is found
-      // if (checkExisting) {
-      //   res.status(422).json({ message: "User already exists" });
-      //   client.close();
-      //   return;
+      // if (req.file) {
+      //   let image = {
+      //     url: req.file.path.replace("/upload", "/upload/w_798"),
+      //     filename: req.file.filename,
+      //   };
+      //   console.log(image);
+      //   // newProcessedPost.image = image;
       // }
-      //Hash password
-      const newPost = new Post({
-        title,
-        image: [],
-        imageUrl: image,
+      let newProcessedPost = {
+        title: title,
         body: content,
         userProfile: {
           id: session.user.id,
@@ -39,22 +41,37 @@ const postHandler = async (req, res) => {
           profileImage: session.user.profile.image.url,
           profileGenericPic: session.user.genericImage,
         },
-      });
-
-      const user = await User.findById(session.user.id);
+      };
+      if (req.file) {
+        let image = {
+          url: req.file.path.replace("upload", "/upload/w_798"),
+          filename: req.file.filename,
+        };
+        newProcessedPost.image = image;
+      }
+      if (req.body.imageUrl) {
+        newProcessedPost.imageUrl = req.body.imageUrl;
+      }
+      const newPost = new Post(newProcessedPost);
+      console.log(newPost);
+      // // const user = await User.findById(session.user.id);
       await user.profile.posts.push(newPost._id);
       await user.save();
 
       const postCreated = await newPost.save();
-      //Send success response
-      res
-        .status(201)
-        .json({ message: "Yay! Your new post has been created!!" });
+      // console.log(postCreated);
+      // //Send success response
+      res.status(201).json({
+        message: "Your new post has been created!!",
+        newPostId: newPost._id,
+      });
+      res.end();
       //Close DB connection
       // client.close();
     } else {
       //Response for other than POST method
-      res.status(500).json({ message: "Route not valid" });
+      res.status(401).json({ message: "Route not valid" });
+      res.end();
     }
   };
 
@@ -62,13 +79,19 @@ const postHandler = async (req, res) => {
   const session = await getSession({ req });
   if (session) {
     // Signed in
-    console.log(session.user);
+    // console.log(session.user);
     await createNewPost(session);
   } else {
     // Not Signed in
     res.status(401).json({ message: "oh no you must be logged in" });
+    res.end();
   }
-  res.end();
+});
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
 
-export default postHandler;
+export default handler;

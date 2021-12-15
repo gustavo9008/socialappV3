@@ -1,14 +1,14 @@
 import Post from "../../components/posts/post";
 import { useRouter } from "next/router";
 import { server } from "../../config/index";
-import { useSession, getSession } from "next-auth/client";
+import { useSession, getSession } from "next-auth/react";
 // import useSWR from "swr";
 // import fetcher from "middleware/fetch/fetch";
 
 // import { MongoClient, ObjectID } from "mongodb";
 
 function SinglePost(props) {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   // console.log(session);
   return (
     <>

@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import Settings from "../../../components/user/settings/profiledit/settings";
 import AccountPicture from "@/components/user/settings/profiledit/accountpicture";
 import Account from "@/components/user/settings/useraccountedit/account";
-import { useSession, getSession } from "next-auth/client";
+import { useSession, getSession } from "next-auth/react";
 
 export default function ProfilePage(props) {
   // console.log(props);
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
 
   const [showProfile, setShowProfile] = useState(true);
   const [showAccount, setShowAccount] = useState(false);
@@ -31,7 +31,7 @@ export default function ProfilePage(props) {
   return (
     <>
       <main className="flex Psm:flex-col max-w-screen-md mx-auto">
-        <div className="w-48 Psm:w-72 h-full px-4 py-8 dark:bg-gray-800 dark:border-gray-600">
+        <div className="w-48 Psm:w-72 h-full px-4 py-8">
           <div className="flex flex-col Psm:flex-row justify-between flex-1 mt-6">
             <nav className="Psm:flex Psm:flex-row Psm:m-auto">
               <div>

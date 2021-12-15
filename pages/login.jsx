@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/client";
+import { signIn } from "next-auth/react";
+import { appToastContext } from "context/state";
 
 const LoginPage = () => {
+  const { showToast } = React.useContext(appToastContext);
+
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   useEffect(() => {
@@ -40,8 +43,14 @@ const LoginPage = () => {
       email: email,
       password: password,
     });
-    if (status.ok === true) {
+    console.log(status);
+    if (status.error === null) {
+      let message = `Welcome back`;
       router.push("/");
+      showToast("success", message);
+    }
+    if (status.error !== null) {
+      showToast("error", status.error);
     }
   }
 

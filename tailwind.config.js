@@ -2,9 +2,14 @@ const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   mode: "jit",
-  purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
+    maxHeight: {
+      "1/2": "40rem",
+    },
     screens: {
       Psm: { min: "300px", max: "760px" },
       xsm: "450px",

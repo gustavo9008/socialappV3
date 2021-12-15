@@ -1,12 +1,12 @@
 import React from "react";
 
 export default function EditPassword(props) {
+  const sendAccountData = props.send;
   const oldPasswordRef = React.useRef();
   const newPasswordRef = React.useRef();
 
   const updateAccountPasswordSubmit = async (e) => {
     e.preventDefault();
-    const sendAccountData = props.send;
 
     const type = "EDIT_USER_PASSWORD";
     const data = {

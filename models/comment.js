@@ -23,6 +23,7 @@ let commentSchema = new Schema({
     address: String,
     title: String,
   },
+  originalPostId: String,
   created: { type: Date, default: Date.now },
 });
 

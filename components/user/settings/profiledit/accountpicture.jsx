@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Compressor from "compressorjs";
 
 export default function AccountPicture(props) {
+  console.log(props.user);
   const [show, setShow] = useState(true);
   const [newcolorstate, setNewColorState] = useState([]);
   const profilePictureRef = useRef();
@@ -188,7 +189,7 @@ export default function AccountPicture(props) {
                   id="oldFilenameImage"
                   data-filename={props.profile.image.filename}
                   className="object-cover"
-                  src={props.user.image}
+                  src={props.profile.image.url}
                   alt=""
                 />
               </picture>

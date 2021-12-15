@@ -51,7 +51,7 @@ export default function Account(props) {
       <aside className="">
         <UserAccount send={useFetch} user={props.user} />
         <EditPassword send={useFetch} />
-        <DeleteAccount />
+        <DeleteAccount delete={useFetch} user={props.user} />
       </aside>
     </>
   );

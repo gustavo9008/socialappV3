@@ -1,11 +1,29 @@
 import React from "react";
-import useFetch from "@/hooks/fetch";
+// import useFetch from "@/hooks/fetch";
 
 export default function Modal(props) {
+  const deleteUserAccount = props.delete;
+  // console.log(props);
+  const deleteAccountRef = React.useRef();
   //   const [showModal, setShowModal] = React.useState(false);
 
-  const deleteAccount = (e) => {
-    console.log("deleting account!");
+  const deleteAccount = async (e) => {
+    console.log(deleteAccountRef.current.value);
+    if (deleteAccountRef.current.value) {
+      const data = {
+        account: props.user._id,
+        auth: deleteAccountRef.current.value,
+        type: "DELETE_ACCOUNT",
+      };
+
+      const res = await deleteUserAccount(
+        "DELETE",
+        "/api/user/editaccount",
+        data
+      );
+      console.log(res.data);
+    }
+    // console.log(deleteAccountRef.current.value);
   };
   return (
     <>
@@ -25,7 +43,7 @@ export default function Modal(props) {
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-3xl font-semibold text-red-700">
-                    DELETE ACCOUNT?
+                    DELETE ACCOUNT
                   </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -39,8 +57,24 @@ export default function Modal(props) {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
-                    Are you sure you want to delete your account?
+                    Enter Password to delete account.
                   </p>
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor="password"
+                        className="block text-sm text-white"
+                      >
+                        Password
+                      </label>
+                    </div>
+
+                    <input
+                      ref={deleteAccountRef}
+                      type="password"
+                      className="bg-gray-700 focus:bg-gray-900 appearance-none rounded w-full py-2 px-3 text-gray-300 mb-1 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-10"
+                    />
+                  </div>
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-between p-4 border-t border-solid border-blueGray-200 rounded-b">

@@ -1,12 +1,15 @@
 import Header from "@/components/ui/header";
-// import Footer from '@/components/ui/footer'
+import Footer from "@/components/layout/Footer";
+import { ToastWrapper } from "context/state";
 
 export default function Layout({ children }) {
   return (
     <>
-      <Header />
-      {children}
-      {/* <Footer/> */}
+      <ToastWrapper>
+        <Header />
+        {children}
+        <Footer />
+      </ToastWrapper>
     </>
   );
 }

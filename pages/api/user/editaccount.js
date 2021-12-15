@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { compare, hash } from "bcryptjs";
 import Post from "../../../models/post";
 import User from "../../../models/user";
@@ -152,9 +152,6 @@ const updateuseraccounthandler = async (req, res) => {
       req.body.type === "EDIT_USER_PASSWORD" &&
       editUserPassword(session);
     //===== check if delete req =====
-    user._id.toString() === session.user.id.toString() &&
-      req.body.type === "DELETE_ACCOUNT" &&
-      deleteAccount(session);
 
     // if (user._id == session.user.id) {
     //   if ((req.body.type = `EDIT_USER_ACCOUNT`)) {
@@ -173,6 +170,46 @@ const updateuseraccounthandler = async (req, res) => {
     //Close DB connection
     // client.close();
   };
+  const deleteAccount = async (session) => {
+    await dbConnect();
+    const user = await User.findById(session.user.id);
+    const userName = user.name;
+    // console.log(userName);
+    // console.log(req.body);
+
+    const deleteEverything = async () => {
+      // console.log(req.body);
+      const commentDeleted = await Comment.deleteMany({
+        "userProfile.id": user._id,
+      });
+      console.log(commentDeleted);
+      const repliesDeleted = await Reply.deleteMany({
+        "userProfile.id": user._id,
+      });
+      console.log(repliesDeleted);
+      const postsDeleted = await Post.deleteMany({
+        "userProfile.id": user._id,
+      });
+      console.log(postsDeleted);
+      // if(user.profile.image.filename){
+
+      // }
+      const userDelete = await User.findByIdAndDelete(session.user.id);
+      console.log(userDelete);
+      res.status(201).json({ message: "your account has been delete" });
+      res.end();
+    };
+    // const checkPass = await compare(req.body.auth, user.password);
+    // console.log(await compare(req.body.auth, user.password));
+    // console.log(checkPass);
+    (await compare(req.body.auth, user.password)) &&
+      req.body.type === "DELETE_ACCOUNT" &&
+      deleteEverything(session);
+
+    (await compare(req.body.auth, user.password)) === false &&
+      res.status(203).json({ message: "incorect password" });
+    res.end();
+  };
   //===== checks if user is logged in  =====
   const checkSession = async () => {
     const session = await getSession({ req });
@@ -180,24 +217,33 @@ const updateuseraccounthandler = async (req, res) => {
     session && (await updateAccount(session));
     !session &&
       res.status(401).json({ message: "oh no you must be logged in" });
+    res.end();
+  };
+  const checkDeleteSession = async () => {
+    const session = await getSession({ req });
+    // console.log(session);
+    session && (await deleteAccount(session));
+    !session &&
+      res.status(401).json({ message: "oh no you must be logged in" });
+    res.end();
   };
   //===== check if request is put than runs functions =====
 
-  req.method === "PUT" && checkSession();
-  req.method !== "PUT" && res.status(500).json({ message: "Route not valid" });
+  //===== switch method =====
 
-  // if (req.method === "PUT") {
-  //   if (session) {
-  //     // Signed in
-  //     await updateAccount(session);
-  //   } else {
-  //     // Not Signed in
-  //     res.status(401).json({ message: "oh no you must be logged in" });
-  //   }
-  // } else {
-  //   //Response for other than POST method
-  //   res.status(500).json({ message: "Route not valid" });
-  // }
+  switch (req.method) {
+    case "PUT":
+      //...
+      checkSession();
+      break;
+    case "DELETE":
+      //...
+      checkDeleteSession();
+      break;
+    default:
+      res.status(500).json({ message: "Route not valid" });
+      res.end();
+  }
 
   //===== check if user is log in =====
 };

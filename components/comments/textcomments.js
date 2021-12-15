@@ -4,14 +4,35 @@ import ReplyComments from "./replycomments";
 import Link from "next/link";
 import { CommentContext } from "./commentsection";
 import AddReply from "./addreplyfrom";
+import { useDetectOutsideClick } from "@/components/ui/useDetectClick";
+// import EditCommentModal from "./EditCommentModal";
 // import { useEffect } from "react/cjs/react.development";
 
 export default function TextComments(props) {
+  // console.log(props.comment);
   let cardSize = 100;
   if (props.cardSize) {
-    cardSize = props.cardSize - 3;
+    cardSize = props.cardSize - 2;
   }
+  const commentDropdownRef = React.useRef(null);
+  const [isActive, setIsActive] = useDetectOutsideClick(
+    commentDropdownRef,
+    false
+  );
   const [commentReply, setCommentReply] = React.useState(props.comment);
+  const [repliesComment, setRepliesComment] = React.useState(
+    props.comment.repliesFound
+  );
+  // console.log(repliesComment);
+  // console.log(commentReply);
+  const updateCommentReplies = (newReply) => {
+    // console.log(newReply);
+    setRepliesComment([...repliesComment, newReply]);
+    // props.comment.push(newReply);
+    // commentReply.push(newReply);
+    // setCommentReply(commentReply, newReply);
+    console.log(repliesComment);
+  };
   // console.log(commentReply);
   let action = null;
   if (props.type === "ADD_REPLY") {
@@ -23,7 +44,8 @@ export default function TextComments(props) {
   const replyFormState = { display: `${displayReplyForm}` };
 
   const formId = `hiddenInput_${props.comment._id}`;
-  let repliesSorted = commentReply.repliesFound.slice().reverse();
+  let repliesSorted = repliesComment.slice().reverse();
+  // console.log(commentReply);
 
   const openCloseCommentReply = (e) => {
     e.preventDefault();
@@ -36,6 +58,10 @@ export default function TextComments(props) {
       setDisplayReplyFrom("none");
       return;
     }
+  };
+
+  const commentDropdwn = () => {
+    setIsActive(!isActive);
   };
 
   return (
@@ -86,7 +112,10 @@ export default function TextComments(props) {
 
             {session.user && session.user.id === commentReply.userProfile.id && (
               <div className="relative comment-dropdown-btn rounded-full h-8 w-8 flex items-center justify-end">
-                <i className="fas fa-ellipsis-v w-full h-full">
+                <i
+                  onClick={commentDropdwn}
+                  className="fas fa-ellipsis-v w-full h-full"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -102,6 +131,82 @@ export default function TextComments(props) {
                     />
                   </svg>
                 </i>
+
+                {/* dropdown menu */}
+
+                {/* <!-- ===== dropdown options for comment content ===== --> */}
+
+                <div
+                  className={`commentMenu ${
+                    isActive ? "active" : "inactive"
+                  } z-10 origin-top-right absolute right-0 w-56 rounded-md py-1 bg-gray-900 border-2 border-gray-500 nav-dropdown-content`}
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu"
+                >
+                  <div>
+                    {/* <!-- ===== edit btn ===== --> */}
+                    <button
+                      id=""
+                      className="block w-full text-left px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                    >
+                      Edit
+                    </button>
+                    {/* <!-- ===== delete comment btn =====  --> */}
+                    <button
+                      id="delete-comment"
+                      className="delete-comment block w-full text-left px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                    >
+                      Delete
+                    </button>
+                    {/* <!-- ===== edit comment modal ===== --> */}
+                    <div
+                      style={{ display: "none" }}
+                      className="z-20 h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50"
+                    >
+                      {/* <!-- ===== modal ===== --> */}
+                      <div className="bg-gray-800 border-2 border-gray-500 rounded modal">
+                        {/* <!-- ===== modal header ===== --> */}
+                        <div className="border-b px-4 py-2 flex justify-between items-center">
+                          <h3 className="font-semibold text-lg">
+                            Edit Comment
+                          </h3>
+                          <button className="">&cross;</button>
+                        </div>
+                        {/* <!-- ===== modal body ===== --> */}
+                        <div className="p-3">
+                          <form id="<%= comments.id %>">
+                            <div className="">
+                              <textarea
+                                id="saveCommentBtn"
+                                className="comment-textarea py-2 text-white bg-gray-700 rounded-md pl-1 focus:outline-none border border-gray-500 focus:border-purple-800 focus:bg-gray-900 focus:text-gray-300"
+                                autoComplete="off"
+                                rows="3"
+                                type="text"
+                                name="comment[text]"
+                              ></textarea>
+                            </div>
+                          </form>
+                        </div>
+                        <div className="flex justify-end items-center w-100 border-t p-3">
+                          <button className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white mr-1">
+                            Cancel
+                          </button>
+                          <button
+                            data-action="/blogs/<%= blog._id %>/comments/<%= comments._id %>"
+                            className="save-comment-btn bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-white"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <!-- ===== end of edit comment modal ===== --> */}
+                  </div>
+                </div>
+
+                {/* end of dropdown menu */}
+                {/* <EditCommentModal /> */}
               </div>
             )}
           </div>
@@ -113,7 +218,7 @@ export default function TextComments(props) {
 
       {session && action === null && (
         <AddReply
-          updateComment={setCommentReply}
+          updateComment={updateCommentReplies}
           commentId={commentReply._id}
           formStyle={replyFormState}
           formId={formId}
@@ -124,7 +229,7 @@ export default function TextComments(props) {
 
       {session && action === "ADD_REPLY" && (
         <AddReply
-          updateComment={setCommentReply}
+          updateComment={updateCommentReplies}
           commentId={props.comment._id}
           formStyle={replyFormState}
           formId={formId}

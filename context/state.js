@@ -1,20 +1,65 @@
 import React, { useState } from "react";
+import useFetch from "@/hooks/fetch";
+import checkIcon from "../styles/assets/check.svg";
+import errorIcon from "../styles/assets/error.svg";
+import infoIcon from "../styles/assets/info.svg";
+import warningIcon from "../styles/assets/warning.svg";
 
-var CommentContext = React.createContext(null);
+export const appToastContext = React.createContext(null);
 
-export function CommentsWrapper(props) {
-  //   console.log(props);
-  var [userDetails] = useState(props.user);
-  //   setUserDetails(props.user);
-  console.log(userDetails);
+export function ToastWrapper(props) {
+  const [list, setList] = React.useState([]);
+
+  let toastProperties = null;
+
+  const showToast = (type, description) => {
+    const id = Math.floor(Math.random() * 100 + 1);
+    switch (type) {
+      case "success":
+        toastProperties = {
+          id,
+          title: "Success",
+          description: description,
+          backgroundColor: "#5cb85c",
+          icon: checkIcon,
+        };
+        break;
+      case "error":
+        toastProperties = {
+          id,
+          title: "Error",
+          description: description,
+          backgroundColor: "#d9534f",
+          icon: errorIcon,
+        };
+        break;
+      case "info":
+        toastProperties = {
+          id,
+          title: "Info",
+          description: description,
+          backgroundColor: "#5bc0de",
+          icon: infoIcon,
+        };
+        break;
+      case "warning":
+        toastProperties = {
+          id,
+          title: "Warning",
+          description: description,
+          backgroundColor: "#f0ad4e",
+          icon: warningIcon,
+        };
+        break;
+      default:
+        setList([]);
+    }
+    setList([...list, toastProperties]);
+  };
 
   return (
-    <CommentContext.Provider value={userDetails}>
+    <appToastContext.Provider value={{ list, setList, showToast, useFetch }}>
       {props.children}
-    </CommentContext.Provider>
+    </appToastContext.Provider>
   );
-}
-
-export function useCommentContext() {
-  return useContext(CommentContext);
 }
