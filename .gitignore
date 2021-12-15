@@ -22,6 +22,8 @@ yarn.lock
 # misc
 .DS_Store
 *.pem
+/styles/assets
+.gitignore
 
 # debug
 npm-debug.log*
