@@ -14,6 +14,7 @@ yarn.lock
 
 # next.js
 /.next/
+/.idea/
 /out/
 
 # production
@@ -22,8 +23,8 @@ yarn.lock
 # misc
 .DS_Store
 *.pem
-/styles/assets
-.gitignore
+/styles/assets/
+._.DS_Store
 
 # debug
 npm-debug.log*
