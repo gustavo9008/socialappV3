@@ -9,6 +9,7 @@ import { useDetectOutsideClick } from "@/components/ui/useDetectClick";
 // import { useEffect } from "react/cjs/react.development";
 
 export default function TextComments(props) {
+  const [openCommentModal, setOpenCommentModal] = React.useState(false);
   // console.log(props.comment);
   let cardSize = 100;
   if (props.cardSize) {
@@ -63,6 +64,7 @@ export default function TextComments(props) {
   const commentDropdwn = () => {
     setIsActive(!isActive);
   };
+  const openCommentModalBtn = () => {};
 
   return (
     <ul>

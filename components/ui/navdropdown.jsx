@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useDetectOutsideClick } from "./useDetectClick";
 
 const AlpineWidjet = (props) => {
-  console.log(props.user);
+  // console.log(props.user);
   const handleLogout = async () => {
     signOut({ callbackUrl: "10.0.0.60:3000/" });
   };

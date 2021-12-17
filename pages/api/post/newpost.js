@@ -11,7 +11,7 @@ const upload = multer({ storage });
 const handler = nextConnect();
 
 handler.post(upload.single("file"), async (req, res) => {
-  // console.log(req);
+  console.log(req);
   console.log(req.body.title);
   //===== create one post function =====
   const createNewPost = async (session) => {

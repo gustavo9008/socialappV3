@@ -100,8 +100,8 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log(user);
-      console.log(token);
+      // console.log(user);
+      // console.log(token);
       user &&
         ((token.id = user.id),
         (token.name = user.name),
@@ -129,7 +129,7 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log(session);
+      // console.log(session);
 
       if (session.user.name !== token.name) {
         session.user.name = token.name;
@@ -141,7 +141,7 @@ export default NextAuth({
       session.user.genericImage = token.profile.image.genericPic;
       session.user.created = token.created;
 
-      console.log(session);
+      // console.log(session);
       return session;
     },
   },

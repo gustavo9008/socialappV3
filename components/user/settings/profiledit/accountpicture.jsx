@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Compressor from "compressorjs";
 
 export default function AccountPicture(props) {
-  console.log(props.user);
+  // console.log(props.user);
   const [show, setShow] = useState(true);
   const [newcolorstate, setNewColorState] = useState([]);
   const profilePictureRef = useRef();

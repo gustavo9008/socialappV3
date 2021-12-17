@@ -9,7 +9,7 @@ import AlpineWidjet from "@/components/ui/navdropdown";
 export default function Header() {
   // console.log(children.props);
   const { data: session, status } = useSession();
-  console.log(session);
+  // console.log(session);
 
   const handleLogout = async () => {
     await fetch("/api/auth", {
