@@ -25,6 +25,7 @@ yarn.lock
 *.pem
 /styles/assets/
 ._.DS_Store
+testRequest.js
 
 # debug
 npm-debug.log*
