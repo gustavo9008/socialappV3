@@ -30,16 +30,14 @@ const EditPostModal = (props) => {
   // submit handler
   const submitEditHandler = async (e) => {
     e.preventDefault();
-    console.log("submit handler has been clicked");
     // const title = titleRef.current.value;
 
-    // console.log(content);
+    console.log(props.post.image[0]);
     const updatedPost = {
       post: { title: titleRef.current.value, content: content },
       postId: props.post._id,
-      imageToDelete: props.post.image[0].filename
-        ? props.post.image[0].filename
-        : null,
+      imageToDelete:
+        props.post.image[0] !== undefined ? props.post.image[0].filename : null,
       type: "UPDATE_POST",
     };
     // console.log(updatedPost);

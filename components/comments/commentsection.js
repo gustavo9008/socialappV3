@@ -48,7 +48,7 @@ export default function CommentSection(props) {
     <CommentContext.Provider
       value={{ userSession, postComments, setPostComments, title, postId }}
     >
-      <section className="comments p-4 pb-7">
+      <section className="comments p-4 pb-14">
         <h3 className="mt-10 text-3xl pb-4">Discussion</h3>
         <div className="">
           <AddCommentForm postId={props.post._id} title={props.post.title} />

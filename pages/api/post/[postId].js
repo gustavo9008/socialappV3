@@ -24,28 +24,30 @@ export default async function findPostHandler(req, res) {
       path: "comments",
       options: { sort: { created: -1 } },
     });
-    //===== recursion function =====
+    //===== recursion function to find all replies =====
     async function deepIterator(comment) {
       let commentReplies = comment;
       for (const key in commentReplies) {
         if (commentReplies[key].replies !== undefined) {
+          console.log(commentReplies[key].replies);
           for (const com in commentReplies[key].replies) {
-            // console.log(commentReplies[key].replies[com].toString());
+            console.log(commentReplies[key].replies[com].toString());
             const commentReply = await Reply.findById(
               commentReplies[key].replies[com].toString()
             );
-            if (commentReply === null) {
-              commentReplies[key].replies.splice(
-                commentReplies[key].replies[com]
-              );
-            }
-            // console.log(commentReply);
+            // if (commentReply === null) {
+            //   commentReplies[key].replies.spice(
+            //     commentReplies[key].replies[com]
+            //   );
+            //   console.log(commentReplies[key].replies);
+            // }
             if (commentReply !== null) {
               commentReplies[key].repliesFound.push(commentReply);
             }
             // commentReplies[key].repliesFound.push(commentReply);
           }
           if (commentReplies[key].repliesFound !== undefined) {
+            console.log("if is undefined is running");
             await deepIterator(commentReplies[key].repliesFound);
           }
         }

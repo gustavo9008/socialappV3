@@ -1,4 +1,3 @@
-import { Collection } from "mongoose";
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import UserAccount from "./useraccount";

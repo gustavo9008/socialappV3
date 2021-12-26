@@ -24,6 +24,7 @@ let replySchema = new Schema({
     title: String,
   },
   originalCommentId: String,
+  originalReplyId: String,
   originalPostId: String,
   created: { type: Date, default: Date.now },
 });
