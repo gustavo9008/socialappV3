@@ -26,6 +26,7 @@ yarn.lock
 /styles/assets/
 ._.DS_Store
 testRequest.http
+.gitignore
 
 # debug
 npm-debug.log*
