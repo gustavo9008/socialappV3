@@ -1,18 +1,48 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-
+// import useFetch from "@/hooks/fetch";
 import Compressor from "compressorjs";
+import Button, { useBtnState } from "@/components/ui/Button";
+import { appToastContext } from "../../../../context/state";
 
 export default function AccountPicture(props) {
+  const {
+    useFetch,
+    showToast,
+    userSession,
+    setUserSession,
+    setTokenRefreshInterval,
+  } = React.useContext(appToastContext);
+  const [
+    btnDisabled,
+    setBtnDisabled,
+    stopBtnAnimate,
+    label,
+    setLabel,
+    btnColor,
+    setBtnColor,
+  ] = useBtnState(true, "Save Picture/Color", "bg-slate-700", "block");
   // console.log(props.user);
-  const [show, setShow] = useState(true);
+  // const [show, setShow] = useState(true);
   const [newcolorstate, setNewColorState] = useState([]);
   const profilePictureRef = useRef();
   const oldProfilePic = useRef();
   const newColor = useRef();
   const router = useRouter();
+  const updateNewColorPic = useFetch;
+  console.log(newcolorstate);
+
+  const changeBtnColorActive = () => {
+    btnDisabled === true && setBtnDisabled(false);
+    btnColor === "bg-slate-700" &&
+      setBtnColor("bg-indigo-500 hover:bg-indigo-600");
+    return;
+  };
 
   const loadFile = (event) => {
+    //===== change btn color and change btn active  =====
+
+    changeBtnColorActive();
     const output = document.getElementById("output");
     output.src = URL.createObjectURL(event.target.files[0]);
     output.onload = function () {
@@ -23,13 +53,13 @@ export default function AccountPicture(props) {
   const newPic = async (e) => {
     e.preventDefault();
 
-    function btnAnimate() {
-      document.querySelector("#svgSpin").classList.add("animate-spin");
-      document.querySelector("#svgSpin").style.display = "inline-block";
-      document.querySelector("#postText").style.display = "none";
-      document.querySelector("#postingText").style.display = "inline";
-    }
-
+    // function btnAnimate() {
+    //   document.querySelector("#svgSpin").classList.add("animate-spin");
+    //   document.querySelector("#svgSpin").style.display = "inline-block";
+    //   document.querySelector("#postText").style.display = "none";
+    //   document.querySelector("#postingText").style.display = "inline";
+    // }
+    //===== form data creation =====
     const formData = new FormData();
     const oldFilename = oldProfilePic.current.getAttribute("data-filename");
     // console.log(newColor.current.getAttribute("data-color"));
@@ -40,7 +70,7 @@ export default function AccountPicture(props) {
     // console.log();
 
     if (profilePictureRef.current.files[0]) {
-      btnAnimate();
+      // btnAnimate();
       // formData.append("file", profilePictureRef.current.files[0]);
       // console.log(formData);
       let imageForm = profilePictureRef.current.files[0];
@@ -60,7 +90,7 @@ export default function AccountPicture(props) {
       updateColor();
     }
     function updateColor() {
-      btnAnimate();
+      // btnAnimate();
       if (newColor.current.getAttribute("data-color")) {
         console.log(newcolorstate);
         formData.append("newColor", JSON.stringify(newcolorstate));
@@ -75,50 +105,67 @@ export default function AccountPicture(props) {
 
   const updateImageSubmit = async (formData) => {
     // console.log(message);
-    const res = await fetch("/api/user/uploadimage", {
-      method: "PUT",
-      body: formData,
-    });
+    // const res = await fetch("/api/user/uploadimage", {
+    //   method: "PUT",
+    //   body: formData,
+    // });
+    const res = await updateNewColorPic(
+      "PUT",
+      "/api/user/uploadimage",
+      formData
+    );
     // Await for data for any desirable next steps
-    const data = await res.json();
-    console.log(res.ok);
+    // const data = await res;
+    if (res.statusText === "Created") {
+      setTokenRefreshInterval(2);
+      setTimeout(() => {
+        console.log("setTimeout Triggered!");
+        setTokenRefreshInterval(432000);
+      }, 4000);
+      res.data.message && showToast("success", res.data.message);
+      setBtnColor("bg-slate-700");
+      setBtnDisabled(true);
+      stopBtnAnimate("sendNewColorBtn");
+    }
+
     // if (res.ok === true) {
     //   router.reload();
     // }
   };
 
+  async function generateRandomColors(num) {
+    // make an array
+    var arr = [];
+    // repeat num times
+    for (var i = 0; i < num; i++) {
+      // get random color and push into arr
+      arr.push(await randomColor());
+    }
+    // return that array
+    return arr;
+  }
+  async function randomColor() {
+    // pick a "red" fromm 0-255
+    let r = Math.floor(Math.random() * 256);
+    // pick a "green" fromm 0-255
+    let g = Math.floor(Math.random() * 256);
+    // pick a "blue" fromm 0-255
+    let b = Math.floor(Math.random() * 256);
+    return "rgb(" + r + ", " + g + ", " + b + ")";
+  } //===
+
   //===== new colors =====
-  const newColorPic = (e) => {
+  const newColorPic = async (e) => {
     e.preventDefault();
-    let newColorpic = generateRandomColors(8);
+
+    changeBtnColorActive();
+    let newColorpic = await generateRandomColors(8);
     // console.log(newColorPic);
     setNewColorState(newColorpic);
     console.log(newcolorstate);
     const colorCircle = document.querySelector("#colorPic");
-    // colorCircle.style.backgroundColor = newColorpic[0];
     colorCircle.style.backgroundImage = `conic-gradient(${newColorpic[0]}, ${newColorpic[1]}, ${newColorpic[2]}, ${newColorpic[3]}, ${newColorpic[4]}, ${newColorpic[5]}, ${newColorpic[6]}, ${newColorpic[7]} )`;
     colorCircle.setAttribute("data-color", newColor);
-
-    function generateRandomColors(num) {
-      // make an array
-      var arr = [];
-      // repeat num times
-      for (var i = 0; i < num; i++) {
-        // get random color and push into arr
-        arr.push(randomColor());
-      }
-      // return that array
-      return arr;
-    }
-    function randomColor() {
-      // pick a "red" fromm 0-255
-      let r = Math.floor(Math.random() * 256);
-      // pick a "green" fromm 0-255
-      let g = Math.floor(Math.random() * 256);
-      // pick a "blue" fromm 0-255
-      let b = Math.floor(Math.random() * 256);
-      return "rgb(" + r + ", " + g + ", " + b + ")";
-    } //===
   };
   const colorProfilePic = {
     background: `conic-gradient(${props.user.genericImage[0]} , ${props.user.genericImage[1]}, ${props.user.genericImage[2]}, ${props.user.genericImage[3]}, ${props.user.genericImage[4]}, ${props.user.genericImage[5]}, ${props.user.profile.image.genericPic[6]}, ${props.user.profile.image.genericPic[7]}  )`,
@@ -239,7 +286,14 @@ export default function AccountPicture(props) {
               </div>
             </div>
           </div>
-          <button
+          <Button
+            disabled={btnDisabled}
+            label={label}
+            idTag={"sendNewColorBtn"}
+            handleClick={newPic}
+            className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded bg-opacity-80 p-2 hover:text-white`}
+          />
+          {/* <button
             onClick={newPic}
             id="edit-pic-btn"
             data-action="/blogs/profile/settings"
@@ -271,7 +325,7 @@ export default function AccountPicture(props) {
             </span>
 
             <span id="postText">Save Picture/Color</span>
-          </button>
+          </button> */}
         </form>
       </section>
     </>

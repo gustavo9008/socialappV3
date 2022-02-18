@@ -38,7 +38,7 @@ const updateProfileImageHandler = async (req, res) => {
         //===== end of user check =====
       }
       //Send success response
-      res.status(201).json({ message: "Your new post has been created!!" });
+      res.status(201).json({ message: "Color/Picture has been updated." });
       //Close DB connection
       // client.close();
     } else {

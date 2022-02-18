@@ -15,7 +15,7 @@ const upload = multer({ storage });
 const handler = nextConnect();
 
 handler.put(upload.array("file"), async (req, res) => {
-  console.log(req);
+  console.log(JSON.parse(req.body.newColor));
   //===== function updates image or color  =====
   async function saveImage(session) {
     if (req.body.oldFileName) {
@@ -39,7 +39,7 @@ handler.put(upload.array("file"), async (req, res) => {
     };
     //===== updates color =====
     const updateUserColorPic = async () => {
-      const newColorArray = req.body.newColor;
+      const newColorArray = JSON.parse(req.body.newColor);
       console.log(newColorArray);
       await changePostImage(newColorArray);
       user.profile.image.genericPic = newColorArray;

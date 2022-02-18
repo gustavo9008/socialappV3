@@ -1,6 +1,6 @@
 import React from "react";
 import { appToastContext } from "context/state";
-import Head from "next/head";
+// import Head from "next/head";
 import Link from "next/link";
 // import { useSession } from "next-auth/react";
 
@@ -50,12 +50,6 @@ export default function Header() {
   // );
   return (
     <>
-      <Head>
-        <script
-          defer
-          src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
-        ></script>
-      </Head>
       <nav
         id="navbar"
         className="fixed top-0 z-50 mb-4 w-full border-b-2 border-gray-900 bg-gray-800 text-white"

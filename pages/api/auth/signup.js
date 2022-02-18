@@ -16,18 +16,18 @@ async function signUpHandler(req, res) {
       return;
     }
     //===== color pick functions =====
-    function generateRandomColors(num) {
+    async function generateRandomColors(num) {
       // make an array
       var arr = [];
       // repeat num times
       for (var i = 0; i < num; i++) {
         // get random color and push into arr
-        arr.push(randomColor());
+        arr.push(await randomColor());
       }
       // return that array
       return arr;
     }
-    function randomColor() {
+    async function randomColor() {
       // pick a "red" fromm 0-255
       let r = Math.floor(Math.random() * 256);
       // pick a "green" fromm 0-255
@@ -37,9 +37,9 @@ async function signUpHandler(req, res) {
       return "rgb(" + r + ", " + g + ", " + b + ")";
     } //==========
 
-    let newcolors = generateRandomColors(3);
-
-    let profileRegistered = false;
+    let newcolors = await generateRandomColors(8);
+    console.log(newcolors);
+    // let profileRegistered = false;
     let hashPass = await hash(password, 12);
 
     const newProfile = {
@@ -62,7 +62,7 @@ async function signUpHandler(req, res) {
       comments: [],
       commentReplies: [],
     };
-
+    console.log(newProfile);
     const newUser = new User({
       name: name,
       email: email,
