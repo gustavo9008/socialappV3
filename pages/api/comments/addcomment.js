@@ -64,7 +64,7 @@ const postHandler = async (req, res) => {
     await comment.replies.push(newReply._id);
     await comment.save();
     const user = await User.findById(userProfile.id);
-    await user.profile.commentReplies.push(newReply._id);
+    await user.profile.replies.push(newReply._id);
     await user.save();
     const replyCreated = await newReply.save();
     console.log(newReply._id.toString());
@@ -90,7 +90,7 @@ const postHandler = async (req, res) => {
     originalReply.replies.push(newReply._id);
     originalReply.save();
     const user = await User.findById(userProfile.id);
-    await user.profile.commentReplies.push(newReply._id);
+    await user.profile.replies.push(newReply._id);
     await user.save();
     const replyCreated = await newReply.save();
     // console.log(newReply._id.toString());
@@ -127,7 +127,7 @@ const postHandler = async (req, res) => {
     if (req.body.action === "ADD_REPLY") {
       const userProfileUpdate = await User.findByIdAndUpdate(
         session.user.id,
-        { $pull: { "profile.commentReplies": req.body.commentId } },
+        { $pull: { "profile.replies": req.body.commentId } },
         { safe: true, multi: true }
       );
       console.log(userProfileUpdate);

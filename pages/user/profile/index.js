@@ -4,7 +4,7 @@ import { useSession, getSession } from "next-auth/react";
 
 export default function ProfilePage(props) {
   const { data: session, status } = useSession();
-  //   console.log(session.user.profile.image.genericPic);
+  // console.log(session.user.profile.image.genericPic);
 
   return (
     <>

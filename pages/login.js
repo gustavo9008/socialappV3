@@ -50,6 +50,7 @@ const LoginPage = () => {
       showToast("success", message);
     }
     if (status.error !== null) {
+      console.log(status.error);
       showToast("error", status.error);
     }
   }

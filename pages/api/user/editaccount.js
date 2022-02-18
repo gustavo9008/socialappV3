@@ -1,37 +1,31 @@
 import { getSession } from "next-auth/react";
+// import { getCsrfToken } from "next-auth/react";
+// import { getToken } from "next-auth/jwt";
 import { compare, hash } from "bcryptjs";
 import Post from "../../../models/post";
 import User from "../../../models/user";
 import Comment from "../../../models/comment";
 import dbConnect from "../../../middleware/mongodb";
 import Reply from "../../../models/replies";
+// import useFetch from "../../../hooks/fetch";
+// import { server } from "../../../config/index";
+
+// const secret = process.env.SECRET;
 
 const updateuseraccounthandler = async (req, res) => {
+  // const sendNewUser = useFetch;
+
   //===== create one post functionk =====
   const updateAccount = async (session) => {
-    //===== recursion function =====
-    // function deepIterator(target, savedUser) {
-    //   // console.log(target);
-    //   if (typeof target === "object") {
-    //     for (const key in target) {
-    //       target[key].userProfile.name = savedUser;
-    //       console.log(target[key].userProfile);
-
-    //       if (target[key].replies) {
-    //         deepIterator(target[key].replies);
-    //       }
-    //     }
-    //   }
-    // }
     //===== search user account =====
     await dbConnect();
+    console.log(req.body);
     const user = await User.findById(session.user.id);
-    const userName = user.name;
-    console.log(userName);
+    // const sendNewUser = user.name;
+    // console.log(userName);
 
-    const editUserAccount = () => {
-      console.log(req.body.type);
-      console.log(req.body.newName, req.body.newEmail);
+    const editUserAccount = async () => {
+      // console.log(req.body.newName, req.body.newEmail);
       console.log("edit user account function");
       let updatedUser = {
         name: req.body.newName,
@@ -44,6 +38,7 @@ const updateuseraccounthandler = async (req, res) => {
         .save()
         .then((savedUser) => {
           console.log("this is savedUser callback");
+          // console.log(savedUser)
           //===== check and updates post user name =====
           if (user.profile.posts) {
             let postsLength = Object.keys(user.profile.posts);
@@ -75,8 +70,10 @@ const updateuseraccounthandler = async (req, res) => {
                 //   deepIterator(comment.replies, savedUser.name);
                 // }
                 // console.log(comment);
-                comment.userProfile.name = savedUser.name;
-                comment.save();
+                if (comment !== null) {
+                  comment.userProfile.name = savedUser.name;
+                  comment.save();
+                }
               });
             }
           }
@@ -85,95 +82,97 @@ const updateuseraccounthandler = async (req, res) => {
             let repliesLength = Object.keys(user.profile.commentReplies);
             // console.log(repliesLength);
             for (let i = 0; i < repliesLength.length; i++) {
-              console.log(user.profile.commentReplies[i]);
+              // console.log(user.profile.commentReplies[i]);
               Reply.findById(user.profile.commentReplies[i], (err, reply) => {
                 if (err) {
                   console.log(err);
                 }
-                reply.userProfile.name = savedUser.name;
-                reply.save();
+                // console.log(reply);
+                if (reply !== null) {
+                  reply.userProfile.name = savedUser.name;
+                  reply.save();
+                }
+
                 // console.log("inside change reply loop");
                 // console.log(reply._id);
               });
             }
           }
           // console.log(savedUser);
-          res.status(201).json({ message: "your account has been updated" });
+          // res.status(201).json({ message: "your account has been updated" });
         })
         .catch((err) => {
-          console.log("this is err callback");
+          console.log("inside catch error");
+          console.log(err);
           if (err.keyPattern.name) {
             console.log(err);
-            res.status(200).json({ message: "Username exists already!" });
+            res
+              .status(200)
+              .json({ type: "error", message: "Username exists already!" });
             res.end();
           }
           if (err.keyPattern.email) {
             console.log(err);
-            res
-              .status(200)
-              .json({ message: "User with email already exists!" });
+            res.status(200).json({
+              type: "error",
+              message: "User with email already exists!",
+            });
             res.end();
           }
-          // if (err) {
-          //   console.log(err);
-          //   res
-          //     .status(200)
-          //     .json({ message: "Something went wrong, try again later" });
-          //   // res.end();
-          // }
+          if (err) {
+            console.log(err);
+            res.status(200).json({
+              type: "error",
+              message: "Something went wrong, try again later",
+            });
+            // res.end();
+          }
+          res.end();
         });
+
+      // await updateUserToken();
+      res.status(201).json({ message: "your account has been updated" });
+      res.end();
     };
     //===== edit user password funtion =====
     const editUserPassword = async (session) => {
       const { oldPassword, newPassword } = req.body;
       const passwordMatch = await compare(oldPassword, user.password);
       if (!passwordMatch) {
-        res.status(401).json({
-          error: { message: "The old password you entered is incorrect." },
+        res.status(200).json({
+          error: { message: "The current password you entered is incorrect." },
         });
       }
       if (passwordMatch) {
         const password = await hash(newPassword, 10);
         user.password = password;
         user.save();
+        console.log("account password has been update");
         res.status(201).json({ message: "Your password has been update." });
       }
 
-      res.end();
+      // res.end();
     };
     //===== check what kind of edit must be performed =====
     // console.log(user._id.toString() === session.user.id.toString());
     //===== check if is user account edit =====
+    // async function updateUserToken() {
+    //   // const csrfToken = await getCsrfToken({ req });
+    //   // console.log(csrfToken);
+    // }
+
     user._id.toString() === session.user.id.toString() &&
       req.body.type === "EDIT_USER_ACCOUNT" &&
-      editUserAccount();
+      (await editUserAccount());
     //===== check if is passsword edit =====
     user._id.toString() === session.user.id.toString() &&
       req.body.type === "EDIT_USER_PASSWORD" &&
-      editUserPassword(session);
-    //===== check if delete req =====
-
-    // if (user._id == session.user.id) {
-    //   if ((req.body.type = `EDIT_USER_ACCOUNT`)) {
-    //     // console.log(req.body.type);
-    //     console.log(req.body);
-    //     console.log(user);
-    //   }
-
-    //   // console.log(updatedProfile);
-
-    //   //===== end of user check =====
-    // }
-
-    //Send success response
-    // res.status(201).json({ message: "your account has been found" });
-    //Close DB connection
-    // client.close();
+      (await editUserPassword(session));
   };
   const deleteAccount = async (session) => {
     await dbConnect();
     const user = await User.findById(session.user.id);
-    const userName = user.name;
+    // const userName = user.name;
     // console.log(userName);
     // console.log(req.body);
 
@@ -213,6 +212,7 @@ const updateuseraccounthandler = async (req, res) => {
   //===== checks if user is logged in  =====
   const checkSession = async () => {
     const session = await getSession({ req });
+    // const csrfToken = await getCsrfToken({ req });
     // console.log(session);
     session && (await updateAccount(session));
     !session &&
@@ -221,6 +221,7 @@ const updateuseraccounthandler = async (req, res) => {
   };
   const checkDeleteSession = async () => {
     const session = await getSession({ req });
+
     // console.log(session);
     session && (await deleteAccount(session));
     !session &&
@@ -230,7 +231,6 @@ const updateuseraccounthandler = async (req, res) => {
   //===== check if request is put than runs functions =====
 
   //===== switch method =====
-
   switch (req.method) {
     case "PUT":
       //...
@@ -241,8 +241,9 @@ const updateuseraccounthandler = async (req, res) => {
       checkDeleteSession();
       break;
     default:
-      res.status(500).json({ message: "Route not valid" });
+      res.status(500).json({ message: "Route not valid!" });
       res.end();
+      break;
   }
 
   //===== check if user is log in =====

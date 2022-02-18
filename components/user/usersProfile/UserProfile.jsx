@@ -1,72 +1,38 @@
-import React from "react";
-// import ReactDOM from "react-dom";
 import Link from "next/link";
-import { server } from "../../config/index";
-import { appToastContext } from "../../context/state";
+import React from "react";
 
-export default function Profile(props) {
-  const { useFetch } = React.useContext(appToastContext);
-  const [dataLoaded, setDataLoaded] = React.useState(false);
-  // console.log(props.user.id);
-  const getMyProfile = useFetch;
-  const [myProfile, setMyProfile] = React.useState(props.user);
-  if (myProfile.profile.posts) {
-    console.log(myProfile.profile);
-  }
+// import ReactDOM from "react-dom";
+
+export default function UserProfile(props) {
+  // console.log(props.user.profile);
   // const css2obj = (css) => {
   //   const r = /(?<=^|;)\s*([^:]+)\s*:\s*([^;]+)\s*/g,
   //     o = {};
   //   css.replace(r, (m, p, v) => (o[p] = v));
   //   return o;
   // };
-  if (dataLoaded) {
-    const CommentsReplies = myProfile.profile.comments.concat(
-      myProfile.profile.replies
-    );
-    // console.log(CommentsReplies);
 
-    const sortedCommentReplies = CommentsReplies.slice().sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
-  }
+  const CommentsReplies = props.comments.concat(props.replies);
+  // console.log(CommentsReplies);
+
+  const sortedCommentReplies = CommentsReplies.slice().sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  // console.log(sortedCommentReplies);
 
   const btnStyle = {
-    backgroundColor: `${props.user.genericImage[0]}`,
-    backgroundImage: `conic-gradient(${props.user.genericImage[0]}, ${props.user.genericImage[1]}, ${props.user.genericImage[2]}, ${props.user.profile.image.genericPic[3]}, ${props.user.profile.image.genericPic[4]}, ${props.user.profile.image.genericPic[5]}, ${props.user.profile.image.genericPic[6]}, ${props.user.profile.image.genericPic[7]}`,
+    background: `conic-gradient(${props.user.profile.image.genericPic[0]}, ${props.user.profile.image.genericPic[1]} , ${props.user.profile.image.genericPic[2]}, ${props.user.profile.image.genericPic[3]}, ${props.user.profile.image.genericPic[4]}, ${props.user.profile.image.genericPic[5]}, ${props.user.profile.image.genericPic[6]}, ${props.user.profile.image.genericPic[7]})`,
   };
 
-  // const MyProfile = async (id) => {
-  //   const response = await getMyProfile("GET", `/api/user/${id}`);
-  //   // const myProfile = await response.json();
-  //   console.log(response);
-  // };
-
-  React.useEffect(() => {
-    const MyProfile = async (id) => {
-      const res = await getMyProfile("GET", `/api/user/${id}`);
-      // const myProfile = await response.json();
-      // console.log(res.data);
-      setMyProfile(res.data.account);
-      res.data.account && setDataLoaded(true);
-    };
-
-    MyProfile(props.user.id);
-  }, [props.user.id, getMyProfile]);
+  // const spanSyle = css2obj(props.user.genericImage);
+  // console.log(spanSyle);
   return (
     <main className="Psm:m-0 profile-container Psm:mt-3 mt-3">
       <header className="Psm:w-full mx-auto mb-2">
-        <figure className="Psm:border-l-0 Psm:border-r-0 Psm:rounded-none relative flex-grow overflow-hidden rounded-md border border-gray-600 bg-gray-800 p-8 md:flex md:p-0">
-          <Link href="/user/profile/settings">
-            <a
-              className=" Psm:right-0 Psm:top-0 absolute right-1 top-1 rounded  bg-indigo-500 p-2 font-medium tracking-tighter text-black hover:bg-indigo-600"
-              aria-label="Edit profile button"
-            >
-              Edit Profile
-            </a>
-          </Link>
-
+        <figure className="Psm:border-l-0 Psm:border-r-0 Psm:rounded-none flex-grow overflow-hidden rounded-md border border-gray-600 bg-gray-800 p-8 md:flex md:p-0">
           <div className="Psm:flex-col flex w-full">
-            {!myProfile.profile.image.url ? (
+            {!props.user.profile.image.url ? (
               <span
                 className="profile-circle-avatar Psm:mx-auto h-32 w-32 rounded-full object-cover md:h-auto md:w-48 md:rounded-none"
                 style={btnStyle}
@@ -74,7 +40,7 @@ export default function Profile(props) {
             ) : (
               <img
                 className="profile-circle-avatar Psm:mx-auto h-32 w-32 rounded-full object-cover md:h-auto md:w-48 md:rounded-none"
-                src={myProfile.profile.image.url}
+                src={props.user.profile.image.url}
                 alt=""
                 width="384"
                 height="512"
@@ -82,10 +48,8 @@ export default function Profile(props) {
             )}
             <div className="space-y-4 pt-6 text-center md:p-8 md:text-left">
               <figcaption className="font-medium">
-                <p>{myProfile.name}</p>
-                <p className="text-lg font-semibold">
-                  {myProfile.profile.about}
-                </p>
+                <p className="text-lg font-semibold">{props.user.name}</p>
+                <p className="text-md">{props.user.profile.about}</p>
 
                 <aside className="mt-2 flex justify-around text-sm text-gray-400">
                   <span>
@@ -105,7 +69,7 @@ export default function Profile(props) {
                         />
                       </svg>
                     </i>
-                    Location: {myProfile.profile.location}{" "}
+                    Location: {props.user.profile.location}{" "}
                   </span>
                   <span>
                     <i className="profile-card-loc_joined">
@@ -124,7 +88,7 @@ export default function Profile(props) {
                         />
                       </svg>
                     </i>
-                    Joined on: {new Date(myProfile.createdAt).toDateString()}
+                    Joined on: {new Date(props.user.createdAt).toDateString()}
                   </span>
                 </aside>
                 <footer className="m-auto mt-4 flex w-60 justify-around text-xl"></footer>
@@ -132,12 +96,12 @@ export default function Profile(props) {
             </div>
           </div>
         </figure>
-      </header>{" "}
+      </header>
       <section className="mx-auto flex flex-row flex-wrap justify-evenly gap-4">
         {/* post section  */}
-        {dataLoaded && myProfile.profile.posts.length > 0 && (
+        {props.user.profile.posts.length > 0 && (
           <article className="Psm:w-screen profile-post-comment-containers flex flex-auto flex-col flex-wrap self-start ">
-            {myProfile.profile.posts.map((post) => (
+            {props.user.profile.posts.map((post) => (
               <div
                 className="Psm:rounded-none profile-article-cards Psm:border-l-0 Psm:border-r-0 border border-gray-700 bg-gray-800"
                 key={post._id}
@@ -155,7 +119,7 @@ export default function Profile(props) {
         )}
 
         {/* comment section */}
-        {dataLoaded && sortedCommentReplies.length > 0 && (
+        {sortedCommentReplies.length > 0 && (
           <article className="Psm:w-screen profile-post-comment-containers Psm:border-l-0 Psm:border-r-0 Psm:rounded-none mb-4 flex flex-auto flex-col flex-wrap self-start overflow-hidden rounded-md border border-gray-500">
             <h3 className="p-2 pl-6"> Recent Comments</h3>
             {sortedCommentReplies.map((comment) => (

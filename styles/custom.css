@@ -95,7 +95,7 @@ video {
   text-shadow: 0 0 10px #000000, 0 0 10px #000000;
 }
 .main-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 .profile-container {
@@ -235,6 +235,7 @@ video {
   scrollbar-width: none; /* Firefox */
   width: clamp(310px, 95vw, 700px);
   box-shadow: 4px 4px 0px 0px #6b7280;
+  max-height: 87vh;
 }
 .post-modal::-webkit-scrollbar {
   display: none;
@@ -343,6 +344,8 @@ video {
   color: #d1cccc;
 }
 .profile-card-loc_joined {
+  position: relative;
+  top: 3px;
   display: inline-block;
   font-size: 1.1rem;
   padding-right: 10px;

@@ -1,14 +1,15 @@
 import React from "react";
-
+import { appToastContext } from "context/state";
 import Head from "next/head";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 import AlpineWidjet from "@/components/ui/navdropdown";
 
 export default function Header() {
-  // console.log(children.props);
-  const { data: session, status } = useSession();
+  const { userSession } = React.useContext(appToastContext);
+  // console.log(userSession);
+
   // console.log(session);
 
   const handleLogout = async () => {
@@ -23,7 +24,7 @@ export default function Header() {
     <>
       <Link href="/login">
         <a
-          className="rounded font-medium text-gray-900 antialiased bg-blue-400 hover:bg-blue-600 p-2 mr-1.5"
+          className="mr-1.5 rounded bg-blue-400 p-2 font-medium text-gray-900 antialiased hover:bg-blue-600"
           role="menuitem"
           aria-label="login button"
         >
@@ -33,7 +34,7 @@ export default function Header() {
 
       <Link href="/signup">
         <a
-          className="rounded font-medium bg-gray-700 hover:bg-gray-600 p-2"
+          className="rounded bg-gray-700 p-2 font-medium hover:bg-gray-600"
           role="menuitem"
           aria-label="create account button"
         >
@@ -57,16 +58,16 @@ export default function Header() {
       </Head>
       <nav
         id="navbar"
-        className="bg-gray-800 text-white sticky top-0 z-50 border-b-2 border-gray-900 mb-4"
+        className="fixed top-0 z-50 mb-4 w-full border-b-2 border-gray-900 bg-gray-800 text-white"
         role="menubar"
       >
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-          <div className="relative flex items-center justify-between h-16">
-            <div className="flex-1 flex ">
+        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="relative flex h-16 items-center justify-between">
+            <div className="flex flex-1 ">
               <div className="flex">
                 <Link href="/">
                   <a
-                    className="rounded bg-gray-700 gen hover:text-white hover:bg-gray-600 p-2"
+                    className="gen rounded bg-gray-700 p-2 hover:bg-gray-600 hover:text-white"
                     role="menuitem"
                     aria-label="home page button"
                   >
@@ -99,21 +100,20 @@ export default function Header() {
               </div>
             </div>
             {/* {noUserBtns} */}
-            {!session && status === "unauthenticated" && noUserBtns}
-            {status && <p className="text-black"></p>}
-            {status === "authenticated" && (
-              <div className="flex ml-3 Psm:ml-2 relative">
+            {!userSession && noUserBtns}
+            {userSession && (
+              <div className="Psm:ml-2 relative ml-3 flex">
                 <div className="flex items-center">
                   <Link href="/post/newpost">
                     <a
-                      className="rounded font-medium text-black bg-indigo-500 hover:bg-indigo-600 p-2 Psm:mr-3 mr-1.5 tracking-wide"
+                      className="Psm:mr-3 mr-1.5 rounded bg-indigo-500 p-2 font-medium tracking-wide text-black hover:bg-indigo-600"
                       role="menuitem"
                       aria-label="Post and article or picture"
                     >
                       Post
                     </a>
                   </Link>
-                  <AlpineWidjet user={session.user} />
+                  <AlpineWidjet user={userSession.user} />
                 </div>
               </div>
             )}

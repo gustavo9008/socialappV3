@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 
 const Toast = (props) => {
   const { toastList, position, autoDelete, autoDeleteTime } = props;
+  // console.log(toastList);
   const [list, setList] = useState(toastList);
-  // console.log(styles.position);
+  // console.log("toastList", toastList);
+  // console.log("list", list);
   let classStyle;
   switch (position) {
     case "bottomRight":
@@ -25,6 +27,22 @@ const Toast = (props) => {
       classStyle = styles.bottomRight;
       break;
   }
+
+  const deleteToast = React.useCallback(
+    (id) => {
+      // console.log(id);
+      const index = list.findIndex((e) => e.id === id);
+      // console.log(index);
+      list.splice(index, 1);
+      // console.log(list);
+      // const toastListItem = toastList.findIndex((e) => e.id === id);
+      // console.log(toastListItem);
+      // console.log(toastList);
+      // toastList.splice(toastListItem, 1);
+      setList([...list]);
+    },
+    [list, setList]
+  );
   //===== set list for toast =====
   useEffect(() => {
     setList(toastList);
@@ -40,35 +58,31 @@ const Toast = (props) => {
     return () => {
       clearInterval(interval);
     };
-  }, [toastList, autoDelete, autoDeleteTime, list]);
+  }, [toastList, autoDelete, autoDeleteTime, list, deleteToast]);
   //===== delete toast with btn =====
-  const deleteToast = (id) => {
-    const index = list.findIndex((e) => e.id === id);
-    list.splice(index, 1);
-    const toastListItem = toastList.findIndex((e) => e.id === id);
-    toastList.splice(toastListItem, 1);
-    setList([...list]);
-  };
 
   return (
     <>
-      <div className={`${styles.notificationContainer} ${classStyle}`}>
+      <div
+        className={`Psm:w-full Psm:bottom-1 Psm:right-[0px] ${styles.notificationContainer} ${classStyle}`}
+      >
         {list.map((toast, i) => (
           <div
             key={i}
-            className={`${styles.notification} ${styles.toast} ${classStyle}`}
+            id={toast.id}
+            role="alert"
+            className={`Psm:ml-[5px] Psm:mr-[5px] flex flex-row items-center justify-between rounded text-white ${classStyle}`}
             style={{ backgroundColor: toast.backgroundColor }}
           >
-            <button onClick={() => deleteToast(toast.id)}>X</button>
-            <div className={`${styles.notificationImage}`}>
-              <img src={toast.icon.src} alt="" />
-            </div>
-            <div>
-              <p className={`${styles.notificationTitle}`}>{toast.title}</p>
-              <p className={`${styles.notificationMessage}`}>
-                {toast.description}
-              </p>
-            </div>
+            <section className="flex flex-row py-4 pl-4">
+              {toast.icon}
+
+              <p className="ml-3 font-bold"> {toast.description}</p>
+            </section>
+
+            <footer className="px-4">
+              <button onClick={() => deleteToast(toast.id)}>X</button>
+            </footer>
           </div>
         ))}
       </div>

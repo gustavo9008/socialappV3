@@ -8,7 +8,7 @@ const updateUserProfileHandler = async (req, res) => {
   //===== create one post functionk =====
   const updateUser = async (session) => {
     if (req.method === "PUT") {
-      // console.log(req.body);
+      console.log(req.body);
       await dbConnect();
       const user = await User.findById(session.user.id);
       // console.log(req.body);

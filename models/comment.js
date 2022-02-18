@@ -1,31 +1,34 @@
 import mongoose from "mongoose";
 let Schema = mongoose.Schema;
 
-let commentSchema = new Schema({
-  comment: String,
-  userProfile: {
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+let commentSchema = new Schema(
+  {
+    comment: String,
+    userProfile: {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      name: String,
+      profileImage: String,
+      profileGenericPic: Array,
     },
-    name: String,
-    profileImage: String,
-    profileGenericPic: Array,
-  },
-  replies: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Replies",
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Replies",
+      },
+    ],
+    repliesFound: [],
+    postUrl: {
+      address: String,
+      title: String,
     },
-  ],
-  repliesFound: [],
-  postUrl: {
-    address: String,
-    title: String,
+    originalPostId: String,
+    created: { type: Date, default: Date.now },
   },
-  originalPostId: String,
-  created: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
 
 // let Comment = mongoose.model("Comment", commentSchema);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import CommentCard from "../ui/commentcard";
+import CommentCard from "../ui/CommentCard";
 import TextComments from "./textcomments";
 // import { CommentContext } from "./commentsection";
 

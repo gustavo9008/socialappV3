@@ -25,6 +25,7 @@ function AllPosts(props) {
             src={props.posts.image}
             layout="fill"
             alt="this is a picture"
+            priority="true"
           />
         ) : (
           <Image
@@ -42,8 +43,7 @@ function AllPosts(props) {
               <span
                 className="block h-10 w-10 rounded-full"
                 style={{
-                  backgroundColor: `${props.posts.userProfile.profileGenericPic[0]}`,
-                  backgroundImage: `linear-gradient(225deg, ${props.posts.userProfile.profileGenericPic[0]} 0%, ${props.posts.userProfile.profileGenericPic[1]} 50%, ${props.posts.userProfile.profileGenericPic[2]} 100%)`,
+                  background: `conic-gradient(${props.posts.userProfile.profileGenericPic[0]}, ${props.posts.userProfile.profileGenericPic[1]}, ${props.posts.userProfile.profileGenericPic[2]}, ${props.posts.userProfile.profileGenericPic[3]}, ${props.posts.userProfile.profileGenericPic[4]}, ${props.posts.userProfile.profileGenericPic[5]}, ${props.posts.userProfile.profileGenericPic[6]}, ${props.posts.userProfile.profileGenericPic[7]})`,
                 }}
               ></span>
             </div>
@@ -60,22 +60,18 @@ function AllPosts(props) {
             </span>
           )}
           <div className="author-container">
-            <span className="text-gray-300 text-sm">
-              <Link
-                href={"/post/user/userprofile" + props.posts.userProfile.id}
-              >
+            <span className="text-sm text-gray-300">
+              <Link href={"/user/" + props.posts.userProfile.id}>
                 <a className="clickable"> {props.posts.userProfile.name} </a>
               </Link>
             </span>
-            <span className="text-gray-400 text-xs">{props.posts.created}</span>
+            <span className="text-xs text-gray-400">{props.posts.created}</span>
           </div>
         </div>
         <Link href={"/post/" + props.posts.id}>
           <a
-            // href={"/api/post/" + props.posts.id}
-            // onClick={(e) => linkHandleClick(e)}
             id=""
-            className="article-link text-xl my-0 ml-12 Psm:ml-0 text-gray-300 tracking-wide"
+            className="article-link Psm:ml-0 my-0 ml-12 text-xl tracking-wide text-gray-300"
             aria-label="article title"
           >
             {props.posts.title}

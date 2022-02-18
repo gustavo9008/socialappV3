@@ -10,28 +10,31 @@ let ImageSchema = new Schema({
 //   return this.url.replace('/upload', '/upload/w_798')
 // })
 
-let postSchema = new Schema({
-  title: { type: String },
-  imageUrl: { type: String },
-  image: [ImageSchema],
-  body: { type: String },
-  userProfile: {
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+let postSchema = new Schema(
+  {
+    title: { type: String },
+    imageUrl: { type: String },
+    image: [ImageSchema],
+    body: { type: String },
+    userProfile: {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      name: String,
+      profileImage: String,
+      profileGenericPic: Array,
     },
-    name: String,
-    profileImage: String,
-    profileGenericPic: Array,
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    created: { type: Date, default: Date.now },
   },
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment",
-    },
-  ],
-  created: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
 // const Post = mongoose.model("Post", postSchema);
 
 export default mongoose.models.Post || mongoose.model("Post", postSchema);

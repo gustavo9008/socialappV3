@@ -12,15 +12,13 @@ export const useDetectCommentOutsideClick = (el, initialState) => {
     const onClick = (e) => {
       // If the active element exists and is clicked outside of
       if (el.current !== null && !el.current.contains(e.target)) {
-        console.log("inside if current does not contain");
         setIsActive(!isActive);
       }
     };
 
     // If the item is active (ie open) then listen for clicks outside
     if (isActive) {
-      console.log("evenet listening");
-      // window.addEventListener("click", onClick);
+      window.addEventListener("click", onClick);
     }
 
     return () => {

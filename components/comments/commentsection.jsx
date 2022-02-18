@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import AddCommentForm from "./addcommentform.js";
+import AddCommentForm from "./addcommentform.jsx";
 import Comments from "./comments";
 // import { CommentsWrapper } from "../../context/state.js";
 // import { useCommentContext } from "../../context/state.js";

@@ -2,13 +2,31 @@ import { useEffect } from "react";
 import Head from "next/head";
 import { MongoClient } from "mongodb";
 
-import { Fragment } from "react";
-
-import Card from "../components/ui/card";
+import Card from "../components/ui/Card";
 import AllPost from "../components/posts/allposts";
 // import { useCurrentUser } from "@/hooks/index";
 
 function HomePage(props) {
+  useEffect(() => {
+    const card = document.querySelectorAll(".link-card");
+    const clickableElements = document.querySelectorAll(".clickable");
+    // console.log(props.posts);
+
+    clickableElements.forEach((ele) =>
+      ele.addEventListener("click", (e) => e.stopPropagation())
+    );
+
+    for (let i = 0; i < card.length; i++) {
+      card[i].addEventListener("click", function () {
+        // link to be trigger
+        let link = this.querySelectorAll(".article-link");
+        const isTextSelected = window.getSelection().toString();
+        if (!isTextSelected) {
+          link[0].click();
+        }
+      });
+    }
+  }, []);
   return (
     <>
       <Head>
@@ -36,7 +54,14 @@ export async function getServerSideProps() {
 
   const postsCollection = db.collection("posts");
 
-  const posts = await postsCollection.find().sort({ created: -1 }).toArray();
+  const posts = await postsCollection
+    .find({})
+    .project({
+      body: 0,
+      comments: 0,
+    })
+    .sort({ created: -1 })
+    .toArray();
 
   // console.log(posts);
 
@@ -46,7 +71,6 @@ export async function getServerSideProps() {
     props: {
       posts: posts.map((posts) => ({
         title: posts.title,
-        body: posts.body,
         image: posts.image[0] ? posts.image[0].url : null,
         imageUrl: posts.imageUrl ? posts.imageUrl : null,
         id: posts._id.toString(),

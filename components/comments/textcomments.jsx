@@ -1,5 +1,5 @@
 import React from "react";
-import CommentCard from "../ui/commentcard";
+import CommentCard from "../ui/CommentCard";
 import Link from "next/link";
 import { CommentContext } from "./commentsection";
 import AddReply from "./addreplyfrom";
@@ -8,14 +8,11 @@ import EditCommentModal from "./EditCommentModal";
 import DeleteCommentModal from "./DeleteCommentModal";
 
 export default function TextComments(props) {
+  const { userSession: session } = React.useContext(CommentContext);
+  //===== modals state =====
   const [openCommentModal, setOpenCommentModal] = React.useState(false);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-  // console.log(props.comment);
-  let cardSize = 100;
-  if (props.cardSize) {
-    cardSize = props.cardSize - 2;
-  }
-  // comment dropdown logic
+  //===== comment/reply menu dropdown state  =====
   const commentDropdownRef = React.useRef(null);
   const [isActive, setIsActive] = useDetectCommentOutsideClick(
     commentDropdownRef,
@@ -24,35 +21,31 @@ export default function TextComments(props) {
   const commentDropdwn = () => {
     setIsActive(!isActive);
   };
+  //===== comments props states, for main comment and replies =====
   const [commentReply, setCommentReply] = React.useState(props.comment);
   const [repliesComment, setRepliesComment] = React.useState(
     props.comment.repliesFound
   );
-  // console.log(repliesComment);
-  // console.log(commentReply);
-  const updateCommentReplies = (newReply) => {
-    // console.log(newReply);
-    setRepliesComment([...repliesComment, newReply]);
-    // props.comment.push(newReply);
-    // commentReply.push(newReply);
-    // setCommentReply(commentReply, newReply);
-    console.log(repliesComment);
-  };
-  // console.log(commentReply);
+  //===== form state and action =====
+  const [displayReplyForm, setDisplayReplyFrom] = React.useState("none");
+  const replyFormState = { display: `${displayReplyForm}` };
+  const formId = `hiddenInput_${props.comment._id}`;
+  //===== action determines what function it will run on the backend =====
   let action = null;
   if (props.type === "ADD_REPLY") {
     action = props.type;
   }
-
-  const { userSession: session } = React.useContext(CommentContext);
-  const [displayReplyForm, setDisplayReplyFrom] = React.useState("none");
-  const replyFormState = { display: `${displayReplyForm}` };
-
-  const formId = `hiddenInput_${props.comment._id}`;
-  // sorts comments by date
+  //===== card size is use for a visual presentation for what is a reply of a comment  =====
+  let cardSize = 100;
+  if (props.cardSize) {
+    cardSize = props.cardSize - 2;
+  }
+  //===== sorts comments by date =====
   let repliesSorted = repliesComment.slice().reverse();
-  // console.log(commentReply);
-  // opens drwopdown reply form
+  const updateCommentReplies = (newReply) => {
+    setRepliesComment([...repliesComment, newReply]);
+  };
+  //=====  opens drwopdown reply form =====
   const openCloseCommentReply = (e) => {
     e.preventDefault();
 
@@ -65,7 +58,6 @@ export default function TextComments(props) {
       return;
     }
   };
-  // open comment dropdown options
 
   const openCommentModalBtn = () => {
     setOpenCommentModal(!openCommentModal);
@@ -81,11 +73,9 @@ export default function TextComments(props) {
             cardSize={props.cardSize ? props.cardSize : undefined}
           >
             <div className="comment-header flex justify-between pt-2">
-              <span className="comment-info text-sm text-gray-400 self-center">
-                <Link
-                  href={"/post/user/userprofile/" + commentReply.userProfile.id}
-                >
-                  <a className="text-sm text-blue-300 hover:text-blue-400 font-semibold">
+              <span className="comment-info self-center text-sm text-gray-400">
+                <Link href={"/user/" + commentReply.userProfile.id}>
+                  <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
                     {commentReply.userProfile.name}
                   </a>
                 </Link>
@@ -97,7 +87,7 @@ export default function TextComments(props) {
                   <div className="">
                     <button
                       onClick={openCloseCommentReply}
-                      className="reply-comment-btn rounded-full h-8 w-8 flex items-center justify-end"
+                      className="reply-comment-btn flex h-8 w-8 items-center justify-end rounded-full"
                     >
                       <i className="far fa-comment-dots">
                         <svg
@@ -121,10 +111,10 @@ export default function TextComments(props) {
 
                 {session.user &&
                   session.user.id === commentReply.userProfile.id && (
-                    <div className="relative comment-dropdown-btn rounded-full h-8 w-8 flex items-center justify-end">
+                    <div className="comment-dropdown-btn relative flex h-8 w-8 items-center justify-end rounded-full">
                       <i
                         onClick={commentDropdwn}
-                        className="fas fa-ellipsis-v w-full h-full"
+                        className="fas fa-ellipsis-v h-full w-full"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -147,9 +137,10 @@ export default function TextComments(props) {
                       {/* <!-- ===== dropdown options for comment content ===== --> */}
 
                       <div
+                        ref={commentDropdownRef}
                         className={`commentMenu ${
                           isActive ? "active" : "inactive"
-                        } z-10 origin-top-right absolute right-0 w-56 rounded-md py-1 bg-gray-900 border-2 border-gray-500 nav-dropdown-content`}
+                        } nav-dropdown-content absolute right-0 z-10 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-gray-900 py-1`}
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="user-menu"
@@ -159,7 +150,7 @@ export default function TextComments(props) {
                           <button
                             onClick={() => setOpenCommentModal(true)}
                             id=""
-                            className="block w-full text-left px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                            className="block w-full px-4 py-2 text-left font-medium tracking-wider text-gray-300 hover:bg-gray-800"
                           >
                             Edit
                           </button>
@@ -167,7 +158,7 @@ export default function TextComments(props) {
                           <button
                             onClick={() => setShowDeleteModal(true)}
                             id="delete-comment"
-                            className="delete-comment block w-full text-left px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                            className="delete-comment block w-full px-4 py-2 text-left font-medium tracking-wider text-gray-300 hover:bg-gray-800"
                           >
                             Delete
                           </button>

@@ -82,19 +82,21 @@ export default function AccountPicture(props) {
     // Await for data for any desirable next steps
     const data = await res.json();
     console.log(res.ok);
-    if (res.ok === true) {
-      router.reload();
-    }
+    // if (res.ok === true) {
+    //   router.reload();
+    // }
   };
 
   //===== new colors =====
   const newColorPic = (e) => {
     e.preventDefault();
-    let newColorpic = generateRandomColors(3);
+    let newColorpic = generateRandomColors(8);
+    // console.log(newColorPic);
     setNewColorState(newColorpic);
+    console.log(newcolorstate);
     const colorCircle = document.querySelector("#colorPic");
-    colorCircle.style.backgroundColor = newColorpic[0];
-    colorCircle.style.backgroundImage = `linear-gradient(225deg, ${newColorpic[0]} 0%, ${newColorpic[1]} 50%, ${newColorpic[2]} 100%)`;
+    // colorCircle.style.backgroundColor = newColorpic[0];
+    colorCircle.style.backgroundImage = `conic-gradient(${newColorpic[0]}, ${newColorpic[1]}, ${newColorpic[2]}, ${newColorpic[3]}, ${newColorpic[4]}, ${newColorpic[5]}, ${newColorpic[6]}, ${newColorpic[7]} )`;
     colorCircle.setAttribute("data-color", newColor);
 
     function generateRandomColors(num) {
@@ -119,15 +121,14 @@ export default function AccountPicture(props) {
     } //===
   };
   const colorProfilePic = {
-    backgroundColor: `${props.user.genericImage[0]}`,
-    backgroundImage: `linear-gradient(225deg, ${props.user.genericImage[0]} 0%, ${props.user.genericImage[1]} 50%, ${props.user.genericImage[2]} 100%)`,
+    background: `conic-gradient(${props.user.genericImage[0]} , ${props.user.genericImage[1]}, ${props.user.genericImage[2]}, ${props.user.genericImage[3]}, ${props.user.genericImage[4]}, ${props.user.genericImage[5]}, ${props.user.profile.image.genericPic[6]}, ${props.user.profile.image.genericPic[7]}  )`,
   };
 
   return (
     <>
       <section className="settings-card mt-4 p-4">
         <h4 className="headings-style">Change Profile Picture/Color</h4>
-        <h6 className="text-sm tracking-wide pb-4 font-medium">
+        <h6 className="pb-4 text-sm font-medium tracking-wide">
           Pick between new random color or choose your own custom picture.
         </h6>
 
@@ -137,24 +138,24 @@ export default function AccountPicture(props) {
           action="/api/user/uploadimage"
           encType="multipart/form-data"
         >
-          <div className="field flex justify-evenly Psm:flex-col Psm:justify-center">
+          <div className="field Psm:flex-col Psm:justify-center flex justify-evenly">
             <div
               ref={newColor}
               id="colorPic"
               style={colorProfilePic}
-              className="w-64 h-80 generic-circle m-auto grid items-center rounded-md Psm:mb-4"
+              className="generic-circle Psm:mb-4 m-auto grid h-80 w-64 items-center rounded-md"
             >
               <div
                 id="colorPic-container"
-                className="m-auto w-4/5 h-3/6 flex-col flex-wrap justify-center p-4 bg-gray-800 bg-opacity-70 rounded-md"
+                className="m-auto h-3/6 w-4/5 flex-col flex-wrap justify-center rounded-md bg-gray-800 bg-opacity-70 p-4"
               >
-                <h3 className="font-medium antialiased text-center mb-4 mt-4">
+                <h3 className="mb-4 mt-4 text-center font-medium antialiased">
                   Change your profile color
                 </h3>
                 <button
                   onClick={newColorPic}
                   id="changeColor"
-                  className="m-auto flex font-medium antialiased rounded bg-gray-600 hover:bg-gray-700 p-2 tracking-tighter text-center"
+                  className="m-auto flex rounded bg-gray-600 p-2 text-center font-medium tracking-tighter antialiased hover:bg-gray-700"
                 >
                   <span className="latop-code pr-2">
                     <svg
@@ -181,9 +182,9 @@ export default function AccountPicture(props) {
               </div>
             </div>
             {/* <h4 className="m-auto">or</h4> */}
-            <div className="w-64 m-auto">
+            <div className="m-auto w-64">
               {/* //image container goes here */}
-              <picture className="block overflow-hidden mb-2">
+              <picture className="mb-2 block overflow-hidden">
                 <img
                   ref={oldProfilePic}
                   id="oldFilenameImage"
@@ -197,9 +198,9 @@ export default function AccountPicture(props) {
                 {/* uploadt image input */}
                 <label
                   htmlFor="profileImage"
-                  className="block m-auto text-center rounded text-white bg-gray-600 hover:bg-gray-700 p-2"
+                  className="m-auto block rounded bg-gray-600 p-2 text-center text-white hover:bg-gray-700"
                 >
-                  <i className="text-xl relative pr-2">
+                  <i className="relative pr-2 text-xl">
                     <svg
                       className="inline-block"
                       width="24"
@@ -232,7 +233,7 @@ export default function AccountPicture(props) {
                   />
                 </label>
 
-                <picture className="block overflow-hidden mt-4">
+                <picture className="mt-4 block overflow-hidden">
                   <img className="object-cover" id="output" alt="" />
                 </picture>
               </div>
@@ -242,7 +243,7 @@ export default function AccountPicture(props) {
             onClick={newPic}
             id="edit-pic-btn"
             data-action="/blogs/profile/settings"
-            className="w-full mt-3 inline-flex items-center justify-center bg-opacity-80 rounded hover:text-white bg-indigo-500 hover:bg-indigo-600  transition ease-in-out duration-150 p-2 mr-1.5 h-10"
+            className="mt-3 mr-1.5 inline-flex h-10 w-full items-center justify-center rounded bg-indigo-500 bg-opacity-80  p-2 transition duration-150 ease-in-out hover:bg-indigo-600 hover:text-white"
             aria-roledescription="save profile picture button"
           >
             <svg

@@ -3,9 +3,21 @@ import useFetch from "@/hooks/fetch";
 import { getSession } from "next-auth/react";
 import { CommentContext } from "./commentsection";
 import { appToastContext } from "context/state";
+import Button, { useBtnState } from "../ui/Button";
 
 export default function AddReply(props) {
   const { showToast } = React.useContext(appToastContext);
+  const [
+    btnDisabled,
+    setBtnDisabled,
+    stopBtnAnimate,
+    label,
+    setLabel,
+    btnColor,
+    setBtnColor,
+    btnVisibility,
+    setBtnVisibility,
+  ] = useBtnState(true, "Reply", "bg-slate-700", "block");
   // console.log(props.commentId);
   const addReply = useFetch;
   const { title, postId } = React.useContext(CommentContext);
@@ -17,6 +29,20 @@ export default function AddReply(props) {
   const formStyle = props.formStyle;
   // console.log(replyFormState);
   // const formId = `hiddenInput_${props.comment._id}`;
+
+  const enableReplyBtn = (e) => {
+    e.preventDefault();
+    if (replyRef.current.value !== "") {
+      // console.log(replyRef.current.value);
+      setBtnDisabled(false);
+      setBtnColor("bg-indigo-500 hover:bg-indigo-600");
+      return;
+    } else {
+      setBtnDisabled(true);
+      setBtnColor("bg-slate-700");
+      return;
+    }
+  };
 
   const submitReplyHandler = async (e) => {
     e.preventDefault();
@@ -65,8 +91,9 @@ export default function AddReply(props) {
         {/* <!-- <input type="text" name="commentReply"> --> */}
         <textarea
           ref={replyRef}
+          onChange={enableReplyBtn}
           id="reply-textarea"
-          className="submit-reply-form comment-textarea py-2 text-white bg-gray-700 pl-1 focus:outline-none border-gray-500 focus:bg-gray-900 focus:text-gray-300"
+          className="submit-reply-form comment-textarea border-gray-500 bg-gray-700 py-2 pl-1 text-white focus:bg-gray-900 focus:text-gray-300 focus:outline-none"
           autoComplete="off"
           rows="3"
           type="text"
@@ -74,22 +101,37 @@ export default function AddReply(props) {
           placeholder="Add to the discussion"
         ></textarea>
       </form>
-      <div className="flex justify-between px-4">
-        <button
+      <div className="flex justify-between px-4 pt-2">
+        <Button
+          label={"Cancel"}
+          className={`reply-button mr-1.5" mb-2 rounded bg-red-500 p-2 hover:bg-red-600 hover:text-white`}
+          handleClick={openCloseCommentReply}
+          disabled={false}
+          idTag={"addReplyForm"}
+          btnType={"CANCEL"}
+        />
+        {/* <button
           onClick={openCloseCommentReply}
           id="cancelReplyBtn"
-          className='reply-button rounded hover:text-white bg-red-500 hover:bg-red-600 p-2 mr-1.5"'
+          className='reply-button mr-1.5" rounded bg-red-500 p-2 hover:bg-red-600 hover:text-white'
         >
           cancel
-        </button>
-        <button
+        </button> */}
+        <Button
+          label={label}
+          className={`${btnVisibility} ${btnColor} reply-button mr-1.5 mb-2 rounded p-2 hover:text-white`}
+          handleClick={submitReplyHandler}
+          disabled={btnDisabled}
+          idTag={"addReplyForm"}
+        />
+        {/* <button
           onClick={submitReplyHandler}
           id="replyBtn"
           data-url="/blogs/<%= blog._id %>/comments/<%= comments._id %>"
-          className="reply-button rounded hover:text-white bg-indigo-500 hover:bg-indigo-600 p-2 mr-1.5"
+          className="reply-button mr-1.5 rounded bg-indigo-500 p-2 hover:bg-indigo-600 hover:text-white"
         >
           submit
-        </button>
+        </button> */}
       </div>
     </aside>
   );

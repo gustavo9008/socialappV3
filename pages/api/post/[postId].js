@@ -6,7 +6,7 @@ import Post from "../../../models/post";
 import Comment from "../../../models/comment";
 import Reply from "../../../models/replies";
 import dbConnect from "../../../middleware/mongodb";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
 // import Post from "../../../models/post";
 // import {useRouter} from 'next/router';
@@ -29,9 +29,9 @@ export default async function findPostHandler(req, res) {
       let commentReplies = comment;
       for (const key in commentReplies) {
         if (commentReplies[key].replies !== undefined) {
-          console.log(commentReplies[key].replies);
+          // console.log(commentReplies[key].replies);
           for (const com in commentReplies[key].replies) {
-            console.log(commentReplies[key].replies[com].toString());
+            // console.log(commentReplies[key].replies[com].toString());
             const commentReply = await Reply.findById(
               commentReplies[key].replies[com].toString()
             );
@@ -47,7 +47,7 @@ export default async function findPostHandler(req, res) {
             // commentReplies[key].repliesFound.push(commentReply);
           }
           if (commentReplies[key].repliesFound !== undefined) {
-            console.log("if is undefined is running");
+            // console.log("if is undefined is running");
             await deepIterator(commentReplies[key].repliesFound);
           }
         }

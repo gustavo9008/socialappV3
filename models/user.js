@@ -36,7 +36,7 @@ const profileSchema = new Schema({
       ref: "Comment",
     },
   ],
-  commentReplies: [
+  replies: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Replies",

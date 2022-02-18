@@ -94,7 +94,7 @@ export default function NewPost(props) {
       if (postCustomImage.current.files[0] === undefined) {
         if (!imageRef.current.value) {
           let err =
-            "Please choose and image. It can either be an url or a custom image you took.";
+            "Please choose and image. It can either be an url or a custom image. ";
           showToast("error", err);
         } else {
           setDisable(true);

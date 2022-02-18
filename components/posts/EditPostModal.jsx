@@ -99,32 +99,32 @@ const EditPostModal = (props) => {
     </button> */}
       {props.showPostModal ? (
         <>
-          <div className="justify-center bg-black bg-opacity-70 items-center flex overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="z-50 w-auto mx-auto max-w-3xl sticky top-0">
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-auto overflow-y-auto bg-black bg-opacity-70 outline-none focus:outline-none">
+            <div className="sticky top-0 z-50 mx-auto w-auto max-w-3xl">
               {/*content*/}
-              <div className="Psm:max-h-1/2 Psm:overflow-scroll bg-gray-900 border-2 border-gray-500 rounded post-modal flex flex-col outline-none focus:outline-none">
+              <div className="Psm:max-h-1/2 post-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                <div className="border-blueGray-200 flex items-start justify-between rounded-t border-b border-solid p-5">
                   <h3 className="text-3xl font-semibold text-gray-100">
                     Edit Post
                   </h3>
                   <button
-                    className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
+                    className="float-right ml-auto border-0 p-1 text-3xl font-semibold leading-none"
                     onClick={() => props.setShowPostModal(false)}
                   >
-                    <span className="hover:text-gray-100 text-gray-400 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                    <span className="block h-6 w-6 text-2xl text-gray-400 outline-none hover:text-gray-100 focus:outline-none">
                       ×
                     </span>
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-3 flex-auto">
+                <div className="relative flex-auto p-3">
                   <div className="field">
                     <label>Title</label>
                     <input
                       ref={titleRef}
                       defaultValue={props.post.title}
-                      className="bg-gray-700 focus:bg-gray-900 appearance-none rounded w-full py-2 px-3 text-gray-300 mb-1 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-10"
+                      className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 leading-tight text-gray-300 focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       type="text"
                       name="title"
                       placeholder="title"
@@ -133,13 +133,13 @@ const EditPostModal = (props) => {
                   </div>
                   {props.post.image[0] ? (
                     <img
-                      className="edit-post-modal object-cover m-auto"
+                      className="edit-post-modal m-auto object-cover"
                       src={props.post.image[0].url}
                       alt="this is a picture"
                     />
                   ) : (
                     <img
-                      className="object-cover m-auto"
+                      className="m-auto object-cover"
                       src={props.post.imageUrl}
                       alt="this is a picture"
                     />
@@ -155,17 +155,17 @@ const EditPostModal = (props) => {
                   </div>
                 </div>
                 {/*footer*/}
-                <div className="flex items-center justify-between p-4 border-t border-solid border-blueGray-200 rounded-b">
+                <div className="border-blueGray-200 flex items-center justify-between rounded-b border-t border-solid p-4">
                   <button
                     onClick={deletePostHandler}
-                    className="bg-red-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="mr-1 mb-1 rounded bg-red-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
                     type="button"
                   >
                     Delete
                   </button>
                   <button
                     onClick={submitEditHandler}
-                    className="bg-blue-500 hover:bg-blue-600 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="mr-1 mb-1 rounded bg-blue-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:bg-blue-600 hover:shadow-lg focus:outline-none active:bg-emerald-600"
                     type="button"
                   >
                     Update
@@ -174,7 +174,7 @@ const EditPostModal = (props) => {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
         </>
       ) : null}
     </>

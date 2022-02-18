@@ -1,6 +1,7 @@
 import { getSession } from "next-auth/react";
 import nextConnect from "next-connect";
 import multer from "multer";
+import sanitizeHtml from "sanitize-html";
 // import { MongoClient } from "mongodb";
 
 import Post from "../../../models/post";
@@ -12,17 +13,17 @@ const handler = nextConnect();
 
 handler.post(upload.single("file"), async (req, res) => {
   // console.log(req);
-  console.log(req.body.title);
+  // console.log(req.body.title);
   //===== create one post function =====
   const createNewPost = async (session) => {
     if (req.method === "POST") {
       const user = await User.findById(session.user.id);
       // console.log(user);
-      console.log(session);
+      // console.log(session);
       console.log("this is the post image route");
       await dbConnect();
       const { title, imageUrl, content } = req.body;
-      console.log(title, imageUrl, content);
+      // console.log(title, imageUrl, content);
 
       // if (req.file) {
       //   let image = {
@@ -32,9 +33,37 @@ handler.post(upload.single("file"), async (req, res) => {
       //   console.log(image);
       //   // newProcessedPost.image = image;
       // }
+      //===== sanitize html content =====
+      const cleanContent = async () => {
+        let sanitizeContent = sanitizeHtml(content, {
+          allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+            "iframe",
+            "img",
+          ]),
+          allowedAttributes: {
+            img: ["src", "alt"],
+            iframe: [
+              "src",
+              "width",
+              "height",
+              "allow",
+              "clipboard-write",
+              "encrypted-media",
+              "gyroscope",
+              "picture-in-picture",
+              "allowfullscreen",
+            ],
+          },
+          allowedIframeHostnames: ["www.youtube.com"],
+        });
+        return sanitizeContent;
+      };
+      let newContent = await cleanContent();
+      // console.log(newContent);
+      //===== post object =====
       let newProcessedPost = {
         title: title,
-        body: content,
+        body: newContent,
         userProfile: {
           id: session.user.id,
           name: session.user.name,
