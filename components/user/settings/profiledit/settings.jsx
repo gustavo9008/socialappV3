@@ -42,6 +42,7 @@ export default function Settings(props) {
   const refreshTokenTrigger = () => {
     setTokenRefreshInterval(432000);
   };
+  userSession !== null && console.log(userSession.user.id);
 
   const updateProfileHandler = async (e) => {
     e.preventDefault();
@@ -58,19 +59,21 @@ export default function Settings(props) {
         youtube: youtubeRef.current.value,
         linkedin: linkedinRef.current.value,
       },
+      user: userSession.user.id,
+      type: "UPDATE_PROFILE",
     };
     const res = await sendAccountProfile(
       "PUT",
       "/api/user/updateuserprofile",
       data
     );
-    console.log(res);
+    // console.log(res);
 
     if (res.statusText === "Created") {
       // console.log(userSession);
       setTokenRefreshInterval(2);
       setTimeout(() => {
-        console.log("setTimeout Triggered!");
+        // console.log("setTimeout Triggered!");
         refreshTokenTrigger();
       }, 4000);
       showToast("success", res.data.message);
@@ -153,7 +156,11 @@ export default function Settings(props) {
                   type="text"
                   name="personal"
                   placeholder="http://..."
-                  defaultValue={props.profile.links.personalWebsite}
+                  defaultValue={
+                    props.profile.links
+                      ? props.profile.links.personalWebsite
+                      : ""
+                  }
                 />
               </div>
               <div className="fields">
@@ -167,7 +174,9 @@ export default function Settings(props) {
                   type="text"
                   name="instagram"
                   placeholder="instagram.com/..."
-                  defaultValue={props.profile.links.instagram}
+                  defaultValue={
+                    props.profile.links ? props.profile.links.instagram : ""
+                  }
                 />
               </div>
               <div className="fields">
@@ -181,7 +190,9 @@ export default function Settings(props) {
                   type="text"
                   name="twitter"
                   placeholder="twitter/..."
-                  defaultValue={props.profile.links.twitter}
+                  defaultValue={
+                    props.profile.links ? props.profile.links.twitter : ""
+                  }
                 />
               </div>
               <div className="fields">
@@ -195,7 +206,9 @@ export default function Settings(props) {
                   type="text"
                   name="youtube"
                   placeholder="channels/..."
-                  defaultValue={props.profile.links.youtube}
+                  defaultValue={
+                    props.profile.links ? props.profile.links.youtube : ""
+                  }
                 />
               </div>
               <div className="fields">
@@ -208,7 +221,9 @@ export default function Settings(props) {
                   className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   type="text"
                   name="linkedin"
-                  defaultValue={props.profile.links.linkedin}
+                  defaultValue={
+                    props.profile.links ? props.profile.links.linkedin : ""
+                  }
                 />
               </div>
             </div>

@@ -12,7 +12,7 @@ const upload = multer({ storage });
 const handler = nextConnect();
 
 handler.post(upload.single("file"), async (req, res) => {
-  // console.log(req);
+  console.log(req);
   // console.log(req.body.title);
   //===== create one post function =====
   const createNewPost = async (session) => {
@@ -70,6 +70,7 @@ handler.post(upload.single("file"), async (req, res) => {
           profileImage: session.user.profile.image.url,
           profileGenericPic: session.user.genericImage,
         },
+        likes: 0,
       };
       if (req.file) {
         let image = {

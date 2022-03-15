@@ -1,32 +1,142 @@
-import { useEffect } from "react";
+import {
+  useEffect,
+  useRef,
+  useCallback,
+  useContext,
+  useState,
+  useMemo,
+} from "react";
 import Head from "next/head";
-import { MongoClient } from "mongodb";
-
+// import { MongoClient } from "mongodb";
+import { appToastContext } from "context/state";
 import Card from "../components/ui/Card";
 import AllPost from "../components/posts/allposts";
 // import { useCurrentUser } from "@/hooks/index";
+import { useHistory } from "react-router-dom";
+// import Post from "../models/post";
+// // import Comment from "../models/comment";
+// // import Reply from "../models/replies";
+// import dbConnect from "../middleware/mongodb";
 
 function HomePage(props) {
-  useEffect(() => {
-    const card = document.querySelectorAll(".link-card");
-    const clickableElements = document.querySelectorAll(".clickable");
-    // console.log(props.posts);
+  console.log("//===== beg =====");
+  //===== context imports =====
+  const { useFetch, userSession } = useContext(appToastContext);
+  const getMorePost = useFetch;
+  const loader = useRef(null);
+  const observer = useRef();
+  const [posts, setPosts] = useState({
+    posts: [],
+    previousLimit: 0,
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [typeSort, setTypeSort] = useState("TOP");
 
-    clickableElements.forEach((ele) =>
-      ele.addEventListener("click", (e) => e.stopPropagation())
+  //=====  =====
+  const transformPosts = useCallback(async (posts) => {
+    let transformed = posts.map((posts) => ({
+      title: posts.title,
+      image: posts.image[0] ? posts.image[0].url : null,
+      imageUrl: posts.imageUrl ? posts.imageUrl : null,
+      id: posts._id.toString(),
+      userProfile: {
+        id: posts.userProfile.id.toString(),
+        name: posts.userProfile.name,
+        profileImage: posts.userProfile.profileImage,
+        profileGenericPic: posts.userProfile.profileGenericPic,
+      },
+      created: new Date(posts.created).toDateString(),
+      likes: posts.likes.toString(),
+    }));
+    return transformed;
+  }, []);
+
+  const handleUpdatePost = useCallback(async () => {
+    // setIsLoading(true);
+    const res = await getMorePost(
+      "GET",
+      `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
     );
+    console.log(res);
+    const newUpdatePost = await transformPosts(res.data.data);
+    if (res.statusText === "OK") {
+      if (res.data.data.length > 1) {
+        console.log(res.data.data);
+        console.log(posts.previousLimit);
+        setPosts((prev) => ({
+          posts: [...new Set([...prev.posts, ...newUpdatePost])],
+          previousLimit: parseInt(res.data.nextPost),
+        }));
+      }
+      setIsLoading(false);
+    }
+  }, [getMorePost, posts.previousLimit, transformPosts, typeSort]);
 
-    for (let i = 0; i < card.length; i++) {
-      card[i].addEventListener("click", function () {
-        // link to be trigger
-        let link = this.querySelectorAll(".article-link");
-        const isTextSelected = window.getSelection().toString();
-        if (!isTextSelected) {
-          link[0].click();
+  const lastBookElementRef = useCallback(
+    (node) => {
+      console.log("last ref run");
+      const transformPosts = async (posts) => {
+        let transformed = posts.map((posts) => ({
+          title: posts.title,
+          image: posts.image[0] ? posts.image[0].url : null,
+          imageUrl: posts.imageUrl ? posts.imageUrl : null,
+          id: posts._id.toString(),
+          userProfile: {
+            id: posts.userProfile.id.toString(),
+            name: posts.userProfile.name,
+            profileImage: posts.userProfile.profileImage,
+            profileGenericPic: posts.userProfile.profileGenericPic,
+          },
+          created: new Date(posts.created).toDateString(),
+          likes: posts.likes.toString(),
+        }));
+        return transformed;
+      };
+      const handleUpdatePost = async () => {
+        // setIsLoading(true);
+        const res = await getMorePost(
+          "GET",
+          `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
+        );
+        console.log(res);
+        const newUpdatePost = await transformPosts(res.data.data);
+        if (res.statusText === "OK") {
+          if (res.data.data.length > 1) {
+            console.log(res.data.data);
+            console.log(posts.previousLimit);
+            setPosts((prev) => ({
+              posts: [...new Set([...prev.posts, ...newUpdatePost])],
+              previousLimit: parseInt(res.data.nextPost),
+            }));
+          }
+          setIsLoading(false);
+        }
+      };
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting) {
+          console.log("observer triggered");
+          await handleUpdatePost();
         }
       });
-    }
-  }, []);
+      if (node) observer.current.observe(node);
+    },
+    [getMorePost, isLoading, posts, typeSort]
+  );
+
+  useEffect(() => {
+    console.log("//===== useEffect run =====");
+    // console.log(posts.previousLimit);
+    window.onpopstate = (e) => {
+      //your code...
+      console.log(e);
+    };
+
+    isLoading && handleUpdatePost();
+  }, [setIsLoading, isLoading, handleUpdatePost]);
+
+  console.log("//===== end =====");
   return (
     <>
       <Head>
@@ -36,54 +146,107 @@ function HomePage(props) {
       </Head>
 
       <Card>
-        {props.posts.map((post) => (
-          <AllPost posts={post} key={post.id} />
-        ))}
+        <aside>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              typeSort === "LATEST" &&
+                (setTypeSort("TOP"),
+                setIsLoading(true),
+                setPosts({ posts: [], previousLimit: 0 }));
+              return;
+            }}
+          >
+            Top
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              typeSort === "TOP" &&
+                (setTypeSort("LATEST"),
+                setIsLoading(true),
+                setPosts({ posts: [], previousLimit: 0 }));
+              return;
+            }}
+          >
+            <span className="">Latest</span>
+          </button>
+          <button className="group relative inline-flex items-center justify-start overflow-hidden rounded bg-gray-50 py-3 pl-4 pr-4 font-semibold text-indigo-600 transition-all duration-150 ease-in-out">
+            <span className="absolute bottom-0 left-0 h-1 w-full bg-indigo-600 transition-all duration-150 ease-in-out group-hover:h-full"></span>
+
+            <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">
+              Button Text
+            </span>
+          </button>
+        </aside>
+        {!isLoading && (
+          <>
+            <section>
+              {posts.posts.map((post) => (
+                <AllPost posts={post} key={post.id} />
+              ))}
+            </section>
+          </>
+        )}
+        {isLoading && (
+          <div className="mx-auto w-full max-w-sm rounded-md border border-blue-300 p-4 shadow">
+            <div className="flex animate-pulse space-x-4">
+              <div className="h-10 w-10 rounded-full bg-slate-700"></div>
+              <div className="flex-1 space-y-6 py-1">
+                <div className="h-2 rounded bg-slate-700"></div>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-2 h-2 rounded bg-slate-700"></div>
+                    <div className="col-span-1 h-2 rounded bg-slate-700"></div>
+                  </div>
+                  <div className="h-2 rounded bg-slate-700"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </Card>
+
+      <div ref={lastBookElementRef} />
     </>
   );
 }
 
-export async function getServerSideProps() {
-  // fetch data from an API
-  const client = await MongoClient.connect(
-    "mongodb://localhost/restful_blog_appv3",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  );
-  const db = client.db();
+// export async function getServerSideProps(context) {
+//   console.log("server side is running");
+//   await dbConnect();
 
-  const postsCollection = db.collection("posts");
+//   // let queryLimit = 5;
+//   // console.log(context);
+//   const postsLikes = await Post.find({})
+//     .select("-body -comments")
+//     .limit(5)
+//     .sort({ likes: -1 });
+//   const newpostsLikes = await Post.find({})
+//     .select("-body -comments")
+//     .skip(5)
+//     .limit(5)
+//     .sort({ likes: -1 });
 
-  const posts = await postsCollection
-    .find({})
-    .project({
-      body: 0,
-      comments: 0,
-    })
-    .sort({ created: -1 })
-    .toArray();
-
-  // console.log(posts);
-
-  client.close();
-
-  return {
-    props: {
-      posts: posts.map((posts) => ({
-        title: posts.title,
-        image: posts.image[0] ? posts.image[0].url : null,
-        imageUrl: posts.imageUrl ? posts.imageUrl : null,
-        id: posts._id.toString(),
-        userProfile: {
-          id: posts.userProfile.id.toString(),
-          name: posts.userProfile.name,
-          profileImage: posts.userProfile.profileImage,
-          profileGenericPic: posts.userProfile.profileGenericPic,
-        },
-        created: posts.created.toDateString(),
-      })),
-    },
-  };
-}
+//   return {
+//     props: {
+//       posts: postsLikes.map((posts) => ({
+//         title: posts.title,
+//         image: posts.image[0] ? posts.image[0].url : null,
+//         imageUrl: posts.imageUrl ? posts.imageUrl : null,
+//         id: posts._id.toString(),
+//         userProfile: {
+//           id: posts.userProfile.id.toString(),
+//           name: posts.userProfile.name,
+//           profileImage: posts.userProfile.profileImage,
+//           profileGenericPic: posts.userProfile.profileGenericPic,
+//         },
+//         created: posts.created.toDateString(),
+//         likes: posts.likes.toString(),
+//       })),
+//       limit: 5,
+//     },
+//   };
+// }
 
 export default HomePage;

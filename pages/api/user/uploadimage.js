@@ -15,7 +15,7 @@ const upload = multer({ storage });
 const handler = nextConnect();
 
 handler.put(upload.array("file"), async (req, res) => {
-  console.log(JSON.parse(req.body.newColor));
+  console.log(req.files);
   //===== function updates image or color  =====
   async function saveImage(session) {
     if (req.body.oldFileName) {

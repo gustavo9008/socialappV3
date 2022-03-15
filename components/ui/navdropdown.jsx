@@ -1,39 +1,50 @@
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useDetectOutsideClick } from "./useDetectClick";
 import { appToastContext } from "context/state";
+import ProfileColorAvatar from "./ProfileColorAvatar";
 
 const AlpineWidjet = (props) => {
-  const { userSession } = React.useContext(appToastContext);
-  // console.log(props.user);
+  const router = useRouter();
+  const { userSession, showToast, setUserSession } =
+    React.useContext(appToastContext);
+  // console.log(userSession);
   const handleLogout = async () => {
-    signOut({ callbackUrl: "10.0.0.60:3000/" });
+    // signOut({ callbackUrl: "10.0.0.60:3000/" });
+    const logoutData = await signOut({ redirect: false });
+    console.log(logoutData);
+    logoutData.url &&
+      (localStorage.removeItem("user_lists"),
+      showToast("success", "You have been logged out."),
+      setUserSession(null),
+      router.push("/"));
   };
 
   const dropdownRef = React.useRef(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
   const toggleMenu = () => setIsActive(!isActive);
-  //===== color button =====
-  const btncolorPic = (
-    <span
-      className="h-12 w-12 rounded-full"
-      style={{
-        background: `conic-gradient(${userSession.user.genericImage[0]}, ${userSession.user.genericImage[1]}, ${userSession.user.genericImage[2]}, ${userSession.user.genericImage[3]}, ${userSession.user.genericImage[4]}, ${userSession.user.genericImage[5]}, ${userSession.user.genericImage[6]}, ${userSession.user.genericImage[7]})`,
-      }}
-    ></span>
-  );
-  //===== image button =====
-  const imagebtn = (
-    <img
-      loading="lazy"
-      className="h-12 w-12 rounded-full"
-      src={props.user.profile.image.url}
-      alt=""
-    />
-  );
-  //===== picks between image or color  =====
-  const picbtn = props.user.profile.image.url ? imagebtn : btncolorPic;
+  // //===== color button =====
+  // const btncolorPic = (
+  //   <span
+  //     className="h-12 w-12 rounded-full"
+  //     style={{
+  //       background: `linear-gradient(225deg,${userSession.user.genericImage[0]}, ${userSession.user.genericImage[1]}, ${userSession.user.genericImage[2]}, ${userSession.user.genericImage[3]}, ${userSession.user.genericImage[4]}, ${userSession.user.genericImage[5]})`,
+  //     }}
+  //   ></span>
+  // );
+  // //===== image button =====
+  // const imagebtn = (
+  //   <img
+  //     loading="lazy"
+  //     className="h-12 w-12 rounded-full"
+  //     src={props.user.profile.image.url}
+  //     alt=""
+  //   />
+  // );
+  // //===== picks between image or color  =====
+  // const picbtn = props.user.profile.image.url ? imagebtn : btncolorPic;
 
   return (
     <>
@@ -52,7 +63,11 @@ const AlpineWidjet = (props) => {
             aria-haspopup="false"
             aria-label="profile button"
           >
-            {picbtn}
+            <ProfileColorAvatar
+              type={"LOGGED_USER_CIRCLE_AVATAR"}
+              profile={userSession.user.profile.image}
+            />
+            {/* {picbtn} */}
           </button>
         </div>
         <div
@@ -79,14 +94,7 @@ const AlpineWidjet = (props) => {
                 Write a post
               </a>
             </Link>
-            <Link href="/user/profile">
-              <a
-                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
-                role="menuitem"
-              >
-                Reading list
-              </a>
-            </Link>
+
             <Link href="/user/profile/settings">
               <a
                 className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"

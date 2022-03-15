@@ -24,9 +24,17 @@ const profileSchema = new Schema({
   ],
   readingList: [
     {
-      blog_id: String,
-      url: String,
+      postId: String,
       title: String,
+      _id: false,
+      created: { type: Date, default: Date.now },
+    },
+  ],
+  likesList: [
+    {
+      postId: String,
+      title: String,
+      _id: false,
       created: { type: Date, default: Date.now },
     },
   ],

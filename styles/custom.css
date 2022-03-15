@@ -60,9 +60,9 @@ video {
 .commentMenu {
   /* background: #ffffff; */
   /* border-radius: 8px; */
-  position: absolute;
-  top: 40px;
-  right: 0;
+  position: relative;
+  /* top: 40px; */
+  /* right: 0; */
   width: 300px;
   opacity: 0;
   visibility: hidden;
@@ -216,7 +216,7 @@ video {
 }
 .main-article-card {
   margin: 0 auto;
-  width: clamp(300px, 91vw, 800px);
+  width: clamp(300px, 88vw, 800px);
 }
 .user-container {
   display: flex;

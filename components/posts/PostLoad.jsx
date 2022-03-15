@@ -10,7 +10,6 @@ import ProfileColorAvatar from "../ui/ProfileColorAvatar";
 import PostSideMenu from "./PostSideMenu";
 
 function Post(props) {
-  // console.log(props.post);
   //===== context imports =====
   const { useFetch, userSession, showToast } =
     React.useContext(appToastContext);
@@ -27,8 +26,27 @@ function Post(props) {
     setBtnVisibility,
   ] = useBtnState(false, "", "", "");
   //===== state variables =====
+  const getOnePost = useFetch;
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [post, setPost] = React.useState(props.post);
+
+  const handleUpdatePost = useCallback(async () => {
+    const res = await getOnePost(
+      "GET",
+      `/api/post/getposts?next=${previousLimit}`
+    );
+    console.log(res);
+    const newUpdatePost = await transformPosts(res.data.data);
+    if (res.statusText === "OK") {
+      setPost(res.data.data);
+      setPreviousLimit(parseInt(res.data.nextPost));
+      setLoading(false);
+    }
+  }, [setPost, getOnePost]);
+
+  useEffect(() => {
+    handleUpdatePost();
+  }, [handleUpdatePost]);
 
   return (
     <main className="Psm:m-0 main-container Psm:mt-3 Psm:flex-col-reverse mt-3 flex flex-row">

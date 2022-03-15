@@ -38,7 +38,7 @@ export default function TextComments(props) {
   //===== card size is use for a visual presentation for what is a reply of a comment  =====
   let cardSize = 100;
   if (props.cardSize) {
-    cardSize = props.cardSize - 2;
+    cardSize = props.cardSize - 3;
   }
   //===== sorts comments by date =====
   let repliesSorted = repliesComment.slice().reverse();
@@ -111,31 +111,31 @@ export default function TextComments(props) {
 
                 {session.user &&
                   session.user.id === commentReply.userProfile.id && (
-                    <div className="comment-dropdown-btn relative flex h-8 w-8 items-center justify-end rounded-full">
-                      <i
-                        onClick={commentDropdwn}
-                        className="fas fa-ellipsis-v h-full w-full"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
+                    <div className="relative">
+                      <button className="comment-dropdown-btn flex h-8 w-8 items-center rounded-full">
+                        <i
+                          onClick={commentDropdwn}
+                          className="fas fa-ellipsis-v h-full w-full"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-                          />
-                        </svg>
-                      </i>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                            />
+                          </svg>
+                        </i>
+                      </button>
 
-                      {/* dropdown menu */}
-
-                      {/* <!-- ===== dropdown options for comment content ===== --> */}
-
+                      {/* //===== dropdown menu  =====
+//===== dropdown options for comment content ===== */}
                       <div
                         ref={commentDropdownRef}
                         className={`commentMenu ${

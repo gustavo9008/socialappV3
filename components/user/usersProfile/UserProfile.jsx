@@ -22,7 +22,7 @@ export default function UserProfile(props) {
   // console.log(sortedCommentReplies);
 
   const btnStyle = {
-    background: `conic-gradient(${props.user.profile.image.genericPic[0]}, ${props.user.profile.image.genericPic[1]} , ${props.user.profile.image.genericPic[2]}, ${props.user.profile.image.genericPic[3]}, ${props.user.profile.image.genericPic[4]}, ${props.user.profile.image.genericPic[5]}, ${props.user.profile.image.genericPic[6]}, ${props.user.profile.image.genericPic[7]})`,
+    background: `linear-gradient(225deg, ${props.user.profile.image.genericPic[0]}, ${props.user.profile.image.genericPic[1]} , ${props.user.profile.image.genericPic[2]}, ${props.user.profile.image.genericPic[3]}, ${props.user.profile.image.genericPic[4]}, ${props.user.profile.image.genericPic[5]})`,
   };
 
   // const spanSyle = css2obj(props.user.genericImage);

@@ -5,14 +5,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { appToastContext } from "context/state";
+import { getCookie, setCookies, removeCookies } from "cookies-next";
+import { getCsrfToken } from "next-auth/react";
 
-const LoginPage = () => {
+export default function LoginPage({ csrfToken }) {
   const { showToast } = React.useContext(appToastContext);
 
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   useEffect(() => {
     getSession().then((session) => {
+      // console.log(session);
       if (session) {
         router.push("/");
       } else {
@@ -37,22 +40,50 @@ const LoginPage = () => {
 
     const email = e.currentTarget.email.value;
     const password = e.currentTarget.password.value;
+    // let logcredForm = new FormData();
 
+    // logcredForm.append("redirect", false);
+    // logcredForm.append("email", email);
+    // logcredForm.append("password", password);
+    // logcredForm.append("csrfToken", csrfToken);
+    // logcredForm.append("json", true);
+
+    // const data = {
+    //   csrf: csrfToken,
+    //   email: email,
+    //   password: password,
+    // };
+
+    // // for (var key in data) {
+    // //   logcredForm.append(key, data[key]);
+    // // }
+
+    // const res = await submitLogIn(
+    //   "POST",
+    //   "/api/auth/callback/credentials",
+    //   logcredForm
+    // );
+    // console.log(res);
     const status = await signIn("credentials", {
       redirect: false,
       email: email,
       password: password,
     });
-    console.log(status);
+    // console.log(status);
     if (status.error === null) {
+      let readingCookie = getCookie("user_lists");
+      console.log(readingCookie);
+      localStorage.setItem("user_lists", readingCookie);
       let message = `Welcome back`;
       router.push("/");
       showToast("success", message);
+      removeCookies("user_lists");
     }
     if (status.error !== null) {
       console.log(status.error);
       showToast("error", status.error);
     }
+    return;
   }
 
   return (
@@ -62,14 +93,14 @@ const LoginPage = () => {
       </Head>
 
       <section className="login-form">
-        <div className="login-form-card w-full flex justify-center items-center">
-          <div className="bg-gray-900 border-2 border-gray-500 rounded modal">
+        <div className="login-form-card flex w-full items-center justify-center">
+          <div className="modal rounded border-2 border-gray-500 bg-gray-900">
             {/* === sing in header */}
-            <div className="border-b px-4 py-2 flex justify-between items-center">
+            <div className="flex items-center justify-between border-b px-4 py-2">
               <div>
                 <span className="text-sm">Don&#39;t have an account?</span>
                 <Link href="/signup">
-                  <a className="text-sm text-blue-300 hover:text-blue-400 font-semibold">
+                  <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
                     Sign up
                   </a>
                 </Link>
@@ -78,18 +109,28 @@ const LoginPage = () => {
             <div className="p-3">
               <h2 className=" text-2xl font-bold">Log in</h2>
 
-              <form onSubmit={onSubmit}>
+              <form
+                id="formLogin"
+                method="post"
+                action="/api/auth/callback/credentials"
+                onSubmit={onSubmit}
+              >
                 {/* {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null} */}
+                <input
+                  name="csrfToken"
+                  type="hidden"
+                  defaultValue={csrfToken}
+                />
 
                 <div className="mb-4 mt-6">
                   <label
-                    className="block text-sm font-semibold mb-2"
+                    className="mb-2 block text-sm font-semibold"
                     htmlFor="email"
                   >
                     Email
                   </label>
                   <input
-                    className="bg-gray-300 focus:bg-gray-100 appearance-none rounded w-full py-2 px-3 text-gray-900 mb-1 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-10"
+                    className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 leading-tight text-gray-900 focus:border-transparent focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     id="email"
                     type="email"
                     name="email"
@@ -99,13 +140,13 @@ const LoginPage = () => {
 
                 <div className="mb-6 mt-6">
                   <label
-                    className="block text-sm font-semibold mb-2"
+                    className="mb-2 block text-sm font-semibold"
                     htmlFor="password"
                   >
                     Password
                   </label>
                   <input
-                    className="bg-gray-300 focus:bg-gray-100 appearance-none rounded w-full py-2 px-3 text-gray-900 mb-1 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-10"
+                    className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 leading-tight text-gray-900 focus:border-transparent focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     id="password"
                     type="password"
                     name="password"
@@ -114,15 +155,15 @@ const LoginPage = () => {
                   <p>
                     Forgot password? &#160;
                     <Link href="/forget-password">
-                      <a className="text-sm text-blue-300 hover:text-blue-400 font-semibold">
+                      <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
                         Click here
                       </a>
                     </Link>
                   </p>
                 </div>
-                <div className="flex w-full mt-8">
+                <div className="mt-8 flex w-full">
                   <button
-                    className="w-full bg-gray-800 hover:bg-grey-900 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10"
+                    className="hover:bg-grey-900 focus:shadow-outline h-10 w-full rounded bg-gray-800 py-2 px-4 text-sm font-semibold text-white focus:outline-none"
                     type="submit"
                   >
                     Sign in
@@ -135,6 +176,14 @@ const LoginPage = () => {
       </section>
     </>
   );
-};
+}
 
-export default LoginPage;
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  };
+}
+
+// export default LoginPage;

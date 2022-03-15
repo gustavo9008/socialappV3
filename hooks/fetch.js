@@ -1,7 +1,8 @@
 import axios from "axios";
 // import React, { useState, useCallback, useEffect } from "react";
 
-const useFetch = async (method, url, reqData) => {
+const useFetch = async (method, url, reqData, option) => {
+  // console.log(reqData);
   try {
     const response = await axios({
       method: method,

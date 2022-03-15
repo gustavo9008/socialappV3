@@ -13,12 +13,8 @@ import dbConnect from "../../../middleware/mongodb";
 
 export default async function findPostHandler(req, res) {
   await dbConnect();
-
-  // const router = useRouter();
-
-  // console.log(req.query.postId);
   const { postId } = req.query;
-  // console.log(postId);
+
   try {
     const post = await Post.findById(postId).populate({
       path: "comments",

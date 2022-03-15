@@ -37,7 +37,7 @@ async function signUpHandler(req, res) {
       return "rgb(" + r + ", " + g + ", " + b + ")";
     } //==========
 
-    let newcolors = await generateRandomColors(8);
+    let newcolors = await generateRandomColors(6);
     console.log(newcolors);
     // let profileRegistered = false;
     let hashPass = await hash(password, 12);

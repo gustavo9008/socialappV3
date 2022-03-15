@@ -10,9 +10,9 @@ export default function Profile(props) {
   // console.log(props.user.id);
   const getMyProfile = useFetch;
   const [myProfile, setMyProfile] = React.useState(props.user);
-  if (myProfile.profile.posts) {
-    console.log(myProfile.profile);
-  }
+  // if (myProfile.profile.posts) {
+  //   console.log(myProfile.profile);
+  // }
   // const css2obj = (css) => {
   //   const r = /(?<=^|;)\s*([^:]+)\s*:\s*([^;]+)\s*/g,
   //     o = {};
@@ -32,7 +32,7 @@ export default function Profile(props) {
 
   const btnStyle = {
     backgroundColor: `${props.user.genericImage[0]}`,
-    backgroundImage: `conic-gradient(${props.user.genericImage[0]}, ${props.user.genericImage[1]}, ${props.user.genericImage[2]}, ${props.user.profile.image.genericPic[3]}, ${props.user.profile.image.genericPic[4]}, ${props.user.profile.image.genericPic[5]}, ${props.user.profile.image.genericPic[6]}, ${props.user.profile.image.genericPic[7]}`,
+    backgroundImage: `linear-gradient(225deg,${props.user.genericImage[0]}, ${props.user.genericImage[1]}, ${props.user.genericImage[2]}, ${props.user.profile.image.genericPic[3]}, ${props.user.profile.image.genericPic[4]}, ${props.user.profile.image.genericPic[5]}`,
   };
 
   // const MyProfile = async (id) => {
@@ -45,7 +45,11 @@ export default function Profile(props) {
     const MyProfile = async (id) => {
       const res = await getMyProfile("GET", `/api/user/${id}`);
       // const myProfile = await response.json();
-      // console.log(res.data);
+      // console.log(res.data.account.profile.readingList);
+      // localStorage.setItem(
+      //   "reading_list",
+      //   JSON.stringify(res.data.account.profile.readingList)
+      // );
       setMyProfile(res.data.account);
       res.data.account && setDataLoaded(true);
     };

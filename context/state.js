@@ -10,9 +10,10 @@ export const appToastContext = React.createContext(null);
 
 export function ToastWrapper(props) {
   // const { data: session, status } = useSession();
-  // console.log(props);
+  console.log("toast is running");
   const [list, setList] = React.useState([]);
   const [userSession, setUserSession] = React.useState(null);
+  const [statusAuth, setStatusAuth] = React.useState(null);
   // console.log(userSession);
   const setTokenRefreshInterval = props.setRefreshInterval;
 
@@ -107,6 +108,8 @@ export function ToastWrapper(props) {
         userSession,
         setUserSession,
         setTokenRefreshInterval,
+        statusAuth,
+        setStatusAuth,
       }}
     >
       {props.children}

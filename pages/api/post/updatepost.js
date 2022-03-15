@@ -69,6 +69,53 @@ const updatePostHandler = async (req, res) => {
     // res.status(200).json({ message: "Post has been deleted.", deleted: true });
   }
 
+  async function likePost(session) {
+    const post = await Post.findById(req.body.post);
+    console.log(post);
+    post.likes = (post.likes ? post.likes : 0) + 1;
+    await post.save();
+
+    const user = await User.findById(session.user.id);
+    !user.profile.likesList && (user.profile.likesList = []);
+    user.profile.likesList.push({
+      postId: post._id,
+      title: post.title,
+    });
+    await user.save();
+    // console.log(req.body);
+    res.status(201).json({
+      message: "Post has been liked.",
+      reading_list: {
+        user: user.name,
+        readingList: user.profile.readingList || "",
+        likesList: user.profile.likesList || "",
+      },
+    });
+  }
+  async function unlikePost(session) {
+    const post = await Post.findById(req.body.post);
+    console.log(post);
+    post.likes = (post.likes ? post.likes : 0) - 1;
+    await post.save();
+
+    const user = await User.findById(session.user.id);
+    const removeLike = await user.profile.likesList.filter(
+      (like) => like.postId !== req.body.post
+    );
+    !user.profile.likesList && (user.profile.likesList = []);
+    user.profile.likesList = removeLike;
+    await user.save();
+    // console.log(req.body);
+    res.status(201).json({
+      message: "Post has been unliked.",
+      reading_list: {
+        user: user.name,
+        readingList: user.profile.readingList || "",
+        likesList: user.profile.likesList || "",
+      },
+    });
+  }
+
   // check if user is logged in
   const checkSession = async () => {
     // console.log(req.body);
@@ -80,6 +127,10 @@ const updatePostHandler = async (req, res) => {
         res.end();
       req.body.type === "DELETE_POST" &&
         (await deletePost(session)) &&
+        res.end();
+      req.body.type === "LIKE_POST" && (await likePost(session)) && res.end();
+      req.body.type === "UNLIKE_POST" &&
+        (await unlikePost(session)) &&
         res.end();
       // // req.body.type === "ADD_COMMENT" &&
       //   (await addComment(session)) &&

@@ -12,6 +12,8 @@ let ImageSchema = new Schema({
 
 let postSchema = new Schema(
   {
+    likes: { type: Number },
+    commentCount: { type: Number },
     title: { type: String },
     imageUrl: { type: String },
     image: [ImageSchema],

@@ -122,8 +122,8 @@ export default function Footer(props) {
   return (
     <footer className={`${styles.app}`}>
       <section className="">
-        <div className="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
-          <p className="mt-8 text-base leading-6 text-center text-gray-400">
+        <div className="mx-auto max-w-screen-xl space-y-8 overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
+          <p className="mt-8 text-center text-base leading-6 text-gray-400">
             © 2021 Created by Gustavo Ayala. All rights reserved.
           </p>
         </div>
@@ -159,7 +159,7 @@ export default function Footer(props) {
           toastList={list}
           position={"bottomRight"}
           autoDelete={true}
-          autoDeleteTime={6000}
+          autoDeleteTime={4000}
         />
       </div>
     </footer>

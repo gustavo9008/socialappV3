@@ -5,7 +5,7 @@ const middleware = nextConnect();
 
 middleware.use(async (req, res, next) => {
   const form = new multiparty.Form();
-
+  console.log(req.body);
   await form.parse(req, function (err, fields, files) {
     req.body = fields;
     req.files = files;

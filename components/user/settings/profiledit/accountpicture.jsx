@@ -30,7 +30,7 @@ export default function AccountPicture(props) {
   const newColor = useRef();
   const router = useRouter();
   const updateNewColorPic = useFetch;
-  console.log(newcolorstate);
+  // console.log(newcolorstate);
 
   const changeBtnColorActive = () => {
     btnDisabled === true && setBtnDisabled(false);
@@ -92,7 +92,7 @@ export default function AccountPicture(props) {
     function updateColor() {
       // btnAnimate();
       if (newColor.current.getAttribute("data-color")) {
-        console.log(newcolorstate);
+        // console.log(newcolorstate);
         formData.append("newColor", JSON.stringify(newcolorstate));
         updateImageSubmit(formData);
       } else {
@@ -159,16 +159,16 @@ export default function AccountPicture(props) {
     e.preventDefault();
 
     changeBtnColorActive();
-    let newColorpic = await generateRandomColors(8);
+    let newColorpic = await generateRandomColors(6);
     // console.log(newColorPic);
     setNewColorState(newColorpic);
-    console.log(newcolorstate);
+    // console.log(newcolorstate);
     const colorCircle = document.querySelector("#colorPic");
-    colorCircle.style.backgroundImage = `conic-gradient(${newColorpic[0]}, ${newColorpic[1]}, ${newColorpic[2]}, ${newColorpic[3]}, ${newColorpic[4]}, ${newColorpic[5]}, ${newColorpic[6]}, ${newColorpic[7]} )`;
+    colorCircle.style.backgroundImage = `linear-gradient(225deg, ${newColorpic[0]}, ${newColorpic[1]}, ${newColorpic[2]}, ${newColorpic[3]}, ${newColorpic[4]}, ${newColorpic[5]})`;
     colorCircle.setAttribute("data-color", newColor);
   };
   const colorProfilePic = {
-    background: `conic-gradient(${props.user.genericImage[0]} , ${props.user.genericImage[1]}, ${props.user.genericImage[2]}, ${props.user.genericImage[3]}, ${props.user.genericImage[4]}, ${props.user.genericImage[5]}, ${props.user.profile.image.genericPic[6]}, ${props.user.profile.image.genericPic[7]}  )`,
+    background: `linear-gradient(225deg, ${props.user.genericImage[0]} , ${props.user.genericImage[1]}, ${props.user.genericImage[2]}, ${props.user.genericImage[3]}, ${props.user.genericImage[4]}, ${props.user.genericImage[5]})`,
   };
 
   return (
