@@ -33,7 +33,7 @@ function SinglePost(props) {
       return true;
     });
     // return true;
-  }, []);
+  }, [router]);
   return (
     <>
       <Head>

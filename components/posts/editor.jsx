@@ -29,7 +29,6 @@ export default function MyEditor() {
         wrapperClassName="wrapper-class"
         editorClassName="editor-class"
         ref={editor}
-        editorState={editorState}
         onChange={setEditorState}
         placeholder="Write something!"
         toolbar={{
