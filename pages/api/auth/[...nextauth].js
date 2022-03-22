@@ -325,6 +325,7 @@ export default async function auth(req, res) {
             user: user.name,
             readingList: user.profile.readingList || [],
             likesList: user.profile.likesList || [],
+            postLoaded: [],
           };
           console.log(userList);
           setCookies("user_lists", JSON.stringify(userList), {

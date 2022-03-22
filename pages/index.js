@@ -13,6 +13,7 @@ import Card from "../components/ui/Card";
 import AllPost from "../components/posts/allposts";
 // import { useCurrentUser } from "@/hooks/index";
 import { useHistory } from "react-router-dom";
+import { now } from "next-auth/client/_utils";
 // import Post from "../models/post";
 // // import Comment from "../models/comment";
 // // import Reply from "../models/replies";
@@ -31,6 +32,23 @@ function HomePage(props) {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [typeSort, setTypeSort] = useState("TOP");
+  const [popState, setPopState] = useState(null);
+  // const [btnSelected, setBtnSelected] = useState("");
+  //===== save last load =====
+  const saveLastLoadPost = () => {
+    // console.log("running update local storage func");
+    // console.log(updatedList);
+    let currentList = {
+      timestamp: new Date().getTime(),
+      type: typeSort,
+      posts,
+    };
+
+    console.log(currentList);
+    localStorage.setItem("postLoaded", JSON.stringify(currentList));
+    // localStorage.setItem("reading_list", JSON.stringify(updatedList));
+    return;
+  };
 
   //=====  =====
   const transformPosts = useCallback(async (posts) => {
@@ -53,22 +71,53 @@ function HomePage(props) {
 
   const handleUpdatePost = useCallback(async () => {
     // setIsLoading(true);
-    const res = await getMorePost(
-      "GET",
-      `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
-    );
-    console.log(res);
-    const newUpdatePost = await transformPosts(res.data.data);
-    if (res.statusText === "OK") {
-      if (res.data.data.length > 1) {
-        console.log(res.data.data);
-        console.log(posts.previousLimit);
-        setPosts((prev) => ({
-          posts: [...new Set([...prev.posts, ...newUpdatePost])],
-          previousLimit: parseInt(res.data.nextPost),
-        }));
+    // let checkPopState;
+    // window.onpopstate = function (e) {
+    //   var checkPopState;
+    //   console.log(e);
+
+    //   checkPopState = e.type;
+    //   // eslint-disable-next-line react-hooks/exhaustive-deps
+    //   // setPopState(e.type);
+    //   // checkPopState = e.type;
+    //   // console.log(checkPopState);
+    // };
+    async function getNewPost() {
+      const res = await getMorePost(
+        "GET",
+        `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
+      );
+      const newUpdatePost = await transformPosts(res.data.data);
+      if (res.statusText === "OK") {
+        if (res.data.data.length > 1) {
+          console.log(res.data.data);
+          console.log(posts.previousLimit);
+          setPosts((prev) => ({
+            posts: [...new Set([...prev.posts, ...newUpdatePost])],
+            previousLimit: parseInt(res.data.nextPost),
+          }));
+        }
+        setIsLoading(false);
       }
-      setIsLoading(false);
+    }
+
+    let twentyMin = 1200000;
+    var fiveMin = 1000 * 60 * 1;
+    let loaded = JSON.parse(localStorage.getItem("postLoaded"));
+    // console.log(new Date().getTime() - loaded.timestamp < fiveMin);
+    // console.log(loaded.timestamp - new Date().getTime() < fiveMin);
+    if (new Date().getTime() - loaded?.popState?.timestamp < 3000) {
+      if (new Date().getTime() - loaded.timestamp < fiveMin) {
+        setTypeSort(loaded.type);
+        console.log("setPost is running!");
+        console.log(loaded.posts);
+        setPosts(loaded.posts);
+        setIsLoading(false);
+      } else {
+        getNewPost();
+      }
+    } else {
+      getNewPost();
     }
   }, [getMorePost, posts.previousLimit, transformPosts, typeSort]);
 
@@ -98,12 +147,12 @@ function HomePage(props) {
           "GET",
           `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
         );
-        console.log(res);
+        // console.log(res);
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.statusText === "OK") {
           if (res.data.data.length > 1) {
-            console.log(res.data.data);
-            console.log(posts.previousLimit);
+            // console.log(res.data.data);
+            // console.log(posts.previousLimit);
             setPosts((prev) => ({
               posts: [...new Set([...prev.posts, ...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
@@ -127,14 +176,9 @@ function HomePage(props) {
 
   useEffect(() => {
     console.log("//===== useEffect run =====");
-    // console.log(posts.previousLimit);
-    window.onpopstate = (e) => {
-      //your code...
-      console.log(e);
-    };
 
     isLoading && handleUpdatePost();
-  }, [setIsLoading, isLoading, handleUpdatePost]);
+  }, [setIsLoading, isLoading, handleUpdatePost, setPosts]);
 
   console.log("//===== end =====");
   return (
@@ -146,7 +190,7 @@ function HomePage(props) {
       </Head>
 
       <Card>
-        <aside>
+        <aside className="mb-2 grid grid-cols-2 gap-1 px-4 pb-2">
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -156,8 +200,11 @@ function HomePage(props) {
                 setPosts({ posts: [], previousLimit: 0 }));
               return;
             }}
+            className={`order-1 row-span-1 w-24 p-2  hover:border-slate-400 ${
+              typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
+            }`}
           >
-            Top
+            <span className="text-lg font-medium">Top</span>
           </button>
           <button
             onClick={(e) => {
@@ -168,46 +215,67 @@ function HomePage(props) {
                 setPosts({ posts: [], previousLimit: 0 }));
               return;
             }}
+            className={`order-2 row-span-2 w-24 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 ${
+              typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
+            }`}
           >
-            <span className="">Latest</span>
-          </button>
-          <button className="group relative inline-flex items-center justify-start overflow-hidden rounded bg-gray-50 py-3 pl-4 pr-4 font-semibold text-indigo-600 transition-all duration-150 ease-in-out">
-            <span className="absolute bottom-0 left-0 h-1 w-full bg-indigo-600 transition-all duration-150 ease-in-out group-hover:h-full"></span>
-
-            <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">
-              Button Text
-            </span>
+            <span className="text-lg font-medium">Latest</span>
           </button>
         </aside>
         {!isLoading && (
           <>
             <section>
-              {posts.posts.map((post) => (
-                <AllPost posts={post} key={post.id} />
-              ))}
+              {posts.posts.map((post, i) => {
+                if (posts.posts.length === i + 1) {
+                  return (
+                    <AllPost
+                      id={`${post.id}`}
+                      ref={lastBookElementRef}
+                      posts={post}
+                      key={i}
+                      saveLastLoadPost={saveLastLoadPost}
+                    />
+                    // <div
+                    //   key={posts.posts.length + 1}
+                    //   id={posts.posts.length + 1}
+                    //   ref={lastBookElementRef}
+                    // />
+                  );
+                } else {
+                  return (
+                    <AllPost
+                      id={`${post.id}`}
+                      posts={post}
+                      key={i}
+                      saveLastLoadPost={saveLastLoadPost}
+                    />
+                  );
+                }
+              })}
             </section>
           </>
         )}
         {isLoading && (
-          <div className="mx-auto w-full max-w-sm rounded-md border border-blue-300 p-4 shadow">
-            <div className="flex animate-pulse space-x-4">
-              <div className="h-10 w-10 rounded-full bg-slate-700"></div>
-              <div className="flex-1 space-y-6 py-1">
-                <div className="h-2 rounded bg-slate-700"></div>
-                <div className="space-y-3">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="col-span-2 h-2 rounded bg-slate-700"></div>
-                    <div className="col-span-1 h-2 rounded bg-slate-700"></div>
-                  </div>
+          <>
+            <div className="mx-auto w-full max-w-sm rounded-md border border-blue-300 p-4 shadow">
+              <div className="flex animate-pulse space-x-4">
+                <div className="h-10 w-10 rounded-full bg-slate-700"></div>
+                <div className="flex-1 space-y-6 py-1">
                   <div className="h-2 rounded bg-slate-700"></div>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="col-span-2 h-2 rounded bg-slate-700"></div>
+                      <div className="col-span-1 h-2 rounded bg-slate-700"></div>
+                    </div>
+                    <div className="h-2 rounded bg-slate-700"></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            {/* <div id="emptyDiv" ref={lastBookElementRef} /> */}
+          </>
         )}
       </Card>
-
-      <div ref={lastBookElementRef} />
     </>
   );
 }

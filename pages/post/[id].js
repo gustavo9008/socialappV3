@@ -18,8 +18,22 @@ import dbConnect from "../../middleware/mongodb";
 
 function SinglePost(props) {
   const { userSession } = React.useContext(appToastContext);
+  const router = useRouter();
 
   // console.log("post component");
+  React.useEffect(() => {
+    router.beforePopState(() => {
+      let loaded = JSON.parse(localStorage.getItem("postLoaded"));
+      loaded.popState = {
+        timestamp: new Date().getTime(),
+      };
+      localStorage.setItem("postLoaded", JSON.stringify(loaded));
+      console.log(loaded);
+      console.log("this is from the before pop state router");
+      return true;
+    });
+    // return true;
+  }, []);
   return (
     <>
       <Head>

@@ -1,26 +1,37 @@
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ProfileColorAvatar from "../ui/ProfileColorAvatar";
 
-function AllPosts(props) {
+const AllPosts = React.forwardRef(function Post(props, ref) {
   const router = useRouter();
 
-  // console.log(props.posts.userProfile);
+  // console.log(props);
 
   const linkHandleClick = (e) => {
     e.preventDefault();
+    props.saveLastLoadPost();
     let url = e.currentTarget.attributes.href.nodeValue;
     let title = props.posts.title;
     console.log(url);
     router.push(url);
   };
 
+  useEffect(() => {
+    const clickableElements = document.querySelectorAll(".clickable");
+
+    clickableElements.forEach((ele) =>
+      ele.addEventListener("click", (e) => e.stopPropagation())
+    );
+  }, []);
+
   return (
     <article
+      ref={ref}
       href={"/post/" + props.posts.id}
       onClick={linkHandleClick}
-      id=""
+      id={`${props.id}`}
       className="link-card homepage-card card Psm:mb-2 Psm:w-full Psm:border-l-0 Psm:border-r-0 Psm:border-t Psm:border-b Psm:border-indigo-900 Psm:shadow-none Psm:rounded-none bg-gray-800"
     >
       <figure className="aspect-w-4 aspect-h-2 mb-2">
@@ -113,6 +124,6 @@ function AllPosts(props) {
       </section>
     </article>
   );
-}
+});
 
 export default AllPosts;
