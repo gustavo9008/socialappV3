@@ -191,9 +191,10 @@ function HomePage(props) {
 
       <Card>
         <aside className="mb-2 grid grid-cols-2 gap-1 px-4 pb-2">
-          <button
+          <a
+            href="#Top"
             onClick={(e) => {
-              e.preventDefault();
+              // e.preventDefault();
               typeSort === "LATEST" &&
                 (setTypeSort("TOP"),
                 setIsLoading(true),
@@ -204,11 +205,14 @@ function HomePage(props) {
               typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
             }`}
           >
-            <span className="text-lg font-medium">Top</span>
-          </button>
-          <button
+            <span id="Top" className="text-lg font-medium">
+              Top
+            </span>
+          </a>
+          <a
+            href="#Latest"
             onClick={(e) => {
-              e.preventDefault();
+              // e.preventDefault();
               typeSort === "TOP" &&
                 (setTypeSort("LATEST"),
                 setIsLoading(true),
@@ -219,8 +223,10 @@ function HomePage(props) {
               typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
             }`}
           >
-            <span className="text-lg font-medium">Latest</span>
-          </button>
+            <span id="Latest" className="text-lg font-medium">
+              Latest
+            </span>
+          </a>
         </aside>
         {!isLoading && (
           <>

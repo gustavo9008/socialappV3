@@ -1,10 +1,6 @@
 import React from "react";
 import Toast from "../ui/Toast";
-import checkIcon from "../../styles/assets/check.svg";
-import errorIcon from "../../styles/assets/error.svg";
-import infoIcon from "../../styles/assets/info.svg";
-import warningIcon from "../../styles/assets/warning.svg";
-import Button from "../ui/Button";
+
 import styles from "../ui/Footer.module.css";
 import { appToastContext } from "context/state";
 
