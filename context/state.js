@@ -1,10 +1,6 @@
 import React from "react";
 import { useSession } from "next-auth/react";
 import useFetch from "@/hooks/fetch";
-import checkIcon from "../styles/assets/check.svg";
-import errorIcon from "../styles/assets/error.svg";
-import infoIcon from "../styles/assets/info.svg";
-import warningIcon from "../styles/assets/warning.svg";
 
 export const appToastContext = React.createContext(null);
 
@@ -73,24 +69,6 @@ export function ToastWrapper(props) {
               />
             </svg>
           ),
-        };
-        break;
-      case "info":
-        toastProperties = {
-          id,
-          title: "Info",
-          description: description,
-          backgroundColor: "#5bc0de",
-          icon: infoIcon,
-        };
-        break;
-      case "warning":
-        toastProperties = {
-          id,
-          title: "Warning",
-          description: description,
-          backgroundColor: "#f0ad4e",
-          icon: warningIcon,
         };
         break;
       default:
