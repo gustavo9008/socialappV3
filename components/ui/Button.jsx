@@ -45,6 +45,7 @@ const Button = (props) => {
 
   const handleBtnClick = (e) => {
     e.preventDefault();
+    console.log("Btn was click");
     if (btnType !== "CANCEL") {
       btnAnimate();
     }

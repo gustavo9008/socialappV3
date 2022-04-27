@@ -82,7 +82,7 @@ function Comments(props) {
       setPostComments(res.data);
       commentRef.current.value = "";
       setBtnDisabled(true);
-      setLabel("Submit");
+      setLabel("Comment");
       setBtnColor("bg-slate-700");
       stopBtnAnimate("mainAddCommentForm");
     }
@@ -128,7 +128,10 @@ function Comments(props) {
           <button
             id="loginbtn"
             className="mb-2 font-medium text-blue-300 focus:outline-none"
-            href="/blogs/login"
+            onClick={(e) => {
+              e.preventDefault();
+              props.setShowLoginModal(true);
+            }}
           >
             Sign in
           </button>{" "}

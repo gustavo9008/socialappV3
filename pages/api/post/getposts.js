@@ -6,7 +6,7 @@ import dbConnect from "../../../middleware/mongodb";
 export default async function findPostHandler(req, res) {
   console.log(req.query);
   await dbConnect();
-  async function findTopPosts() {}
+  // async function findTopPosts() {}
   let newpostsLikes;
   let latestPosts;
   try {

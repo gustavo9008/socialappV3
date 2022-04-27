@@ -1,11 +1,18 @@
-import React from 'react';
-import Head from 'next/head';
-import nc from 'next-connect';
-import Router from 'next/router';
-import { database } from '@/middlewares/index';
-import { findTokenByIdAndType } from '@/db/index';
+import React, { useEffect } from "react";
+import Head from "next/head";
+import { appToastContext } from "context/state";
+import User from "../../models/user";
+import dbConnect from "../../middleware/mongodb";
+import Card from "@/components/ui/Card";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const ResetPasswordTokenPage = ({ valid, token }) => {
+  const { useFetch, showToast, userSession } =
+    React.useContext(appToastContext);
+  const sendNewPassword = useFetch;
+  const router = useRouter();
+
   async function handleSubmit(event) {
     event.preventDefault();
     const body = {
@@ -13,58 +20,94 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
       token,
     };
 
-    const res = await fetch('/api/user/password/reset', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
+    const res = await sendNewPassword("PUT", "/api/user/passwordreset", body);
 
-    if (res.status === 200) Router.replace('/');
+    console.log(res);
+    if (res.statusText === "OK") {
+      showToast("success", res.data.message);
+      router.push("/login");
+    }
   }
 
+  const getUserSession = () => {
+    if (userSession) {
+      showToast("success", "Alredy logged in.");
+      router.push("/");
+    }
+  };
+  useEffect(() => {
+    // getSession().then((session) => {
+    //   // console.log(session);
+    //   if (session) {
+    //     showToast("success", "Alredy logged in.");
+    //     router.push("/");
+    //   } else {
+    //     setLoading(false);
+    //   }
+    // });
+    getUserSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userSession]);
   return (
     <>
       <Head>
-        <title>Forget password</title>
+        <title>Change Password</title>
       </Head>
-      <style jsx>
-        {`
-        p {
-          text-align: center;
-        }
-      `}
-      </style>
-      <h2>Forget password</h2>
-      {valid ? (
-        <>
-          <p>Enter your new password.</p>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <input
-                name="password"
-                type="password"
-                placeholder="New password"
-              />
-            </div>
-            <button type="submit">Set new password</button>
-          </form>
-        </>
-      ) : (
-        <p>This link may have been expired</p>
-      )}
+
+      {/* <h2>Forget password</h2> */}
+      <Card>
+        {valid ? (
+          <>
+            <p>Enter your new password.</p>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="New password"
+                />
+              </div>
+              <button type="submit">Set new password</button>
+            </form>
+          </>
+        ) : (
+          <>
+            <p className="text-center text-4xl">This link is expired</p>
+            <p className="mt-4 text-center">
+              <Link href="/forget-password">
+                <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
+                  Click here
+                </a>
+              </Link>{" "}
+              to resend new link{" "}
+            </p>
+          </>
+        )}
+      </Card>
     </>
   );
 };
 
 export async function getServerSideProps(ctx) {
-  const handler = nc();
-  handler.use(database);
-  await handler.run(ctx.req, ctx.res);
+  console.log("Change password page with token");
   const { token } = ctx.query;
 
-  const tokenDoc = await findTokenByIdAndType(ctx.req.db, ctx.query.token, 'passwordReset');
+  dbConnect();
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
 
-  return { props: { token, valid: !!tokenDoc } };
+  const resetLinkExp = user ? true : false;
+  console.log(resetLinkExp);
+  // const handler = nc();
+  // handler.use(database);
+  // await handler.run(ctx.req, ctx.res);
+  console.log(token);
+
+  // const tokenDoc = await findTokenByIdAndType(ctx.req.db, ctx.query.token, 'passwordReset');
+
+  return { props: { token, valid: resetLinkExp } };
 }
 
 export default ResetPasswordTokenPage;

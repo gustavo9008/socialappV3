@@ -3,13 +3,21 @@ import Settings from "../../../components/user/settings/profiledit/settings";
 import AccountPicture from "@/components/user/settings/profiledit/accountpicture";
 import Account from "@/components/user/settings/useraccountedit/account";
 import { useSession, getSession } from "next-auth/react";
+import { appToastContext } from "context/state";
+import { useRouter } from "next/router";
 
 export default function ProfilePage(props) {
-  // console.log(props);
-  const { data: session, status } = useSession();
+  const router = useRouter();
 
+  const { userSession } = React.useContext(appToastContext);
+  console.log(userSession);
+  const { data: session, status } = useSession();
+  console.log(session);
   const [showProfile, setShowProfile] = useState(true);
   const [showAccount, setShowAccount] = useState(false);
+  // if (userSession === null) {
+  //   router.push("/");
+  // }
 
   const showProfileSetting = (e) => {
     e.preventDefault();
@@ -28,19 +36,25 @@ export default function ProfilePage(props) {
     setShowAccount(!showAccount);
   };
   // console.log(session);
+
+  // React.useEffect(() => {
+  //   if (userSession === null) {
+  //     router.push("/");
+  //   }
+  // }, [router, userSession]);
   return (
     <>
-      <main className="flex Psm:flex-col max-w-screen-md mx-auto">
-        <div className="w-48 Psm:w-72 h-full px-4 py-8">
-          <div className="flex flex-col Psm:flex-row justify-between flex-1 mt-6">
+      <main className="Psm:flex-col mx-auto flex max-w-screen-md">
+        <div className="Psm:w-72 h-full w-48 px-4 py-8">
+          <div className="Psm:flex-row mt-6 flex flex-1 flex-col justify-between">
             <nav className="Psm:flex Psm:flex-row Psm:m-auto">
               <div>
                 <a
                   onClick={showProfileSetting}
-                  className="flex items-center px-4 py-2 mt-5 text-gray-400 transition-colors duration-200 transform rounded-md hover:bg-gray-200 hover:text-gray-700"
+                  className="mt-5 flex transform items-center rounded-md px-4 py-2 text-gray-400 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="h-5 w-5"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -68,11 +82,11 @@ export default function ProfilePage(props) {
               <div>
                 <a
                   onClick={showAcccountSetting}
-                  className="flex items-center px-4 py-2 mt-5 text-gray-400 transition-colors duration-200 transform rounded-md hover:bg-gray-200 hover:text-gray-700"
+                  className="mt-5 flex transform items-center rounded-md px-4 py-2 text-gray-400 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
                   href="#"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="h-5 w-5"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -104,10 +118,13 @@ export default function ProfilePage(props) {
         {showProfile && (
           <>
             <aside>
-              <Settings user={session.user} profile={session.user.profile} />
+              <Settings
+                user={session.user || null}
+                profile={session.user.profile || null}
+              />
               <AccountPicture
-                user={session.user}
-                profile={session.user.profile}
+                user={session.user || null}
+                profile={session.user.profile || null}
               />
             </aside>
           </>

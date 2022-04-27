@@ -229,50 +229,73 @@ export default function PostSideMenu(props) {
   return (
     <section className="Psm:bottom-0 fixed w-12 ">
       <aside className="Psm:flex-row Psm:justify-between Psm:w-screen Psm:px-8 Psm:py-1 Psm:bg-gray-900 flex flex-col gap-4 text-gray-300">
-        <>
-          {bookFunction ? (
+        {userSession ? (
+          <>
+            {bookFunction ? (
+              <Button
+                icon={bookmarkBtnIcon}
+                idType={"bookmarkBtn"}
+                handleClick={addBookmarkHandler}
+                btnType={"CANCEL"}
+                className={
+                  "flex w-20 items-center justify-between p-2 text-center"
+                }
+              />
+            ) : (
+              <Button
+                icon={bookmarkBtnIcon}
+                idType={"bookmarkBtn"}
+                handleClick={deleteBookmarkHandler}
+                btnType={"CANCEL"}
+                className={
+                  "flex w-20 items-center justify-between p-2 text-center"
+                }
+              />
+            )}
+            {likeFunc ? (
+              <Button
+                icon={likeBtnIcon}
+                idType={"likeBtn"}
+                handleClick={likePostHandler}
+                btnType={"CANCEL"}
+                className={
+                  "Psm:flex-row Psm:w-20 flex w-12 flex-col items-center justify-between p-2 text-center"
+                }
+              />
+            ) : (
+              <Button
+                icon={likeBtnIcon}
+                idType={"unlikeBtn"}
+                btnType={"CANCEL"}
+                handleClick={unlikePostHandler}
+                className={
+                  "Psm:flex-row Psm:w-20 flex w-12 flex-col items-center justify-between p-2 text-center"
+                }
+              />
+            )}
+          </>
+        ) : (
+          <>
             <Button
               icon={bookmarkBtnIcon}
               idType={"bookmarkBtn"}
-              handleClick={addBookmarkHandler}
+              handleClick={props.setShowLoginModal}
               btnType={"CANCEL"}
               className={
                 "flex w-20 items-center justify-between p-2 text-center"
               }
             />
-          ) : (
-            <Button
-              icon={bookmarkBtnIcon}
-              idType={"bookmarkBtn"}
-              handleClick={deleteBookmarkHandler}
-              btnType={"CANCEL"}
-              className={
-                "flex w-20 items-center justify-between p-2 text-center"
-              }
-            />
-          )}
-          {likeFunc ? (
             <Button
               icon={likeBtnIcon}
               idType={"likeBtn"}
-              handleClick={likePostHandler}
+              handleClick={props.setShowLoginModal}
               btnType={"CANCEL"}
               className={
                 "Psm:flex-row Psm:w-20 flex w-12 flex-col items-center justify-between p-2 text-center"
               }
             />
-          ) : (
-            <Button
-              icon={likeBtnIcon}
-              idType={"unlikeBtn"}
-              btnType={"CANCEL"}
-              handleClick={unlikePostHandler}
-              className={
-                "Psm:flex-row Psm:w-20 flex w-12 flex-col items-center justify-between p-2 text-center"
-              }
-            />
-          )}
-        </>
+          </>
+        )}
 
         {userSession && userSession.user.id === post.userProfile.id && (
           <>

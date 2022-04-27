@@ -69,10 +69,11 @@ export default function AddReply(props) {
     const res = await addReply("POST", "/api/comments/addcomment", data);
     console.log(res.data);
     if (res.data) {
-      let message = "Your reply has been added.";
-      showToast("success", message);
+      setBtnDisabled(true), setBtnColor("bg-slate-700");
+      showToast("success", "Your reply has been added.");
       props.updateComment(res.data);
       replyRef.current.value = "";
+      stopBtnAnimate("addReplyForm");
       openCloseCommentReply(e);
     }
   };

@@ -8,6 +8,7 @@ import Link from "next/link";
 import Button, { useBtnState } from "../ui/Button";
 import ProfileColorAvatar from "../ui/ProfileColorAvatar";
 import PostSideMenu from "./PostSideMenu";
+import LoginModal from "./LoginModal";
 
 function Post(props) {
   // console.log(props.post);
@@ -29,6 +30,7 @@ function Post(props) {
   //===== state variables =====
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [post, setPost] = React.useState(props.post);
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
 
   return (
     <main className="Psm:m-0 main-container Psm:mt-3 Psm:flex-col-reverse mt-3 flex flex-row">
@@ -90,10 +92,18 @@ function Post(props) {
             </div>
           </section>
 
-          <CommentSection user={props.user} post={post} />
+          <CommentSection
+            user={props.user}
+            post={post}
+            setShowLoginModal={setShowLoginModal}
+          />
         </div>
       </article>
-      <PostSideMenu post={post} setShowPostModal={setShowPostModal} />
+      <PostSideMenu
+        post={post}
+        setShowPostModal={setShowPostModal}
+        setShowLoginModal={setShowLoginModal}
+      />
 
       {props.user && props.user.id === post.userProfile.id && (
         <>
@@ -102,6 +112,15 @@ function Post(props) {
             setShowPostModal={setShowPostModal}
             post={post}
             setPost={setPost}
+          />
+        </>
+      )}
+
+      {!userSession && (
+        <>
+          <LoginModal
+            showLoginModal={showLoginModal}
+            setShowLoginModal={setShowLoginModal}
           />
         </>
       )}

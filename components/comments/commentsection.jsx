@@ -49,9 +49,13 @@ export default function CommentSection(props) {
       value={{ userSession, postComments, setPostComments, title, postId }}
     >
       <section className="comments p-4 pb-14">
-        <h3 className="mt-10 text-3xl pb-4">Discussion</h3>
+        <h3 className="mt-10 pb-4 text-3xl">Discussion</h3>
         <div className="">
-          <AddCommentForm postId={props.post._id} title={props.post.title} />
+          <AddCommentForm
+            postId={props.post._id}
+            title={props.post.title}
+            setShowLoginModal={props.setShowLoginModal}
+          />
           {postComments ? (
             <Comments user={userSession} comments={postComments} />
           ) : null}

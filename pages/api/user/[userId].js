@@ -10,6 +10,7 @@ const finduserhandler = async (req, res) => {
   //===== create one post functionk =====
   const findAccount = async (req) => {
     const { userId } = req.query;
+    console.log(userId);
     //===== search user account =====
     await dbConnect();
     // console.log(req.body);
@@ -30,6 +31,8 @@ const finduserhandler = async (req, res) => {
         options: { sort: { created: -1 } },
       })
       .lean();
+
+    console.log(user);
     // delete user.password;
     // console.log(user);
     res.status(200).json({ message: "found account", account: user });

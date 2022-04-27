@@ -7,7 +7,8 @@
       "@/middlewares/*": ["middlewares/*"],
       "@/hooks/*": ["hooks/*"],
       "@/db/*": ["db/*"],
-      "@/models/*": ["models/*"]
+      "@/models/*": ["models/*"],
+      "@/context/*": ["context/*"]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+// import { MongoClient } from "mongodb";
 import { hash } from "bcryptjs";
 import User from "../../../models/user";
 // import Profile from "../../../models/profile";
@@ -6,6 +6,7 @@ import dbConnect from "../../../middleware/mongodb";
 
 async function signUpHandler(req, res) {
   //Only POST mothod is accepted
+  console.log(req.body);
   if (req.method === "POST") {
     await dbConnect();
     //Getting email and password from body

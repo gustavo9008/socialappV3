@@ -2,7 +2,7 @@ import React from "react";
 import Post from "../../components/posts/post";
 import { useRouter } from "next/router";
 import { server } from "../../config/index";
-import { useSession, getSession } from "next-auth/react";
+// import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "../../context/state";
 import Head from "next/head";
 import PostId from "../../models/post";
@@ -34,6 +34,17 @@ function SinglePost(props) {
     });
     // return true;
   }, [router]);
+  // React.useEffect(() => {
+  //   window.history.replaceState(
+  //     {},
+  //     "",
+  //     `/post/${props.post.title.split(" ").join("-")}`
+  //   );
+  //   // Always do navigations after the first render
+  //   // router.push(`/post/${props.post.title}`, `/post/${props.post.title}`, {
+  //   //   shallow: true,
+  //   // });
+  // }, []);
   return (
     <>
       <Head>

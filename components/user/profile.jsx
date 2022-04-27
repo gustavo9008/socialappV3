@@ -45,7 +45,7 @@ export default function Profile(props) {
     const MyProfile = async (id) => {
       const res = await getMyProfile("GET", `/api/user/${id}`);
       // const myProfile = await response.json();
-      // console.log(res.data.account.profile.readingList);
+      console.log(res);
       // localStorage.setItem(
       //   "reading_list",
       //   JSON.stringify(res.data.account.profile.readingList)

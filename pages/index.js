@@ -11,18 +11,17 @@ import Head from "next/head";
 import { appToastContext } from "context/state";
 import Card from "../components/ui/Card";
 import AllPost from "../components/posts/allposts";
-// import { useCurrentUser } from "@/hooks/index";
-import { useHistory } from "react-router-dom";
-import { now } from "next-auth/client/_utils";
+import { useRouter } from "next/router";
+
 // import Post from "../models/post";
 // // import Comment from "../models/comment";
 // // import Reply from "../models/replies";
 // import dbConnect from "../middleware/mongodb";
 
 function HomePage(props) {
-  console.log("//===== beg =====");
   //===== context imports =====
-  const { useFetch, userSession } = useContext(appToastContext);
+  const router = useRouter();
+  const { useFetch } = useContext(appToastContext);
   const getMorePost = useFetch;
   const loader = useRef(null);
   const observer = useRef();
@@ -36,15 +35,11 @@ function HomePage(props) {
   // const [btnSelected, setBtnSelected] = useState("");
   //===== save last load =====
   const saveLastLoadPost = () => {
-    // console.log("running update local storage func");
-    // console.log(updatedList);
     let currentList = {
       timestamp: new Date().getTime(),
       type: typeSort,
       posts,
     };
-
-    console.log(currentList);
     localStorage.setItem("postLoaded", JSON.stringify(currentList));
     // localStorage.setItem("reading_list", JSON.stringify(updatedList));
     return;
@@ -70,18 +65,6 @@ function HomePage(props) {
   }, []);
 
   const handleUpdatePost = useCallback(async () => {
-    // setIsLoading(true);
-    // let checkPopState;
-    // window.onpopstate = function (e) {
-    //   var checkPopState;
-    //   console.log(e);
-
-    //   checkPopState = e.type;
-    //   // eslint-disable-next-line react-hooks/exhaustive-deps
-    //   // setPopState(e.type);
-    //   // checkPopState = e.type;
-    //   // console.log(checkPopState);
-    // };
     async function getNewPost() {
       const res = await getMorePost(
         "GET",
@@ -89,9 +72,7 @@ function HomePage(props) {
       );
       const newUpdatePost = await transformPosts(res.data.data);
       if (res.statusText === "OK") {
-        if (res.data.data.length > 1) {
-          console.log(res.data.data);
-          console.log(posts.previousLimit);
+        if (res.data.data.length > 0) {
           setPosts((prev) => ({
             posts: [...new Set([...prev.posts, ...newUpdatePost])],
             previousLimit: parseInt(res.data.nextPost),
@@ -104,13 +85,9 @@ function HomePage(props) {
     let twentyMin = 1200000;
     var fiveMin = 1000 * 60 * 1;
     let loaded = JSON.parse(localStorage.getItem("postLoaded"));
-    // console.log(new Date().getTime() - loaded.timestamp < fiveMin);
-    // console.log(loaded.timestamp - new Date().getTime() < fiveMin);
     if (new Date().getTime() - loaded?.popState?.timestamp < 3000) {
       if (new Date().getTime() - loaded.timestamp < fiveMin) {
         setTypeSort(loaded.type);
-        console.log("setPost is running!");
-        console.log(loaded.posts);
         setPosts(loaded.posts);
         setIsLoading(false);
       } else {
@@ -147,12 +124,9 @@ function HomePage(props) {
           "GET",
           `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
         );
-        // console.log(res);
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.statusText === "OK") {
-          if (res.data.data.length > 1) {
-            // console.log(res.data.data);
-            // console.log(posts.previousLimit);
+          if (res.data.data.length > 0) {
             setPosts((prev) => ({
               posts: [...new Set([...prev.posts, ...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
@@ -165,7 +139,6 @@ function HomePage(props) {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(async (entries) => {
         if (entries[0].isIntersecting) {
-          console.log("observer triggered");
           await handleUpdatePost();
         }
       });
@@ -173,14 +146,15 @@ function HomePage(props) {
     },
     [getMorePost, isLoading, posts, typeSort]
   );
+  // useEffect(() => {
+  //   // Always do navigations after the first render
+  //   router.push("/#Top", undefined, { shallow: true });
+  // }, []);
 
   useEffect(() => {
-    console.log("//===== useEffect run =====");
-
     isLoading && handleUpdatePost();
-  }, [setIsLoading, isLoading, handleUpdatePost, setPosts]);
+  }, [setIsLoading, isLoading, handleUpdatePost, setPosts, router]);
 
-  console.log("//===== end =====");
   return (
     <>
       <Head>

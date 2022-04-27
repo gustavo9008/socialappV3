@@ -8,18 +8,24 @@ import ProfileColorAvatar from "./ProfileColorAvatar";
 
 const AlpineWidjet = (props) => {
   const router = useRouter();
-  const { userSession, showToast, setUserSession } =
-    React.useContext(appToastContext);
+  const { showToast, setUserSession } = React.useContext(appToastContext);
   // console.log(userSession);
-  const handleLogout = async () => {
+  if (props.user === null) {
+    router.push("/");
+  }
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    router.push("/");
     // signOut({ callbackUrl: "10.0.0.60:3000/" });
-    const logoutData = await signOut({ redirect: false });
+    const logoutData = await signOut({
+      callbackUrl: "10.0.0.60:3000/",
+      redirect: false,
+    });
     console.log(logoutData);
     logoutData.url &&
       (localStorage.removeItem("user_lists"),
       showToast("success", "You have been logged out."),
-      setUserSession(null),
-      router.push("/"));
+      setUserSession(null));
   };
 
   const dropdownRef = React.useRef(null);
@@ -65,7 +71,7 @@ const AlpineWidjet = (props) => {
           >
             <ProfileColorAvatar
               type={"LOGGED_USER_CIRCLE_AVATAR"}
-              profile={userSession.user.profile.image}
+              profile={props.user.profile.image}
             />
             {/* {picbtn} */}
           </button>
