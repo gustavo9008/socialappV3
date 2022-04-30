@@ -19,7 +19,7 @@ const updateuseraccounthandler = async (req, res) => {
   const updateAccount = async (session) => {
     //===== search user account =====
     await dbConnect();
-    console.log(req.body);
+    // console.log(req.body);
     const user = await User.findById(session.user.id);
     // const sendNewUser = user.name;
     // console.log(userName);

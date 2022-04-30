@@ -4,9 +4,17 @@ import Button, { useBtnState } from "@/components/ui/Button";
 
 export function usePasswordInputState() {
   const newPasswordRef = React.useRef();
+  const containerWarning = React.useRef();
+  const repeatPasswordRef = React.useRef();
+  const repeatPasswordCheck = React.useRef();
   // const strengthBadge = React.useRef();
 
-  return [newPasswordRef];
+  return [
+    newPasswordRef,
+    containerWarning,
+    repeatPasswordRef,
+    repeatPasswordCheck,
+  ];
 }
 
 function PasswordInput(props, ref) {
@@ -15,7 +23,6 @@ function PasswordInput(props, ref) {
   const containerWarning = React.useRef();
   const strengthBadge = React.useRef();
   const matchBadge = React.useRef();
-  const [passwordMatchColor, setPasswordMatchColor] = React.useState("");
   let timeout;
 
   //=====  =====
@@ -27,21 +34,21 @@ function PasswordInput(props, ref) {
     // We then change the badge's color and text based on the password strength
 
     if (strongPassword.test(PasswordParameter)) {
-      containerWarning.current.classList.remove("bg-red-100");
-      containerWarning.current.classList.remove("border-red-400");
-      containerWarning.current.classList.add("bg-green-100");
-      containerWarning.current.classList.add("border-green-400");
+      props.containerWarning.current.classList.remove("bg-red-100");
+      props.containerWarning.current.classList.remove("border-red-400");
+      props.containerWarning.current.classList.add("bg-green-100");
+      props.containerWarning.current.classList.add("border-green-400");
       // strengthBadge.current.style.backgroundColor = "green";
       strengthBadge.current.innerText = "Strong Password";
     } else {
-      containerWarning.current.classList.remove("bg-green-100");
-      containerWarning.current.classList.remove("border-green-400");
-      containerWarning.current.classList.add("bg-red-100");
-      containerWarning.current.classList.add("border-red-400");
+      props.containerWarning.current.classList.remove("bg-green-100");
+      props.containerWarning.current.classList.remove("border-green-400");
+      props.containerWarning.current.classList.add("bg-red-100");
+      props.containerWarning.current.classList.add("border-red-400");
       strengthBadge.current.innerText = "Weak Password";
     }
 
-    repeatPasswordRef.current.value.length !== 0 && checkPasswordMatch();
+    props.repeatPasswordRef.current.value.length !== 0 && checkPasswordMatch();
   }
 
   // function checkPasswordMatch() {
@@ -55,8 +62,15 @@ function PasswordInput(props, ref) {
   // }
 
   const checkPassword = () => {
+    if (props.newPasswordRef.current.value.length === 0) {
+      props.containerWarning.current.classList.add("hidden");
+      props.repeatPasswordCheck.current.classList.add("hidden");
+      props.setBtnDisabled(true);
+      props.setBtnColor("bg-slate-700");
+      return;
+    }
     console.log("password input had been used!");
-    containerWarning.current.classList.remove("hidden");
+    props.containerWarning.current.classList.remove("hidden");
 
     clearTimeout(timeout);
 
@@ -65,11 +79,11 @@ function PasswordInput(props, ref) {
       500
     );
 
-    if (props.newPasswordRef.current.value.length !== 0) {
-      containerWarning.current.classList.add("block");
-    } else {
-      containerWarning.current.classList.add("hidden");
-    }
+    // if (props.newPasswordRef.current.value.length !== 0) {
+    //   props.containerWarning.current.classList.add("block");
+    // } else {
+    //   props.containerWarning.current.classList.add("hidden");
+    // }
 
     // console.log(newPasswordRef.current.value);
     // newPasswordRef.current.value !== "" &&
@@ -87,33 +101,40 @@ function PasswordInput(props, ref) {
   };
 
   function passwordMatch() {
-    setPasswordMatchColor("bg-green-100 border-green-400");
-    // repeatPasswordCheck.current.classList.add("bg-green-100");
-    // repeatPasswordCheck.current.classList.add("border-green-400");
+    console.log("matches!!!");
+    // setPasswordMatchColor("bg-green-100 border-green-400");
+    // prettier-ignore
+    props.repeatPasswordCheck.current.classList.add("bg-green-100", "border-green-400");
+    // prettier-ignore
+    props.repeatPasswordCheck.current.classList.remove("bg-yellow-100", "border-yellow-400");
     props.setBtnColor("bg-indigo-500");
     props.setBtnDisabled(false);
     matchBadge.current.innerText = "Password matches.";
   }
 
   function passwordNotMatch() {
-    setPasswordMatchColor("bg-yellow-100 border-yellow-400");
+    console.log("does not match!!");
+    // setPasswordMatchColor("bg-yellow-100 border-yellow-400");
+    // prettier-ignore
+    props.repeatPasswordCheck.current.classList.add("bg-yellow-100", "border-yellow-400");
+    // prettier-ignore
+    props.repeatPasswordCheck.current.classList.remove("bg-green-100", "border-green-400");
+    props.repeatPasswordCheck.current.classList.remove("hidden");
 
-    // repeatPasswordCheck.current.classList.add("bg-yellow-100");
-    // repeatPasswordCheck.current.classList.add("border-yellow-400");
-    repeatPasswordCheck.current.style.display = "block";
     matchBadge.current.innerText = "Password does not match";
     props.setBtnColor("bg-slate-700");
     props.setBtnDisabled(true);
   }
 
   function checkPasswordMatch() {
-    props.newPasswordRef.current.value === repeatPasswordRef.current.value &&
-      passwordMatch();
+    if (props.newPasswordRef.current.value.length !== 0) {
+      props.newPasswordRef.current.value ===
+        props.repeatPasswordRef.current.value && passwordMatch();
 
-    props.newPasswordRef.current.value !== repeatPasswordRef.current.value &&
-      passwordNotMatch();
-
-    return;
+      props.newPasswordRef.current.value !==
+        props.repeatPasswordRef.current.value && passwordNotMatch();
+      return;
+    }
   }
 
   return (
@@ -125,13 +146,13 @@ function PasswordInput(props, ref) {
         ref={props.newPasswordRef}
         onChange={checkPassword}
         id="new-password"
-        className={`mb-2 h-10 w-full appearance-none rounded py-2 px-3 pb-2 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props?.bgColor}`}
+        className={`mb-4 h-10 w-full appearance-none rounded py-2 px-3 pb-2 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props?.bgColor}`}
         type="password"
         name="newPassword"
         placeholder="Password"
       />
       <div
-        ref={containerWarning}
+        ref={props.containerWarning}
         className="relative hidden rounded border px-4 py-3 text-gray-900"
         role="alert"
       >
@@ -185,7 +206,7 @@ function PasswordInput(props, ref) {
 
       <label htmlFor="password">Repeat Password</label>
       <input
-        ref={repeatPasswordRef}
+        ref={props.repeatPasswordRef}
         onChange={checkPasswordMatch}
         className={`mb-2 h-10 w-full appearance-none rounded bg-gray-500 py-2 px-3 pb-2 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500`}
         id="password"
@@ -195,8 +216,8 @@ function PasswordInput(props, ref) {
       />
 
       <div
-        ref={repeatPasswordCheck}
-        className={`relative hidden rounded border px-4 py-3 text-gray-700 ${passwordMatchColor}`}
+        ref={props.repeatPasswordCheck}
+        className={`relative hidden rounded border px-4 py-3 text-gray-700`}
         role="alert"
       >
         <span ref={matchBadge} className="block sm:inline">

@@ -6,8 +6,28 @@ import dbConnect from "../../middleware/mongodb";
 import Card from "@/components/ui/Card";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import {
+  PasswordCheck,
+  usePasswordInputState,
+} from "@/components/utils/inputs/PasswordInput";
+import Button, { useBtnState } from "@/components/ui/Button";
 
 const ResetPasswordTokenPage = ({ valid, token }) => {
+  const [
+    newPasswordRef,
+    containerWarning,
+    repeatPasswordRef,
+    repeatPasswordCheck,
+  ] = usePasswordInputState();
+  const [
+    btnDisabled,
+    setBtnDisabled,
+    stopBtnAnimate,
+    label,
+    setLabel,
+    btnColor,
+    setBtnColor,
+  ] = useBtnState(true, "Update", "bg-slate-700", "block");
   const { useFetch, showToast, userSession } =
     React.useContext(appToastContext);
   const sendNewPassword = useFetch;
@@ -16,16 +36,19 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
   async function handleSubmit(event) {
     event.preventDefault();
     const body = {
-      password: event.currentTarget.password.value,
+      password: newPasswordRef.current.value,
       token,
     };
+    console.log(body);
+    newPasswordRef.current.value.length !== 0 && resetUserPassword();
+    async function resetUserPassword() {
+      const res = await sendNewPassword("PUT", "/api/user/passwordreset", body);
 
-    const res = await sendNewPassword("PUT", "/api/user/passwordreset", body);
-
-    console.log(res);
-    if (res.statusText === "OK") {
-      showToast("success", res.data.message);
-      router.push("/login");
+      console.log(res);
+      if (res.statusText === "OK") {
+        showToast("success", res.data.message);
+        router.push("/login");
+      }
     }
   }
 
@@ -58,17 +81,27 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
       <Card>
         {valid ? (
           <>
-            <p>Enter your new password.</p>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <input
-                  name="password"
-                  type="password"
-                  placeholder="New password"
+            <main className="flex flex-row justify-center">
+              <section className="modal rounded border-2 border-gray-500 bg-slate-900 p-8">
+                <PasswordCheck
+                  newPasswordRef={newPasswordRef}
+                  containerWarning={containerWarning}
+                  bgColor={"bg-gray-700"}
+                  inputLabel={"Enter New Password"}
+                  setBtnDisabled={setBtnDisabled}
+                  setBtnColor={setBtnColor}
+                  repeatPasswordRef={repeatPasswordRef}
+                  repeatPasswordCheck={repeatPasswordCheck}
                 />
-              </div>
-              <button type="submit">Set new password</button>
-            </form>
+                <Button
+                  disabled={btnDisabled}
+                  label={`Reset Password`}
+                  idTag={`resetPasswordSubmit`}
+                  handleClick={handleSubmit}
+                  className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded bg-opacity-80 p-2 hover:text-white`}
+                />
+              </section>
+            </main>
           </>
         ) : (
           <>
