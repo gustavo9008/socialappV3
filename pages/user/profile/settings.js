@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Settings from "../../../components/user/settings/profiledit/settings";
 import AccountPicture from "@/components/user/settings/profiledit/accountpicture";
 import Account from "@/components/user/settings/useraccountedit/account";
 import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "context/state";
 import { useRouter } from "next/router";
+// import profile from "@/models/profile";
 
 export default function ProfilePage(props) {
   const router = useRouter();
@@ -15,6 +16,8 @@ export default function ProfilePage(props) {
   console.log(session);
   const [showProfile, setShowProfile] = useState(true);
   const [showAccount, setShowAccount] = useState(false);
+  const profileBtnRef = useRef();
+  const settingBtnRef = useRef();
   // if (userSession === null) {
   //   router.push("/");
   // }
@@ -24,6 +27,8 @@ export default function ProfilePage(props) {
     if (showProfile) {
       return;
     }
+    profileBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
+    settingBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
     setShowAccount(!showAccount);
     setShowProfile(!showProfile);
   };
@@ -32,26 +37,35 @@ export default function ProfilePage(props) {
     if (showAccount) {
       return;
     }
+    profileBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
+    settingBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
     setShowProfile(!showProfile);
     setShowAccount(!showAccount);
   };
   // console.log(session);
+  function switchSettingOption() {
+    profileBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
+    settingBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
+  }
 
-  // React.useEffect(() => {
-  //   if (userSession === null) {
-  //     router.push("/");
-  //   }
-  // }, [router, userSession]);
+  function switchProfileOption() {
+    profileBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
+    settingBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
+  }
+  React.useEffect(() => {
+    profileBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
+  }, []);
   return (
     <>
-      <main className="Psm:flex-col mx-auto flex max-w-screen-md">
-        <div className="Psm:w-72 h-full w-48 px-4 py-8">
-          <div className="Psm:flex-row mt-6 flex flex-1 flex-col justify-between">
-            <nav className="Psm:flex Psm:flex-row Psm:m-auto">
+      <main className="mx-auto flex max-w-screen-md Psm:flex-col">
+        <div className="h-full w-48 px-4 py-8 Psm:w-72">
+          <div className="mt-6 flex flex-1 flex-col justify-between Psm:flex-row">
+            <nav className="Psm:m-auto Psm:flex Psm:flex-row">
               <div>
                 <a
+                  ref={profileBtnRef}
                   onClick={showProfileSetting}
-                  className="mt-5 flex transform items-center rounded-md px-4 py-2 text-gray-400 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
+                  className="mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
                 >
                   <svg
                     className="h-5 w-5"
@@ -81,8 +95,9 @@ export default function ProfilePage(props) {
 
               <div>
                 <a
+                  ref={settingBtnRef}
                   onClick={showAcccountSetting}
-                  className="mt-5 flex transform items-center rounded-md px-4 py-2 text-gray-400 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
+                  className="mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
                   href="#"
                 >
                   <svg
