@@ -241,13 +241,10 @@ export default async function auth(req, res) {
           // console.log("inside cred");
           // console.log(credentials);
           //Connect to DB
-          const client = await MongoClient.connect(
-            process.env.MONGODB_LOCAL_URI,
-            {
-              useNewUrlParser: true,
-              useUnifiedTopology: true,
-            }
-          );
+          const client = await MongoClient.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          });
           //Get all the users
           const userProfile = await client.db().collection("users");
           //Find user with the email
