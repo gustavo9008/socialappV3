@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import { appToastContext } from "context/state";
 import { useRouter } from "next/router";
-import { useSearchParams } from "react-router-dom";
-import { getSession } from "next-auth/react";
 
 const ForgetPasswordPage = () => {
   const { useFetch, userSession, showToast } =
     React.useContext(appToastContext);
   const router = useRouter();
 
-  const [msg, setMsg] = useState({ message: "", isError: false });
   const sendLink = useFetch;
   console.log(userSession);
 
