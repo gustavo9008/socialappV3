@@ -237,7 +237,7 @@ export default async function auth(req, res) {
     providers: [
       CredentialsProvider({
         async authorize(credentials, req) {
-          // console.log(req);
+          console.log(req);
           // console.log("inside cred");
           // console.log(credentials);
           //Connect to DB
