@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+// import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoClient } from "mongodb";
@@ -25,8 +25,8 @@ import { setCookies } from "cookies-next";
 // };
 
 var profile;
-const req = NextApiRequest;
-const res = NextApiResponse;
+// const req = NextApiRequest;
+// const res = NextApiResponse;
 export const config = {
   api: {
     bodyParser: true,
