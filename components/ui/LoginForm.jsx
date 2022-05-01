@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { appToastContext } from "context/state";
-import { getCookie, setCookies, removeCookies } from "cookies-next";
-import { getCsrfToken } from "next-auth/react";
+import { getCookie, removeCookies } from "cookies-next";
 
 function LoginForm(props) {
   const { showToast, userSession } = React.useContext(appToastContext);
