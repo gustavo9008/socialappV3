@@ -21,7 +21,6 @@ function LoginForm(props) {
     const email = e.currentTarget.email.value;
     const password = e.currentTarget.password.value;
     const status = await signIn("credentials", {
-      callbackUrl: "/",
       email: email,
       password: password,
     });
