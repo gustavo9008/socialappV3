@@ -25,7 +25,7 @@ function LoginForm(props) {
       email: email,
       password: password,
     });
-    // console.log(status);
+    console.log(status);
     if (status.error === null) {
       let readingCookie = getCookie("user_lists");
       // console.log(readingCookie);
