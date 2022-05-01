@@ -14,8 +14,12 @@ import Link from "next/link";
 const SignupPage = () => {
   const { useFetch } = React.useContext(appToastContext);
   const router = useRouter();
-  const [newPasswordRef, containerWarning, strengthBadge, repeatPasswordRef] =
-    usePasswordInputState();
+  const [
+    newPasswordRef,
+    containerWarning,
+    repeatPasswordRef,
+    repeatPasswordCheck,
+  ] = usePasswordInputState();
   const [
     btnDisabled,
     setBtnDisabled,
@@ -36,7 +40,6 @@ const SignupPage = () => {
 
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
-    console.log(nameRef.current.value.length, emailRef.current.value.length);
 
     nameRef.current.value.length === 0 &&
       (nameRefCheck.current.classList.remove("hidden"),
@@ -151,11 +154,12 @@ const SignupPage = () => {
                   <PasswordCheck
                     newPasswordRef={newPasswordRef}
                     containerWarning={containerWarning}
-                    strengthBadge={strengthBadge}
                     bgColor={"bg-gray-500"}
                     inputLabel={"Password"}
                     setBtnDisabled={setBtnDisabled}
                     setBtnColor={setBtnColor}
+                    repeatPasswordRef={repeatPasswordRef}
+                    repeatPasswordCheck={repeatPasswordCheck}
                   />
                   {/* <label htmlFor="password">Repeat Password</label>
                   <input
