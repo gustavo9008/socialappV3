@@ -1,7 +1,7 @@
 import React from "react";
 import Post from "../../components/posts/post";
 import { useRouter } from "next/router";
-import { server } from "../../config/index";
+
 // import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "../../context/state";
 import Head from "next/head";
