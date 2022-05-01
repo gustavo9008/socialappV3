@@ -20,15 +20,11 @@ function LoginForm(props) {
 
     const email = e.currentTarget.email.value;
     const password = e.currentTarget.password.value;
-    const status = await signIn(
-      "credentials",
-      { callbackUrl: "http://localhost:3000/bar" },
-      {
-        redirect: true,
-        email: email,
-        password: password,
-      }
-    );
+    const status = await signIn("credentials", {
+      callbackUrl: "/",
+      email: email,
+      password: password,
+    });
     console.log(status);
     if (status.error === null) {
       let readingCookie = getCookie("user_lists");
@@ -89,12 +85,7 @@ function LoginForm(props) {
       <div className="p-3">
         <h2 className=" text-2xl font-bold">{props.title}</h2>
 
-        <form
-          id="formLogin"
-          method="post"
-          action="/api/auth/callback/credentials"
-          onSubmit={onSubmit}
-        >
+        <form id="formLogin" method="post" onSubmit={onSubmit}>
           {/* {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null} */}
           {/* <input name="csrfToken" type="hidden" defaultValue={csrfToken} /> */}
 
