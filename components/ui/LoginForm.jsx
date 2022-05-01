@@ -20,11 +20,15 @@ function LoginForm(props) {
 
     const email = e.currentTarget.email.value;
     const password = e.currentTarget.password.value;
-    const status = await signIn("credentials", {
-      redirect: true,
-      email: email,
-      password: password,
-    });
+    const status = await signIn(
+      "credentials",
+      { callbackUrl: "http://localhost:3000/bar" },
+      {
+        redirect: true,
+        email: email,
+        password: password,
+      }
+    );
     console.log(status);
     if (status.error === null) {
       let readingCookie = getCookie("user_lists");
