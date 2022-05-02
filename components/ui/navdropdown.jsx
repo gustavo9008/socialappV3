@@ -18,7 +18,7 @@ const AlpineWidjet = (props) => {
     router.push("/");
     // signOut({ callbackUrl: "10.0.0.60:3000/" });
     const logoutData = await signOut({
-      callbackUrl: "10.0.0.60:3000/",
+      callbackUrl: "/",
       redirect: false,
     });
     console.log(logoutData);

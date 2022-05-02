@@ -3,13 +3,17 @@ import React from "react";
 import Link from "next/link";
 import { server } from "../../config/index";
 import { appToastContext } from "../../context/state";
+import { getSortedRoutes } from "next/dist/shared/lib/router/utils";
 
 export default function Profile(props) {
   const { useFetch } = React.useContext(appToastContext);
   const [dataLoaded, setDataLoaded] = React.useState(false);
   // console.log(props.user.id);
   const getMyProfile = useFetch;
-  const [myProfile, setMyProfile] = React.useState(props.user);
+  const [myProfile, setMyProfile] = React.useState({
+    dataLoaded: false,
+    myProfile: props.user,
+  });
   // if (myProfile.profile.posts) {
   //   console.log(myProfile.profile);
   // }
@@ -19,15 +23,18 @@ export default function Profile(props) {
   //   css.replace(r, (m, p, v) => (o[p] = v));
   //   return o;
   // };
-  if (dataLoaded) {
-    const CommentsReplies = myProfile.profile.comments.concat(
-      myProfile.profile.replies
+  let sortedCommentReplies;
+  if (myProfile.dataLoaded) {
+    console.log(myProfile);
+    const CommentsReplies = myProfile.myProfile.profile.comments.concat(
+      myProfile.myProfile.profile.replies
     );
     // console.log(CommentsReplies);
 
-    const sortedCommentReplies = CommentsReplies.slice().sort(
+    sortedCommentReplies = CommentsReplies.slice().sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
+    console.log(sortedCommentReplies);
   }
 
   const btnStyle = {
@@ -50,35 +57,36 @@ export default function Profile(props) {
       //   "reading_list",
       //   JSON.stringify(res.data.account.profile.readingList)
       // );
-      setMyProfile(res.data.account);
-      res.data.account && setDataLoaded(true);
+      // setMyProfile(res.data.account);
+      res.data.account &&
+        setMyProfile({ dataLoaded: true, myProfile: res.data.account });
     };
 
     MyProfile(props.user.id);
   }, [props.user.id, getMyProfile]);
   return (
-    <main className="Psm:m-0 profile-container Psm:mt-3 mt-3">
-      <header className="Psm:w-full mx-auto mb-2">
-        <figure className="Psm:border-l-0 Psm:border-r-0 Psm:rounded-none relative flex-grow overflow-hidden rounded-md border border-gray-600 bg-gray-800 p-8 md:flex md:p-0">
+    <main className="profile-container mt-3 Psm:m-0 Psm:mt-3">
+      <header className="mx-auto mb-2 Psm:w-full">
+        <figure className="relative flex-grow overflow-hidden rounded-md border border-gray-600 bg-gray-800 p-8 Psm:rounded-none Psm:border-l-0 Psm:border-r-0 md:flex md:p-0">
           <Link href="/user/profile/settings">
             <a
-              className=" Psm:right-0 Psm:top-0 absolute right-1 top-1 rounded  bg-indigo-500 p-2 font-medium tracking-tighter text-black hover:bg-indigo-600"
+              className=" absolute right-1 top-1 rounded bg-indigo-500 p-2  font-medium tracking-tighter text-black hover:bg-indigo-600 Psm:right-0 Psm:top-0"
               aria-label="Edit profile button"
             >
               Edit Profile
             </a>
           </Link>
 
-          <div className="Psm:flex-col flex w-full">
-            {!myProfile.profile.image.url ? (
+          <div className="flex w-full Psm:flex-col">
+            {!myProfile.myProfile.profile.image.url ? (
               <span
-                className="profile-circle-avatar Psm:mx-auto h-32 w-32 rounded-full object-cover md:h-auto md:w-48 md:rounded-none"
+                className="profile-circle-avatar h-32 w-32 rounded-full object-cover Psm:mx-auto md:h-auto md:w-48 md:rounded-none"
                 style={btnStyle}
               ></span>
             ) : (
               <img
-                className="profile-circle-avatar Psm:mx-auto h-32 w-32 rounded-full object-cover md:h-auto md:w-48 md:rounded-none"
-                src={myProfile.profile.image.url}
+                className="profile-circle-avatar h-32 w-32 rounded-full object-cover Psm:mx-auto md:h-auto md:w-48 md:rounded-none"
+                src={myProfile.myProfile.profile.image.url}
                 alt=""
                 width="384"
                 height="512"
@@ -86,9 +94,9 @@ export default function Profile(props) {
             )}
             <div className="space-y-4 pt-6 text-center md:p-8 md:text-left">
               <figcaption className="font-medium">
-                <p>{myProfile.name}</p>
+                <p>{myProfile.myProfile.name}</p>
                 <p className="text-lg font-semibold">
-                  {myProfile.profile.about}
+                  {myProfile.myProfile.profile.about}
                 </p>
 
                 <aside className="mt-2 flex justify-around text-sm text-gray-400">
@@ -109,7 +117,7 @@ export default function Profile(props) {
                         />
                       </svg>
                     </i>
-                    Location: {myProfile.profile.location}{" "}
+                    Location: {myProfile.myProfile.profile.location}{" "}
                   </span>
                   <span>
                     <i className="profile-card-loc_joined">
@@ -128,7 +136,8 @@ export default function Profile(props) {
                         />
                       </svg>
                     </i>
-                    Joined on: {new Date(myProfile.createdAt).toDateString()}
+                    Joined on:{" "}
+                    {new Date(myProfile.myProfile.createdAt).toDateString()}
                   </span>
                 </aside>
                 <footer className="m-auto mt-4 flex w-60 justify-around text-xl"></footer>
@@ -139,11 +148,11 @@ export default function Profile(props) {
       </header>{" "}
       <section className="mx-auto flex flex-row flex-wrap justify-evenly gap-4">
         {/* post section  */}
-        {dataLoaded && myProfile.profile.posts.length > 0 && (
-          <article className="Psm:w-screen profile-post-comment-containers flex flex-auto flex-col flex-wrap self-start ">
-            {myProfile.profile.posts.map((post) => (
+        {myProfile.dataLoaded && myProfile.myProfile.profile.posts.length > 0 && (
+          <article className="profile-post-comment-containers flex flex-auto flex-col flex-wrap self-start Psm:w-screen ">
+            {myProfile.myProfile.profile.posts.map((post) => (
               <div
-                className="Psm:rounded-none profile-article-cards Psm:border-l-0 Psm:border-r-0 border border-gray-700 bg-gray-800"
+                className="profile-article-cards border border-gray-700 bg-gray-800 Psm:rounded-none Psm:border-l-0 Psm:border-r-0"
                 key={post._id}
               >
                 <h3 className="text-lg font-medium">{post.title}</h3>
@@ -159,24 +168,26 @@ export default function Profile(props) {
         )}
 
         {/* comment section */}
-        {dataLoaded && sortedCommentReplies.length > 0 && (
-          <article className="Psm:w-screen profile-post-comment-containers Psm:border-l-0 Psm:border-r-0 Psm:rounded-none mb-4 flex flex-auto flex-col flex-wrap self-start overflow-hidden rounded-md border border-gray-500">
-            <h3 className="p-2 pl-6"> Recent Comments</h3>
-            {sortedCommentReplies.map((comment) => (
-              <Link key={comment._id} href={`${comment.postUrl.address}`}>
-                <a
-                  key={comment._id}
-                  className="w-full overflow-hidden border-b border-gray-900 bg-gray-800 p-4"
-                >
-                  <h4 className="text-lg font-medium">{comment.comment}</h4>
-                  <span className="text-sm text-gray-400">
-                    {comment.postUrl.title}
-                  </span>
-                </a>
-              </Link>
-            ))}
-          </article>
-        )}
+        {myProfile.dataLoaded === true &&
+          sortedCommentReplies &&
+          sortedCommentReplies.length > 0 && (
+            <article className="profile-post-comment-containers mb-4 flex flex-auto flex-col flex-wrap self-start overflow-hidden rounded-md border border-gray-500 Psm:w-screen Psm:rounded-none Psm:border-l-0 Psm:border-r-0">
+              <h3 className="p-2 pl-6"> Recent Comments</h3>
+              {sortedCommentReplies.map((comment) => (
+                <Link key={comment._id} href={`${comment.postUrl.address}`}>
+                  <a
+                    key={comment._id}
+                    className="w-full overflow-hidden border-b border-gray-900 bg-gray-800 p-4"
+                  >
+                    <h4 className="text-lg font-medium">{comment.comment}</h4>
+                    <span className="text-sm text-gray-400">
+                      {comment.postUrl.title}
+                    </span>
+                  </a>
+                </Link>
+              ))}
+            </article>
+          )}
       </section>
     </main>
   );
