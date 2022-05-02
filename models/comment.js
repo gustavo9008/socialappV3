@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 let Schema = mongoose.Schema;
 
-let commentSchema = new Schema(
+const commentSchema = new Schema(
   {
     comment: String,
     userProfile: {

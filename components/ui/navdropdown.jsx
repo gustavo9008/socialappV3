@@ -57,7 +57,7 @@ const AlpineWidjet = (props) => {
       <div id="dropdownbtn">
         <div className="flex items-center">
           <p>
-            <span className="Psm:hidden w-32 px-4">
+            <span className="w-32 px-4 Psm:hidden">
               Signed in as: {props.user ? props.user.name : null}
             </span>
           </p>
