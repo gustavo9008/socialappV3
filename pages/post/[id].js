@@ -1,12 +1,12 @@
 import React from "react";
 import Post from "../../components/posts/post";
 import { useRouter } from "next/router";
+import Comment from "../../models/comment";
 
 // import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "../../context/state";
 import Head from "next/head";
 import PostId from "../../models/post";
-// import Comment from "../../models/comment";
 import Reply from "../../models/replies";
 import dbConnect from "../../middleware/mongodb";
 // import post from "@/models/post";

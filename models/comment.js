@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 let Schema = mongoose.Schema;
 
+console.log("comment model imported");
+
 const commentSchema = new Schema(
   {
     comment: String,
@@ -29,9 +31,10 @@ const commentSchema = new Schema(
   },
   { timestamps: true }
 );
+mongoose.models = {};
+let Comment =
+  mongoose.models.Comment || mongoose.model("Comment", commentSchema);
 
-// let Comment = mongoose.model("Comment", commentSchema);
-
-export default mongoose.models.Comment ||
-  mongoose.model("Comment", commentSchema);
-// module.exports = Comment;
+// export default mongoose.models.Comment ||
+//   mongoose.model("Comment", commentSchema);
+module.exports = Comment;

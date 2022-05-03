@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Comment from "./comment.js";
 let Schema = mongoose.Schema;
 
 let ImageSchema = new Schema({
@@ -9,7 +10,7 @@ let ImageSchema = new Schema({
 // ImageSchema.virtual('thumbnail').get(function() {
 //   return this.url.replace('/upload', '/upload/w_798')
 // })
-
+console.log("post model imported");
 let postSchema = new Schema(
   {
     likes: { type: Number },
