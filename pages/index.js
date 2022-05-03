@@ -13,10 +13,10 @@ import Card from "../components/ui/Card";
 import AllPost from "../components/posts/allposts";
 import { useRouter } from "next/router";
 
-// import Post from "../models/post";
-// // import Comment from "../models/comment";
-// // import Reply from "../models/replies";
-// import dbConnect from "../middleware/mongodb";
+import Post from "../models/post";
+import Comment from "../models/comment";
+import Reply from "../models/replies";
+import dbConnect from "../middleware/mongodb";
 
 function HomePage(props) {
   //===== context imports =====
@@ -26,8 +26,8 @@ function HomePage(props) {
   const loader = useRef(null);
   const observer = useRef();
   const [posts, setPosts] = useState({
-    posts: [],
-    previousLimit: 0,
+    posts: props.posts,
+    previousLimit: props.limit,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [typeSort, setTypeSort] = useState("TOP");
@@ -44,7 +44,7 @@ function HomePage(props) {
     // localStorage.setItem("reading_list", JSON.stringify(updatedList));
     return;
   };
-
+  console.log(posts);
   //=====  =====
   const transformPosts = useCallback(async (posts) => {
     let transformed = posts.map((posts) => ({
@@ -202,80 +202,78 @@ function HomePage(props) {
             </span>
           </a>
         </aside>
-        
-          <>
-            <section>
-              {posts.posts.map((post, i) => {
-                if (posts.posts.length === i + 1) {
-                  return (
-                    <AllPost
-                      id={`${post.id}`}
-                      ref={lastBookElementRef}
-                      posts={post}
-                      key={i}
-                      saveLastLoadPost={saveLastLoadPost}
-                    />
-                    // <div
-                    //   key={posts.posts.length + 1}
-                    //   id={posts.posts.length + 1}
-                    //   ref={lastBookElementRef}
-                    // />
-                  );
-                } else {
-                  return (
-                    <AllPost
-                      id={`${post.id}`}
-                      posts={post}
-                      key={i}
-                      saveLastLoadPost={saveLastLoadPost}
-                    />
-                  );
-                }
-              })}
-            </section>
-          </>
-       
-        
+
+        <>
+          <section>
+            {posts.posts.map((post, i) => {
+              if (posts.posts.length === i + 1) {
+                return (
+                  <AllPost
+                    id={`${post.id}`}
+                    ref={lastBookElementRef}
+                    posts={post}
+                    key={i}
+                    saveLastLoadPost={saveLastLoadPost}
+                  />
+                  // <div
+                  //   key={posts.posts.length + 1}
+                  //   id={posts.posts.length + 1}
+                  //   ref={lastBookElementRef}
+                  // />
+                );
+              } else {
+                return (
+                  <AllPost
+                    id={`${post.id}`}
+                    posts={post}
+                    key={i}
+                    saveLastLoadPost={saveLastLoadPost}
+                  />
+                );
+              }
+            })}
+          </section>
+        </>
       </Card>
     </>
   );
 }
 
-// export async function getServerSideProps(context) {
-//   console.log("server side is running");
-//   await dbConnect();
+export async function getServerSideProps(context) {
+  console.log("server side is running");
+  await dbConnect();
 
-//   // let queryLimit = 5;
-//   // console.log(context);
-//   const postsLikes = await Post.find({})
-//     .select("-body -comments")
-//     .limit(5)
-//     .sort({ likes: -1 });
-//   const newpostsLikes = await Post.find({})
-//     .select("-body -comments")
-//     .skip(5)
-//     .limit(5)
-//     .sort({ likes: -1 });
+  // let queryLimit = 5;
+  // console.log(context);
+  const postsLikes = await Post.find({})
+    .select("-body -comments")
+    .limit(5)
+    .sort({ likes: -1 });
+  const newpostsLikes = await Post.find({})
+    .select("-body -comments")
+    .skip(5)
+    .limit(5)
+    .sort({ likes: -1 });
 
-//   return {
-//     props: {
-//       posts: postsLikes.map((posts) => ({
-//         title: posts.title,
-//         image: posts.image[0] ? posts.image[0].url : null,
-//         imageUrl: posts.imageUrl ? posts.imageUrl : null,
-//         id: posts._id.toString(),
-//         userProfile: {
-//           id: posts.userProfile.id.toString(),
-//           name: posts.userProfile.name,
-//           profileImage: posts.userProfile.profileImage,
-//           profileGenericPic: posts.userProfile.profileGenericPic,
-//         },
-//         created: posts.created.toDateString(),
-//         likes: posts.likes.toString(),
-//       })),
-//       limit: 5,
-//     },
-//   };
-// }
+  return {
+    props: {
+      posts: postsLikes.map((posts) => ({
+        title: posts.title,
+        image: posts.image[0] ? posts.image[0].url : null,
+        imageUrl: posts.imageUrl ? posts.imageUrl : null,
+        id: posts._id.toString(),
+        userProfile: {
+          id: posts.userProfile.id.toString(),
+          name: posts.userProfile.name,
+          profileImage: posts.userProfile.profileImage,
+          profileGenericPic: posts.userProfile.profileGenericPic,
+        },
+        created: posts.created.toDateString(),
+        likes: posts.likes.toString(),
+      })),
+      limit: 5,
+    },
+  };
+}
 
 export default HomePage;
