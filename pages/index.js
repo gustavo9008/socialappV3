@@ -44,7 +44,7 @@ function HomePage(props) {
     // localStorage.setItem("reading_list", JSON.stringify(updatedList));
     return;
   };
-  console.log(posts);
+  // console.log(posts);
   //=====  =====
   const transformPosts = useCallback(async (posts) => {
     let transformed = posts.map((posts) => ({
@@ -70,6 +70,7 @@ function HomePage(props) {
         "GET",
         `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
       );
+      console.log(res);
       const newUpdatePost = await transformPosts(res.data.data);
       if (res.statusText === "OK") {
         if (res.data.data.length > 0) {
@@ -124,6 +125,7 @@ function HomePage(props) {
           "GET",
           `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
         );
+        console.log(res);
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.statusText === "OK") {
           if (res.data.data.length > 0) {
