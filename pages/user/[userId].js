@@ -29,12 +29,12 @@ export async function getServerSideProps(context) {
   const userId = context.params.userId;
   // console.log(userId);
   // const user = userId;
-  const res = await getPost("GET", `${server}/api/user/${userId}`);
+  const res = await getPost("GET", `api/user/${userId}`);
   // console.log(res.data.account);
 
   return {
     props: {
-      user: res.data.account,
+      user: await res.data.account,
     },
   };
 }
