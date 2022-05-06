@@ -77,9 +77,9 @@ function HomePage(props) {
         );
         console.log(res);
         const newUpdatePost = await transformPosts(res.data.data);
-        if (res.statusText === "OK") {
+        if (res.data.success === true) {
           if (res.data.data.length > 0) {
-            console.log("setPost trig");
+            console.log("setPost trig from handleUpdatePost");
             setPosts((prev) => ({
               posts: [...new Set([...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
@@ -137,7 +137,7 @@ function HomePage(props) {
           }`
         );
         const newUpdatePost = await transformPosts(res.data.data);
-        if (res.statusText === "OK") {
+        if (res.data.success === true) {
           if (res.data.data.length > 0) {
             setPosts((prev) => ({
               posts: [...new Set([...prev.posts, ...newUpdatePost])],
