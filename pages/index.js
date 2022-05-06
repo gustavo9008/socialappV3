@@ -28,6 +28,8 @@ function HomePage(props) {
   const [posts, setPosts] = useState({
     posts: props.posts,
     previousLimit: props.limit,
+    isLoading: true,
+    typeSort: "TOP",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [typeSort, setTypeSort] = useState("TOP");
@@ -44,7 +46,7 @@ function HomePage(props) {
     // localStorage.setItem("reading_list", JSON.stringify(updatedList));
     return;
   };
-  // console.log(posts);
+  console.log(posts);
   //=====  =====
   const transformPosts = useCallback(async (posts) => {
     let transformed = posts.map((posts) => ({
@@ -64,40 +66,47 @@ function HomePage(props) {
     return transformed;
   }, []);
 
-  const handleUpdatePost = useCallback(async () => {
-    async function getNewPost() {
-      const res = await getMorePost(
-        "GET",
-        `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
-      );
-      console.log(res);
-      const newUpdatePost = await transformPosts(res.data.data);
-      if (res.statusText === "OK") {
-        if (res.data.data.length > 0) {
-          setPosts((prev) => ({
-            posts: [...new Set([...prev.posts, ...newUpdatePost])],
-            previousLimit: parseInt(res.data.nextPost),
-          }));
-        }
-        setIsLoading(false);
-      }
-    }
+  const handleUpdatePost = useCallback(
+    async (type) => {
+      async function getNewPost() {
+        console.log(type);
 
-    let twentyMin = 1200000;
-    var fiveMin = 1000 * 60 * 1;
-    let loaded = JSON.parse(localStorage.getItem("postLoaded"));
-    if (new Date().getTime() - loaded?.popState?.timestamp < 3000) {
-      if (new Date().getTime() - loaded.timestamp < fiveMin) {
-        setTypeSort(loaded.type);
-        setPosts(loaded.posts);
-        setIsLoading(false);
+        const res = await getMorePost(
+          "GET",
+          `/api/post/getposts?next=${0}&type=${type ?? "TOP"}`
+        );
+        console.log(res);
+        const newUpdatePost = await transformPosts(res.data.data);
+        if (res.statusText === "OK") {
+          if (res.data.data.length > 0) {
+            console.log("setPost trig");
+            setPosts((prev) => ({
+              posts: [...new Set([...newUpdatePost])],
+              previousLimit: parseInt(res.data.nextPost),
+              isLoading: false,
+              typeSort: type ?? "TOP",
+            }));
+          }
+        }
+      }
+
+      let twentyMin = 1200000;
+      var fiveMin = 1000 * 60 * 1;
+      let loaded = JSON.parse(localStorage.getItem("postLoaded"));
+      if (new Date().getTime() - loaded?.popState?.timestamp < 3000) {
+        if (new Date().getTime() - loaded.timestamp < fiveMin) {
+          setTypeSort(loaded.type);
+          setPosts(loaded.posts);
+          setIsLoading(false);
+        } else {
+          getNewPost();
+        }
       } else {
         getNewPost();
       }
-    } else {
-      getNewPost();
-    }
-  }, [getMorePost, posts.previousLimit, transformPosts, typeSort]);
+    },
+    [getMorePost, transformPosts]
+  );
 
   const lastBookElementRef = useCallback(
     (node) => {
@@ -123,21 +132,24 @@ function HomePage(props) {
         // setIsLoading(true);
         const res = await getMorePost(
           "GET",
-          `/api/post/getposts?next=${posts.previousLimit}&type=${typeSort}`
+          `/api/post/getposts?next=${posts.previousLimit}&type=${
+            posts.typeSort ?? "TOP"
+          }`
         );
-        console.log(res);
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.statusText === "OK") {
           if (res.data.data.length > 0) {
             setPosts((prev) => ({
               posts: [...new Set([...prev.posts, ...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
+              isLoading: false,
+              typeSort: posts.typeSort,
             }));
           }
-          setIsLoading(false);
+          // setIsLoading(false);
         }
       };
-      if (isLoading) return;
+      if (posts.isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(async (entries) => {
         if (entries[0].isIntersecting) {
@@ -146,7 +158,7 @@ function HomePage(props) {
       });
       if (node) observer.current.observe(node);
     },
-    [getMorePost, isLoading, posts, typeSort]
+    [getMorePost, posts]
   );
   // useEffect(() => {
   //   // Always do navigations after the first render
@@ -154,8 +166,8 @@ function HomePage(props) {
   // }, []);
 
   useEffect(() => {
-    isLoading && handleUpdatePost();
-  }, [setIsLoading, isLoading, handleUpdatePost, setPosts, router]);
+    posts.isLoading && handleUpdatePost();
+  }, [posts, handleUpdatePost, setPosts, router]);
 
   return (
     <>
@@ -171,14 +183,11 @@ function HomePage(props) {
             href="#Top"
             onClick={(e) => {
               // e.preventDefault();
-              typeSort === "LATEST" &&
-                (setTypeSort("TOP"),
-                setIsLoading(true),
-                setPosts({ posts: [], previousLimit: 0 }));
+              posts.typeSort === "LATEST" && handleUpdatePost("TOP");
               return;
             }}
             className={`order-1 row-span-1 w-24 p-2  hover:border-slate-400 ${
-              typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
+              posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
             }`}
           >
             <span id="Top" className="text-lg font-medium">
@@ -189,14 +198,11 @@ function HomePage(props) {
             href="#Latest"
             onClick={(e) => {
               // e.preventDefault();
-              typeSort === "TOP" &&
-                (setTypeSort("LATEST"),
-                setIsLoading(true),
-                setPosts({ posts: [], previousLimit: 0 }));
+              posts.typeSort === "TOP" && handleUpdatePost("LATEST");
               return;
             }}
             className={`order-2 row-span-2 w-24 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 ${
-              typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
+              posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
             }`}
           >
             <span id="Latest" className="text-lg font-medium">
