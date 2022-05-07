@@ -13,7 +13,7 @@ import "../styles/jodit3.css";
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [refreshInterval, setRefreshInterval] = React.useState(432000);
   // const refreshInterval = 5;
-  console.log("app.js ran");
+
   return (
     <SessionProvider session={session} refetchInterval={refreshInterval}>
       <ToastWrapper

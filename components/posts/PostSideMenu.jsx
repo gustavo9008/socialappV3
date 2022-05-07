@@ -117,7 +117,6 @@ export default function PostSideMenu(props) {
   }
   //===== add bookmark  =====
   const addBookmarkHandler = async () => {
-    console.log(`you have bookmarked ${post._id}`);
     const data = {
       post: post._id,
       postTitle: post.title,
@@ -126,10 +125,7 @@ export default function PostSideMenu(props) {
     };
 
     const res = await bookmarkpost("PUT", "/api/user/updateuserprofile", data);
-
-    // console.log(res.data.reading_list);
-
-    res.statusText === "Created" &&
+    res.data.success === true &&
       res.data.message &&
       (await showToast("success", res.data.message)),
       await updateLocalStorage(res.data.reading_list),
@@ -138,7 +134,6 @@ export default function PostSideMenu(props) {
   };
   //===== delete bookmark  =====
   const deleteBookmarkHandler = async () => {
-    console.log(`you have deleted bookmarked ${post._id}`);
     const data = {
       bookmark: post._id,
       user: userSession.user.id,
@@ -149,7 +144,7 @@ export default function PostSideMenu(props) {
 
     // console.log(res);
 
-    res.statusText === "Created" &&
+    res.data.success === true &&
       res.data.message &&
       (await showToast("success", res.data.message)),
       await updateLocalStorage(res.data.reading_list),
@@ -158,7 +153,6 @@ export default function PostSideMenu(props) {
   };
   //===== like post function =====
   const likePostHandler = async () => {
-    console.log(`you have like ${post._id}`);
     const data = {
       post: post._id,
       user: userSession.user.id,
@@ -180,7 +174,6 @@ export default function PostSideMenu(props) {
   };
   //===== unlike post func =====
   const unlikePostHandler = async () => {
-    console.log(`you have like ${post._id}`);
     const data = {
       post: post._id,
       user: userSession.user.id,
@@ -202,7 +195,6 @@ export default function PostSideMenu(props) {
   };
   //===== useEffect is use to check if post is bookmarked and if post is liked =====
   React.useEffect(() => {
-    console.log("use effect is running");
     if (userSession && localStorage.getItem("user_lists") !== "[]") {
       let reading_list = JSON.parse(localStorage.getItem("user_lists"));
       // console.log(reading_list);
@@ -227,8 +219,8 @@ export default function PostSideMenu(props) {
     }
   }, [userSession, post._id, setBtnColor]);
   return (
-    <section className="Psm:bottom-0 fixed w-12 ">
-      <aside className="Psm:flex-row Psm:justify-between Psm:w-screen Psm:px-8 Psm:py-1 Psm:bg-gray-900 flex flex-col gap-4 text-gray-300">
+    <section className="fixed w-12 Psm:bottom-0 ">
+      <aside className="flex flex-col gap-4 text-gray-300 Psm:w-screen Psm:flex-row Psm:justify-between Psm:bg-gray-900 Psm:px-8 Psm:py-1">
         {userSession ? (
           <>
             {bookFunction ? (
@@ -259,7 +251,7 @@ export default function PostSideMenu(props) {
                 handleClick={likePostHandler}
                 btnType={"CANCEL"}
                 className={
-                  "Psm:flex-row Psm:w-20 flex w-12 flex-col items-center justify-between p-2 text-center"
+                  "flex w-12 flex-col items-center justify-between p-2 text-center Psm:w-20 Psm:flex-row"
                 }
               />
             ) : (
@@ -269,7 +261,7 @@ export default function PostSideMenu(props) {
                 btnType={"CANCEL"}
                 handleClick={unlikePostHandler}
                 className={
-                  "Psm:flex-row Psm:w-20 flex w-12 flex-col items-center justify-between p-2 text-center"
+                  "flex w-12 flex-col items-center justify-between p-2 text-center Psm:w-20 Psm:flex-row"
                 }
               />
             )}
@@ -291,7 +283,7 @@ export default function PostSideMenu(props) {
               handleClick={props.setShowLoginModal}
               btnType={"CANCEL"}
               className={
-                "Psm:flex-row Psm:w-20 flex w-12 flex-col items-center justify-between p-2 text-center"
+                "flex w-12 flex-col items-center justify-between p-2 text-center Psm:w-20 Psm:flex-row"
               }
             />
           </>

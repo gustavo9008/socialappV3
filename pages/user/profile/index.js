@@ -4,8 +4,6 @@ import { useSession, getSession } from "next-auth/react";
 
 export default function ProfilePage(props) {
   const { data: session, status } = useSession();
-  console.log(session);
-
   return (
     <>
       <Profile user={session.user} profile={session.user.profile}></Profile>

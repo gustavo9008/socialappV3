@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 let Schema = mongoose.Schema;
 
-console.log("comment model imported");
-
 const commentSchema = new Schema(
   {
     comment: String,

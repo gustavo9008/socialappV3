@@ -67,7 +67,6 @@ export default function AddReply(props) {
     };
 
     const res = await addReply("POST", "/api/comments/addcomment", data);
-    console.log(res.data);
     if (res.data) {
       setBtnDisabled(true), setBtnColor("bg-slate-700");
       showToast("success", "Your reply has been added.");

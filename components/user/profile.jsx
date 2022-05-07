@@ -25,7 +25,6 @@ export default function Profile(props) {
   // };
   let sortedCommentReplies;
   if (myProfile.dataLoaded) {
-    console.log(myProfile);
     const CommentsReplies = myProfile.myProfile.profile.comments.concat(
       myProfile.myProfile.profile.replies
     );
@@ -34,7 +33,6 @@ export default function Profile(props) {
     sortedCommentReplies = CommentsReplies.slice().sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
-    console.log(sortedCommentReplies);
   }
 
   const btnStyle = {
@@ -52,7 +50,6 @@ export default function Profile(props) {
     const MyProfile = async (id) => {
       const res = await getMyProfile("GET", `/api/user/${id}`);
       // const myProfile = await response.json();
-      console.log(res);
       // localStorage.setItem(
       //   "reading_list",
       //   JSON.stringify(res.data.account.profile.readingList)

@@ -327,7 +327,6 @@ export default async function auth(req, res) {
             likesList: user.profile.likesList || [],
             postLoaded: [],
           };
-          console.log(userList);
           setCookies("user_lists", JSON.stringify(userList), {
             req,
             res,
@@ -374,7 +373,6 @@ export default async function auth(req, res) {
         session.user.genericImage = token.profile.image.genericPic;
         session.user.created = token.created;
 
-        console.log(session);
         return session;
       },
       async redirect({ url, baseUrl }) {

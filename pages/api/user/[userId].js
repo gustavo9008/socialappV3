@@ -6,11 +6,9 @@ import Reply from "../../../models/replies";
 
 const finduserhandler = async (req, res) => {
   // console.log(req);
-  console.log("this is the find user handler");
   //===== create one post functionk =====
   const findAccount = async (req) => {
     const { userId } = req.query;
-    console.log(userId);
     //===== search user account =====
     await dbConnect();
     // console.log(req.body);

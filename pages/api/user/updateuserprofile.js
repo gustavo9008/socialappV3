@@ -43,6 +43,7 @@ const updateUserProfileHandler = async (req, res) => {
         let updatedBookmark = user.profile.readingList;
 
         res.status(201).json({
+          success: true,
           message: "Post has been bookmark.",
           reading_list: {
             user: user.name,
@@ -67,6 +68,7 @@ const updateUserProfileHandler = async (req, res) => {
         let updatedBookmark = user.profile.readingList;
 
         res.status(201).json({
+          success: true,
           message: "Bookmark has been removed.",
           reading_list: {
             user: user.name,

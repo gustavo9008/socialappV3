@@ -86,6 +86,7 @@ const updatePostHandler = async (req, res) => {
     await user.save();
     // console.log(req.body);
     res.status(201).json({
+      success: true,
       message: "Post has been liked.",
       reading_list: {
         user: user.name,
@@ -109,6 +110,7 @@ const updatePostHandler = async (req, res) => {
     await user.save();
     // console.log(req.body);
     res.status(201).json({
+      success: true,
       message: "Post has been unliked.",
       reading_list: {
         user: user.name,

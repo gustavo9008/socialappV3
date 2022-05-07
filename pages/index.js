@@ -46,7 +46,6 @@ function HomePage(props) {
     // localStorage.setItem("reading_list", JSON.stringify(updatedList));
     return;
   };
-  console.log(posts);
   //=====  =====
   const transformPosts = useCallback(async (posts) => {
     let transformed = posts.map((posts) => ({
@@ -69,17 +68,13 @@ function HomePage(props) {
   const handleUpdatePost = useCallback(
     async (type) => {
       async function getNewPost() {
-        console.log(type);
-
         const res = await getMorePost(
           "GET",
           `/api/post/getposts?next=${0}&type=${type ?? "TOP"}`
         );
-        console.log(res);
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.data.success === true) {
           if (res.data.data.length > 0) {
-            console.log("setPost trig from handleUpdatePost");
             setPosts((prev) => ({
               posts: [...new Set([...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
@@ -110,7 +105,6 @@ function HomePage(props) {
 
   const lastBookElementRef = useCallback(
     (node) => {
-      console.log("last ref run");
       const transformPosts = async (posts) => {
         let transformed = posts.map((posts) => ({
           title: posts.title,

@@ -31,8 +31,6 @@ const EditPostModal = (props) => {
   const submitEditHandler = async (e) => {
     e.preventDefault();
     // const title = titleRef.current.value;
-
-    console.log(props.post.image[0]);
     const updatedPost = {
       post: { title: titleRef.current.value, content: content },
       postId: props.post._id,
@@ -47,9 +45,7 @@ const EditPostModal = (props) => {
       "/api/post/updatepost",
       updatedPost
     );
-    console.log(res);
     if (res.data.success === true) {
-      console.log(res.data);
       props.setShowPostModal(false);
       showToast("success", res.data.message);
       props.setPost(res.data.post);

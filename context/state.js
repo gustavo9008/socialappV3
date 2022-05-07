@@ -5,19 +5,12 @@ import useFetch from "@/hooks/fetch";
 export const appToastContext = React.createContext(null);
 
 export function ToastWrapper(props) {
-  // const { data: session, status } = useSession();
-  console.log("toast is running");
   const [list, setList] = React.useState([]);
   const [userSession, setUserSession] = React.useState(null);
   const [statusAuth, setStatusAuth] = React.useState(null);
-  // console.log(userSession);
   const setTokenRefreshInterval = props.setRefreshInterval;
 
   let toastProperties = null;
-  // React.useEffect(() => {
-  //   setUserSession(session);
-  //   console.log(userSession);
-  // }, [session, userSession]);
 
   const showToast = (type, description) => {
     const id = Math.floor(Math.random() * 100 + 1);

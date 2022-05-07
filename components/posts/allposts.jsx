@@ -14,7 +14,6 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
     props.saveLastLoadPost();
     let url = e.currentTarget.attributes.href.nodeValue;
     let title = props.posts.title;
-    console.log(url);
     router.push(url);
   };
 
@@ -32,7 +31,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
       href={"/post/" + props.posts.id}
       onClick={linkHandleClick}
       id={`${props.id}`}
-      className="link-card homepage-card card Psm:mb-2 Psm:w-full Psm:border-l-0 Psm:border-r-0 Psm:border-t Psm:border-b Psm:border-indigo-900 Psm:shadow-none Psm:rounded-none bg-gray-800"
+      className="link-card homepage-card card bg-gray-800 Psm:mb-2 Psm:w-full Psm:rounded-none Psm:border-l-0 Psm:border-r-0 Psm:border-t Psm:border-b Psm:border-indigo-900 Psm:shadow-none"
     >
       <figure className="aspect-w-4 aspect-h-2 mb-2">
         {props.posts.image ? (
@@ -115,7 +114,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
         <Link href={"/post/" + props.posts.id}>
           <a
             id=""
-            className="article-link Psm:ml-0 my-0 ml-12 text-xl tracking-wide text-gray-300"
+            className="article-link my-0 ml-12 text-xl tracking-wide text-gray-300 Psm:ml-0"
             aria-label="article title"
           >
             {props.posts.title}
