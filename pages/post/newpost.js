@@ -122,7 +122,7 @@ export default function NewPost(props) {
     // console.log(data);
 
     const res = await sendNewPost("POST", "/api/post/newpost", formData);
-    // console.log(res);
+    console.log(res);
     if (res.statusText === "Created") {
       showToast("success", res.data.message);
       router.push(`/post/${res.data.newPostId}`);

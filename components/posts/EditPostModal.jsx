@@ -47,6 +47,7 @@ const EditPostModal = (props) => {
       "/api/post/updatepost",
       updatedPost
     );
+    console.log(res);
     if (res.statusText === "Created") {
       console.log(res.data);
       props.setShowPostModal(false);
@@ -102,7 +103,7 @@ const EditPostModal = (props) => {
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-auto overflow-y-auto bg-black bg-opacity-70 outline-none focus:outline-none">
             <div className="sticky top-0 z-50 mx-auto w-auto max-w-3xl">
               {/*content*/}
-              <div className="Psm:max-h-1/2 post-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none">
+              <div className="post-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none Psm:max-h-1/2">
                 {/*header*/}
                 <div className="border-blueGray-200 flex items-start justify-between rounded-t border-b border-solid p-5">
                   <h3 className="text-3xl font-semibold text-gray-100">
