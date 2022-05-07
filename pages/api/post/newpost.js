@@ -92,6 +92,7 @@ handler.post(upload.single("file"), async (req, res) => {
       // console.log(postCreated);
       // //Send success response
       res.status(201).json({
+        success: true,
         message: "Your new post has been created!!",
         newPostId: newPost._id,
       });

@@ -25,7 +25,9 @@ const updatePostHandler = async (req, res) => {
     // const user = await User.findById(session.id);
     // console.log(user);
 
-    res.status(201).json({ message: "Post has been updated.", post });
+    res
+      .status(201)
+      .json({ success: true, message: "Post has been updated.", post });
   }
   //=====  // deletes one single post =====
 

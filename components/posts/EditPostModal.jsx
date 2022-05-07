@@ -48,7 +48,7 @@ const EditPostModal = (props) => {
       updatedPost
     );
     console.log(res);
-    if (res.statusText === "Created") {
+    if (res.data.success === true) {
       console.log(res.data);
       props.setShowPostModal(false);
       showToast("success", res.data.message);
