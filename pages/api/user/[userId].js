@@ -32,7 +32,7 @@ const finduserhandler = async (req, res) => {
       })
       .lean();
 
-    console.log(user);
+    // console.log("server data", user);
     // delete user.password;
     // console.log(user);
     res.status(200).json({ message: "found account", account: user });
