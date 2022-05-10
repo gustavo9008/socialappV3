@@ -93,6 +93,7 @@ function HomePage(props) {
           setTypeSort(loaded.type);
           setPosts(loaded.posts);
           setIsLoading(false);
+          setPosts(loaded.posts);
         } else {
           getNewPost();
         }
@@ -206,35 +207,60 @@ function HomePage(props) {
         </aside>
 
         <>
-          <section>
-            {posts.posts.map((post, i) => {
-              if (posts.posts.length === i + 1) {
-                return (
-                  <AllPost
-                    id={`${post.id}`}
-                    ref={lastBookElementRef}
-                    posts={post}
-                    key={i}
-                    saveLastLoadPost={saveLastLoadPost}
-                  />
-                  // <div
-                  //   key={posts.posts.length + 1}
-                  //   id={posts.posts.length + 1}
-                  //   ref={lastBookElementRef}
-                  // />
-                );
-              } else {
-                return (
-                  <AllPost
-                    id={`${post.id}`}
-                    posts={post}
-                    key={i}
-                    saveLastLoadPost={saveLastLoadPost}
-                  />
-                );
-              }
-            })}
-          </section>
+          {posts.isLoading ? (
+            <div className="flex flex-row justify-center">
+              {" "}
+              <svg
+                className="-ml-1 mr-3 h-20 w-20 animate-spin text-white"
+                viewBox="0 0 24 24"
+                style={{ display: "block" }}
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            </div>
+          ) : (
+            <section>
+              {posts.posts.map((post, i) => {
+                if (posts.posts.length === i + 1) {
+                  return (
+                    <AllPost
+                      id={`${post.id}`}
+                      ref={lastBookElementRef}
+                      posts={post}
+                      key={i}
+                      saveLastLoadPost={saveLastLoadPost}
+                    />
+                    // <div
+                    //   key={posts.posts.length + 1}
+                    //   id={posts.posts.length + 1}
+                    //   ref={lastBookElementRef}
+                    // />
+                  );
+                } else {
+                  return (
+                    <AllPost
+                      id={`${post.id}`}
+                      posts={post}
+                      key={i}
+                      saveLastLoadPost={saveLastLoadPost}
+                    />
+                  );
+                }
+              })}
+            </section>
+          )}
         </>
       </Card>
     </>
