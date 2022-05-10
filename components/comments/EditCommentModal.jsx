@@ -30,7 +30,7 @@ export default function EditCommentModal(props) {
       updatedComment
     );
     console.log(res);
-    if (res.statusText === "OK") {
+    if (res.data.success === true) {
       showToast("success", res.data.message);
       props.setOpenCommentModal(false);
       console.log(res.data.updatedComment);
@@ -45,12 +45,12 @@ export default function EditCommentModal(props) {
     <>
       {props.openCommentModal ? (
         // <!-- ===== edit comment modal ===== -->
-        <div className="z-20 h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
+        <div className="fixed left-0 top-0 z-20 flex h-screen w-full items-center justify-center bg-black bg-opacity-50">
           {/* <!-- ===== modal ===== --> */}
-          <div className="bg-gray-800 border-2 border-gray-500 rounded modal">
+          <div className="modal rounded border-2 border-gray-500 bg-gray-800">
             {/* <!-- ===== modal header ===== --> */}
-            <div className="border-b px-4 py-2 flex justify-between items-center">
-              <h3 className="font-semibold text-lg">Edit Comment</h3>
+            <div className="flex items-center justify-between border-b px-4 py-2">
+              <h3 className="text-lg font-semibold">Edit Comment</h3>
               <button
                 onClick={() => props.setOpenCommentModal(false)}
                 className=""
@@ -81,7 +81,7 @@ export default function EditCommentModal(props) {
                     ref={commentRef}
                     defaultValue={props.comment.comment}
                     id="update-reply-comment"
-                    className="comment-textarea py-2 text-white bg-gray-700 rounded-md pl-1 focus:outline-none border border-gray-500 focus:border-purple-800 focus:bg-gray-900 focus:text-gray-300"
+                    className="comment-textarea rounded-md border border-gray-500 bg-gray-700 py-2 pl-1 text-white focus:border-purple-800 focus:bg-gray-900 focus:text-gray-300 focus:outline-none"
                     autoComplete="off"
                     rows="3"
                     type="text"
@@ -90,10 +90,10 @@ export default function EditCommentModal(props) {
                 </div>
               </form>
             </div>
-            <div className="flex justify-end items-center w-100 border-t p-3">
+            <div className="w-100 flex items-center justify-end border-t p-3">
               <button
                 onClick={() => props.setOpenCommentModal(false)}
-                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white mr-1"
+                className="mr-1 rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700"
               >
                 Cancel
               </button>
@@ -101,7 +101,7 @@ export default function EditCommentModal(props) {
                 onClick={editCommentSubmit}
                 id="update-reply-btn"
                 data-action="/blogs/<%= blog._id %>/<%= comments._id %>/<%= reply._id %>"
-                className="update-reply-btn bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-white"
+                className="update-reply-btn rounded bg-green-600 px-3 py-1 text-white hover:bg-green-700"
               >
                 Save
               </button>
