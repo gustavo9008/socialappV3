@@ -6,7 +6,7 @@ import { useDetectOutsideClick } from "./useDetectClick";
 import { appToastContext } from "context/state";
 import ProfileColorAvatar from "./ProfileColorAvatar";
 
-const AlpineWidjet = (props) => {
+const NavDropdown = (props) => {
   const router = useRouter();
   const { showToast, setUserSession } = React.useContext(appToastContext);
   // console.log(userSession);
@@ -125,4 +125,4 @@ const AlpineWidjet = (props) => {
   );
 };
 
-export default AlpineWidjet;
+export default NavDropdown;

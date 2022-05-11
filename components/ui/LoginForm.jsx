@@ -33,15 +33,15 @@ function LoginForm(props) {
       let readingCookie = getCookie("user_lists");
       // console.log(readingCookie);
       localStorage.setItem("user_lists", readingCookie);
-      let message = `Welcome back`;
+      // let message = `Welcome back`;
       if (props.redirect) {
         router.push("/");
       }
-      showToast("success", message);
+      showToast("success", `Welcome back`);
       removeCookies("user_lists");
     }
     if (status.error !== null) {
-      console.log(status.error);
+      // console.log(status.error);
       showToast("error", status.error);
     }
     return;

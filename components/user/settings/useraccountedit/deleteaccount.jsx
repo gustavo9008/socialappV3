@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "@/components/ui/modal";
+import Modal from "@/components/ui/Modal";
 
 export default function DeleteAccount(props) {
   const [showModal, setShowModal] = React.useState(false);

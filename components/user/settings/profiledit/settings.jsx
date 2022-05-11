@@ -67,9 +67,8 @@ export default function Settings(props) {
       "/api/user/updateuserprofile",
       data
     );
-    // console.log(res);
 
-    if (res.statusText === "Created") {
+    if (res.data.success === true) {
       // console.log(userSession);
       setTokenRefreshInterval(2);
       setTimeout(() => {

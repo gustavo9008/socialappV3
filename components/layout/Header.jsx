@@ -4,7 +4,7 @@ import { appToastContext } from "context/state";
 import Link from "next/link";
 // import { useSession } from "next-auth/react";
 
-import AlpineWidjet from "@/components/ui/navdropdown";
+import NavDropdown from "@/components/ui/NavDropdown";
 
 export default function Header() {
   const { userSession } = React.useContext(appToastContext);
@@ -107,7 +107,7 @@ export default function Header() {
                       Post
                     </a>
                   </Link>
-                  <AlpineWidjet user={userSession.user} />
+                  <NavDropdown user={userSession.user} />
                 </div>
               </div>
             )}

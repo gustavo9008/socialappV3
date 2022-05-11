@@ -32,7 +32,6 @@ const updateUserProfileHandler = async (req, res) => {
 
       //===== bookmark post func =====
       async function bookmarkPost() {
-        console.log("you have bookmarked post" + req.body.post);
         const bookmark = {
           postId: req.body.post,
           title: req.body.postTitle,
@@ -84,12 +83,8 @@ const updateUserProfileHandler = async (req, res) => {
         console.log(user._id.toString(), session.user.id);
         // console.log(req.body);
         const { about, location, links } = req.body;
-        console.log(about);
-        const updatedProfile = {
-          about: about,
-          location: location,
-          links,
-        };
+        console.log(location);
+
 
         user.profile.about = about;
         user.profile.location = location;
@@ -98,7 +93,7 @@ const updateUserProfileHandler = async (req, res) => {
 
         // console.log(updatedProfile);
 
-        res.status(201).json({ message: "Profile has been update." });
+        res.status(201).json({ success: true, message: "Profile has been update." });
       }
       //===== connect db function =====
       //   await dbConnect();
@@ -158,13 +153,14 @@ const updateUserProfileHandler = async (req, res) => {
   const session = await getSession({ req });
   if (session) {
     // Signed in
-    req.body.type === "UPDATE_PROFILE" && updateProfile(session);
-    await updateProfile(session);
+    req.body.type === "UPDATE_PROFILE" && (await updateProfile(session)) && (res.end());
+    // await updateProfile(session);
   } else {
     // Not Signed in
     res.status(401).json({ message: "oh no you must be logged in" });
+    res.end();
   }
-  res.end();
+
 };
 
 export default updateUserProfileHandler;

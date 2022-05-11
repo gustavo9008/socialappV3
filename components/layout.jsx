@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "@/components/ui/Header";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { appToastContext } from "context/state";
 import { ToastWrapper } from "context/state";
