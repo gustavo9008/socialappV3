@@ -39,13 +39,10 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
       password: newPasswordRef.current.value,
       token,
     };
-    console.log(body);
     newPasswordRef.current.value.length !== 0 && resetUserPassword();
     async function resetUserPassword() {
       const res = await sendNewPassword("PUT", "/api/user/passwordreset", body);
-
-      console.log(res);
-      if (res.statusText === "OK") {
+      if (res.data.success === true) {
         showToast("success", res.data.message);
         router.push("/login");
       }
@@ -59,15 +56,6 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
     }
   };
   useEffect(() => {
-    // getSession().then((session) => {
-    //   // console.log(session);
-    //   if (session) {
-    //     showToast("success", "Alredy logged in.");
-    //     router.push("/");
-    //   } else {
-    //     setLoading(false);
-    //   }
-    // });
     getUserSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSession]);
@@ -83,11 +71,15 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
           <>
             <main className="flex flex-row justify-center">
               <section className="modal rounded border-2 border-gray-500 bg-slate-900 p-8">
+                <p className="pb-4 text-center text-xl font-medium">
+                  {" "}
+                  Enter Change Password
+                </p>
                 <PasswordCheck
                   newPasswordRef={newPasswordRef}
                   containerWarning={containerWarning}
                   bgColor={"bg-gray-700"}
-                  inputLabel={"Enter New Password"}
+                  inputLabel={"New Password"}
                   setBtnDisabled={setBtnDisabled}
                   setBtnColor={setBtnColor}
                   repeatPasswordRef={repeatPasswordRef}
@@ -122,7 +114,6 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
 };
 
 export async function getServerSideProps(ctx) {
-  console.log("Change password page with token");
   const { token } = ctx.query;
 
   dbConnect();
@@ -130,13 +121,7 @@ export async function getServerSideProps(ctx) {
     resetPasswordToken: token,
     resetPasswordExpires: { $gt: Date.now() },
   });
-
   const resetLinkExp = user ? true : false;
-  console.log(resetLinkExp);
-  // const handler = nc();
-  // handler.use(database);
-  // await handler.run(ctx.req, ctx.res);
-  console.log(token);
 
   // const tokenDoc = await findTokenByIdAndType(ctx.req.db, ctx.query.token, 'passwordReset');
 

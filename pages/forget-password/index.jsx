@@ -9,8 +9,6 @@ const ForgetPasswordPage = () => {
   const router = useRouter();
 
   const sendLink = useFetch;
-  console.log(userSession);
-
   async function handleSubmit(e) {
     e.preventDefault(e);
 
@@ -19,31 +17,17 @@ const ForgetPasswordPage = () => {
     };
 
     const res = await sendLink("POST", "/api/user/passwordreset", body);
-    console.log(res);
 
-    // if (res.status === 200) {
-    //   setMsg({ message: "An email has been sent to your mailbox" });
-    //   console.log(res);
-    // } else {
-    //   setMsg({ message: await res.text(), isError: true });
-    // }
+    if (res.data.success === true) {
+      showToast("success", res.data.message);
+    }
   }
   const getUserSession = () => {
     if (userSession) {
-      showToast("success", "Alredy logged in.");
       router.push("/");
     }
   };
   useEffect(() => {
-    // getSession().then((session) => {
-    //   // console.log(session);
-    //   if (session) {
-    //     showToast("success", "Alredy logged in.");
-    //     router.push("/");
-    //   } else {
-    //     setLoading(false);
-    //   }
-    // });
     getUserSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSession]);

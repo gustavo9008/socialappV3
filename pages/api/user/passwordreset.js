@@ -6,7 +6,6 @@ import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
 
 const forgetpassword = async (req, res) => {
-  console.log(req.body);
   await dbConnect();
 
   //===== create one post functionk =====
@@ -25,8 +24,6 @@ const forgetpassword = async (req, res) => {
     }
 
     const randomId = await makeid(30);
-
-    console.log(randomId);
     //===== search user account =====
     // await dbConnect();
 
@@ -75,21 +72,18 @@ const forgetpassword = async (req, res) => {
     };
 
     const sendEMail = await smtpTransport.sendMail(mailOptions);
-    console.log(sendEMail);
 
-    res.status(200).json({ message: "found account", account: user });
+    res.status(200).json({ success: true, message: "Email has been sent." });
     res.end();
   };
 
   const createNewPassword = async () => {
-    console.log(req.body);
     const { password, token } = req.body;
 
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
     });
-    console.log(user);
     if (user) {
       user.password = await hash(password, 12);
       user.resetPasswordToken = "";
@@ -98,7 +92,10 @@ const forgetpassword = async (req, res) => {
     }
     res
       .status(200)
-      .json({ message: "Password has been change, You can now log in." });
+      .json({
+        success: true,
+        message: "Password has been change, You can now log in.",
+      });
     res.end();
   };
 
