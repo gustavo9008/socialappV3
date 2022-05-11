@@ -5,7 +5,6 @@ import { MongoClient } from "mongodb";
 import { compare } from "bcryptjs";
 import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
-import formidable from "formidable";
 import { setCookies } from "cookies-next";
 // import { serialize } from "mongoose/node_modules/mongodb/node_modules/bson";
 

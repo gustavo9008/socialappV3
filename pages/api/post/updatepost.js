@@ -73,7 +73,6 @@ const updatePostHandler = async (req, res) => {
 
   async function likePost(session) {
     const post = await Post.findById(req.body.post);
-    console.log(post);
     post.likes = (post.likes ? post.likes : 0) + 1;
     await post.save();
 
@@ -97,7 +96,6 @@ const updatePostHandler = async (req, res) => {
   }
   async function unlikePost(session) {
     const post = await Post.findById(req.body.post);
-    console.log(post);
     post.likes = (post.likes ? post.likes : 0) - 1;
     await post.save();
 

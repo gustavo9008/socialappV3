@@ -78,7 +78,6 @@ function SinglePost(props) {
 // }
 
 export async function getServerSideProps(context) {
-  console.log("server side is running");
   await dbConnect();
 
   const postId = context.params.id;

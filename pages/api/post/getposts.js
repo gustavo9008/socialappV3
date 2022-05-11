@@ -11,7 +11,6 @@ export default async function findPostHandler(req, res) {
   let latestPosts;
   try {
     if (req.query.type === "TOP") {
-      console.log("Find Top Posts");
       newpostsLikes = await Post.find({})
         .sort({ likes: -1, _id: 1 })
         .select("-body -comments")

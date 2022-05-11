@@ -268,11 +268,9 @@ function HomePage(props) {
 }
 
 export async function getServerSideProps(context) {
-  console.log("server side is running");
   await dbConnect();
 
   // let queryLimit = 5;
-  // console.log(context);
   const postsLikes = await Post.find({})
     .select("-body -comments")
     .limit(5)
