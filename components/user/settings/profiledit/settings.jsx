@@ -42,7 +42,7 @@ export default function Settings(props) {
   const refreshTokenTrigger = () => {
     setTokenRefreshInterval(432000);
   };
-  userSession !== null && console.log(userSession.user.id);
+  // userSession !== null && console.log(userSession.user.id);
 
   const updateProfileHandler = async (e) => {
     e.preventDefault();
@@ -62,6 +62,8 @@ export default function Settings(props) {
       user: userSession.user.id,
       type: "UPDATE_PROFILE",
     };
+   
+
     const res = await sendAccountProfile(
       "PUT",
       "/api/user/updateuserprofile",
@@ -69,12 +71,16 @@ export default function Settings(props) {
     );
 
     if (res.data.success === true) {
-      // console.log(userSession);
-      setTokenRefreshInterval(2);
-      setTimeout(() => {
-        // console.log("setTimeout Triggered!");
-        refreshTokenTrigger();
-      }, 4000);
+      const resSession = await sendAccountProfile(
+        "GET",
+        `/api/auth/session?updateUserSession=true`);
+      // console.log("resSession",resSession);
+     
+      // setTokenRefreshInterval(2);
+      // setTimeout(() => {
+      //   // console.log("setTimeout Triggered!");
+      //   refreshTokenTrigger();
+      // }, 4000);
       showToast("success", res.data.message);
       stopBtnAnimate(chAccProfileDetail);
       setLabel("Update Profile");

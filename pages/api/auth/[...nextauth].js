@@ -15,7 +15,7 @@ export const config = {
 
 export default async function auth(req, res) {
 
-  console.log(req);
+  // console.log(req.query);
 
   const NextAuthCredential = await NextAuth(req, res, {
 
@@ -108,26 +108,26 @@ export default async function auth(req, res) {
             }));
 
         if (
-          req.rawHeaders.includes('Referer')
+          req.query.updateUserSession === "true"
         ) {
+          // console.log(req.query)
+          // const refUrl = req.rawHeaders.findIndex(element => {
+          //   if (element.includes("/user/profile/settings")) {
+          //     return true;
+          //   }
+          // });
+          // if (refUrl !== -1) {
+          // console.log("refUrl");
+          await dbConnect();
+          const user = await User.findById(token.sub);
+          token.name = user.name;
+          token.email = user.email;
+          token.profile.about = user.profile.about;
+          token.profile.location = user.profile.location
+          token.profile.image = user.profile.image;
+          token.profile.links = user.profile.links;
 
-          const refUrl = req.rawHeaders.findIndex(element => {
-            if (element.includes("/user/profile/settings")) {
-              return true;
-            }
-          });
-          if (refUrl !== -1) {
-            console.log("refUrl");
-            await dbConnect();
-            const user = await User.findById(token.sub);
-            token.name = user.name;
-            token.email = user.email;
-            token.profile.about = user.profile.about;
-            token.profile.location = user.profile.location
-            token.profile.image = user.profile.image;
-            token.profile.links = user.profile.links;
-
-          }
+          // }
 
         }
         return token;

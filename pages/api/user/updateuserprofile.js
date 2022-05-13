@@ -8,10 +8,10 @@ const updateUserProfileHandler = async (req, res) => {
   //===== create one post functionk =====
   const updateProfile = async (session) => {
     if (req.method === "PUT") {
-      console.log(req.body);
+      // console.log(req.body);
       await dbConnect();
       const user = await User.findById(req.body.user);
-      console.log(user._id.toString() === session.user.id);
+      // console.log(user._id.toString() === session.user.id);
       //===== for update user profile info =====
       user._id.toString() === session.user.id &&
         req.body.type === "UPDATE_PROFILE" &&
@@ -54,14 +54,14 @@ const updateUserProfileHandler = async (req, res) => {
       //===== delete bookmark =====
       async function deleteBookmarkPost() {
         // console.log(user.profile);
-        console.log("you have deleted bookmarked " + req.body.bookmark);
+        // console.log("you have deleted bookmarked " + req.body.bookmark);
 
         const delBook = await user.profile.readingList.filter(
           (bookId) => bookId.postId !== req.body.bookmark
         );
 
         user.profile.readingList = delBook;
-        console.log(delBook);
+        // console.log(delBook);
         await user.save();
 
         let updatedBookmark = user.profile.readingList;
@@ -80,10 +80,10 @@ const updateUserProfileHandler = async (req, res) => {
       //===== update info in user profile =====
       async function updateUserProfile() {
         // console.log("user does match found user");
-        console.log(user._id.toString(), session.user.id);
+        // console.log(user._id.toString(), session.user.id);
         // console.log(req.body);
         const { about, location, links } = req.body;
-        console.log(location);
+        // console.log(location);
 
 
         user.profile.about = about;
