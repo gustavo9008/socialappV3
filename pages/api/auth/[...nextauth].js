@@ -15,6 +15,8 @@ export const config = {
 
 export default async function auth(req, res) {
 
+  console.log(req);
+
   const NextAuthCredential = await NextAuth(req, res, {
 
     providers: [
