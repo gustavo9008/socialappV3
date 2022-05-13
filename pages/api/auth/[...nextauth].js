@@ -115,6 +115,7 @@ export default async function auth(req, res) {
             }
           });
           if (refUrl !== -1) {
+            console.log("refUrl");
             await dbConnect();
             const user = await User.findById(token.sub);
             token.name = user.name;
