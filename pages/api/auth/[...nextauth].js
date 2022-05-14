@@ -15,7 +15,7 @@ export const config = {
 
 export default async function auth(req, res) {
 
-  // console.log(req.query);
+  console.log(req.query);
 
   const NextAuthCredential = await NextAuth(req, res, {
 
@@ -110,14 +110,6 @@ export default async function auth(req, res) {
         if (
           req.query.updateUserSession === "true"
         ) {
-          // console.log(req.query)
-          // const refUrl = req.rawHeaders.findIndex(element => {
-          //   if (element.includes("/user/profile/settings")) {
-          //     return true;
-          //   }
-          // });
-          // if (refUrl !== -1) {
-          // console.log("refUrl");
           await dbConnect();
           const user = await User.findById(token.sub);
           token.name = user.name;

@@ -67,16 +67,16 @@ handler.put(upload.array("file"), async (req, res) => {
       }
     };
 
-    if (user._id == session.user.id) {
-      if (req.files[0]) {
-        updateUserProfilePic();
-      }
-      if (req.body.newColor) {
-        updateUserColorPic();
-      }
+
+    if (req.files[0]) {
+      updateUserProfilePic();
+    }
+    if (req.body.newColor) {
+      updateUserColorPic();
     }
 
-    res.status(201).json({ message: "Your new post has been created!!" });
+
+    res.status(201).json({ success: true, message: "Picture updated." });
   }
   //===== check if user is log in =====
   const session = await getSession({ req });
@@ -86,7 +86,7 @@ handler.put(upload.array("file"), async (req, res) => {
     await saveImage(session);
   } else {
     // Not Signed in
-    res.status(401).json({ message: "oh no you must be logged in" });
+    res.status(401).json({ success: true, message: "oh no you must be logged in" });
   }
   res.end();
 });

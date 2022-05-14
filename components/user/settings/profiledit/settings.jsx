@@ -7,13 +7,8 @@ import Button, { useBtnState } from "@/components/ui/Button";
 
 export default function Settings(props) {
   const router = useRouter();
-  const {
-    useFetch,
-    showToast,
-    userSession,
-    setUserSession,
-    setTokenRefreshInterval,
-  } = React.useContext(appToastContext);
+  const { useFetch, showToast, userSession, setTokenRefreshInterval } =
+    React.useContext(appToastContext);
   const [
     btnDisabled,
     setBtnDisabled,
@@ -62,7 +57,6 @@ export default function Settings(props) {
       user: userSession.user.id,
       type: "UPDATE_PROFILE",
     };
-   
 
     const res = await sendAccountProfile(
       "PUT",
@@ -73,9 +67,10 @@ export default function Settings(props) {
     if (res.data.success === true) {
       const resSession = await sendAccountProfile(
         "GET",
-        `/api/auth/session?updateUserSession=true`);
+        `/api/auth/session?updateUserSession=true`
+      );
       // console.log("resSession",resSession);
-     
+
       // setTokenRefreshInterval(2);
       // setTimeout(() => {
       //   // console.log("setTimeout Triggered!");
@@ -86,27 +81,6 @@ export default function Settings(props) {
       setLabel("Update Profile");
       setBtnDisabled(false);
     }
-
-    // const res = await fetch("/api/user/updateuserprofile", {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     about: aboutRef.current.value,
-    //     location: locationRef.current.value,
-    //     links: {
-    //       personalWebsite: personalWebsiteRef.current.value,
-    //       instagram: instagramRef.current.value,
-    //       twiter: twitterRef.current.value,
-    //       youtube: youtubeRef.current.value,
-    //       linkedin: linkedinRef.current.value,
-    //     },
-    //   }),
-    // });
-    // Await for data for any desirable next steps
-    // const data = await res.json();
-    // console.log(data);
   };
 
   return (
@@ -140,7 +114,8 @@ export default function Settings(props) {
                 <input
                   ref={locationRef}
                   id="location"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none
+                   focus:ring-2 focus:ring-indigo-500 "
                   type="text"
                   name="location"
                   defaultValue={props.profile.location}

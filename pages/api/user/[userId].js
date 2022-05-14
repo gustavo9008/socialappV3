@@ -51,7 +51,7 @@ const finduserhandler = async (req, res) => {
   switch (req.method) {
     case "GET":
       //...
-      findAccount(req);
+      await findAccount(req);
       break;
     default:
       res.status(500).json({ message: "Route not valid!" });

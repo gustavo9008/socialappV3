@@ -115,14 +115,13 @@ export default function AccountPicture(props) {
       formData
     );
     // Await for data for any desirable next steps
-    // const data = await res;
-    if (res.statusText === "Created") {
-      setTokenRefreshInterval(2);
-      setTimeout(() => {
-        console.log("setTimeout Triggered!");
-        setTokenRefreshInterval(432000);
-      }, 4000);
-      res.data.message && showToast("success", res.data.message);
+    console.log(res.data.message);
+    if (res.data.success === true) {
+      const res = await updateNewColorPic(
+        "GET",
+        "/api/auth/session?updateUserSession=true"
+      );
+      showToast("success", "Picture updated.");
       setBtnColor("bg-slate-700");
       setBtnDisabled(true);
       stopBtnAnimate("sendNewColorBtn");
@@ -185,12 +184,12 @@ export default function AccountPicture(props) {
           action="/api/user/uploadimage"
           encType="multipart/form-data"
         >
-          <div className="field Psm:flex-col Psm:justify-center flex justify-evenly">
+          <div className="field flex justify-evenly Psm:flex-col Psm:justify-center">
             <div
               ref={newColor}
               id="colorPic"
               style={colorProfilePic}
-              className="generic-circle Psm:mb-4 m-auto grid h-80 w-64 items-center rounded-md"
+              className="generic-circle m-auto grid h-80 w-64 items-center rounded-md Psm:mb-4"
             >
               <div
                 id="colorPic-container"
