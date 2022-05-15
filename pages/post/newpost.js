@@ -179,7 +179,7 @@ export default function NewPost(props) {
               loadUrlImage={loadImage}
               postImageRef={postCustomImage}
             />
-            <div className="pt-4">
+            {/* <div className="pt-4">
               <JoditEditor
                 ref={editor}
                 value={content}
@@ -188,7 +188,7 @@ export default function NewPost(props) {
                 onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                 onChange={(newContent) => {}}
               />
-            </div>
+            </div> */}
           </form>
           <button
             disabled={disable}
