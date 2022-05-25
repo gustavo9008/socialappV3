@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
@@ -6,7 +6,6 @@ import PictureUpload from "@/components/ui/PictureUpload";
 import { appToastContext } from "context/state";
 import Compressor from "compressorjs";
 import { useRouter } from "next/router";
-// import useFetch from "@/hooks/fetch";
 
 const importJodit = () => import("jodit-react");
 const JoditEditor = dynamic(importJodit, {
@@ -14,10 +13,9 @@ const JoditEditor = dynamic(importJodit, {
 });
 
 export default function NewPost(props) {
-  console.log("//===== beg =====");
+
   const { useFetch, showToast, userSession } =
     React.useContext(appToastContext);
-
   const [disable, setDisable] = React.useState(false);
   const sendNewPost = useFetch;
   const postCustomImage = useRef();
@@ -35,18 +33,32 @@ export default function NewPost(props) {
 
   const titleRef = useRef();
   const imageRef = useRef();
-  const editor = useRef(null);
+  const editor = useRef();
   const [content, setContent] = useState("");
 
-  const config = {
-    allowTabNavigation: false,
 
-    askBeforePasteFromWord: false,
-    askBeforePasteHTML: false,
-    minHeight: "400",
-    readonly: false, // all options from https://xdsoft.net/jodit/doc/
-  };
-  console.log(userSession);
+
+
+
+  const configMemo = useMemo(() => {
+    return {
+      allowTabNavigation: false,
+      askBeforePasteFromWord: false,
+      askBeforePasteHTML: false,
+      minHeight: "400",
+      readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    }
+  })
+
+  // const config = {
+  //   allowTabNavigation: false,
+
+  //   askBeforePasteFromWord: false,
+  //   askBeforePasteHTML: false,
+  //   minHeight: "400",
+  //   readonly: false, // all options from https://xdsoft.net/jodit/doc/
+  // };
+  // console.log(userSession);
   //===== submits new post =====
   const handleNewPost = async (e) => {
     e.preventDefault();
@@ -85,7 +97,7 @@ export default function NewPost(props) {
         },
       });
     }
-
+    // console.log(editorState);
     //===== check input refs =====
     if (!titleRef.current.value) {
       //===== checks of title ref is empty =====
@@ -141,7 +153,6 @@ export default function NewPost(props) {
   //     // router.push("/login");
   //   }
   // }, [router, userSession]);
-  console.log("//===== end =====");
   return (
     <>
       <Head>
@@ -179,16 +190,17 @@ export default function NewPost(props) {
               loadUrlImage={loadImage}
               postImageRef={postCustomImage}
             />
-            {/* <div className="pt-4">
+            <div className="pt-4">
               <JoditEditor
                 ref={editor}
                 value={content}
-                config={config}
+                config={configMemo}
                 tabIndex={1} // tabIndex of textarea
-                onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                onChange={(newContent) => {}}
+                onBlur={(newContent) => setContent(newContent)}
+                onChange={(newContent) => { }}
               />
-            </div> */}
+
+            </div>
           </form>
           <button
             disabled={disable}

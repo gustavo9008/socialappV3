@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { useDetectOutsideClick } from "./useDetectClick";
+// import { useDetectOutsideClick } from "./useDetectClick";
 import { appToastContext } from "context/state";
 import ProfileColorAvatar from "./ProfileColorAvatar";
 
@@ -29,28 +29,48 @@ const NavDropdown = (props) => {
   };
 
   const dropdownRef = React.useRef(null);
-  const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
-  const toggleMenu = () => setIsActive(!isActive);
-  // //===== color button =====
-  // const btncolorPic = (
-  //   <span
-  //     className="h-12 w-12 rounded-full"
-  //     style={{
-  //       background: `linear-gradient(225deg,${userSession.user.genericImage[0]}, ${userSession.user.genericImage[1]}, ${userSession.user.genericImage[2]}, ${userSession.user.genericImage[3]}, ${userSession.user.genericImage[4]}, ${userSession.user.genericImage[5]})`,
-  //     }}
-  //   ></span>
-  // );
-  // //===== image button =====
-  // const imagebtn = (
-  //   <img
-  //     loading="lazy"
-  //     className="h-12 w-12 rounded-full"
-  //     src={props.user.profile.image.url}
-  //     alt=""
-  //   />
-  // );
-  // //===== picks between image or color  =====
-  // const picbtn = props.user.profile.image.url ? imagebtn : btncolorPic;
+  // const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
+  // const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const activeMenu = {
+      state: false,
+      showMenu: function showMenu() {
+        // console.log(this.state);
+        activeMenu.state &&
+          (menuDrop.classList.remove("inactive"),
+          menuDrop.classList.add("active"));
+        !activeMenu.state &&
+          (menuDrop.classList.remove("active"),
+          menuDrop.classList.add("inactive"));
+      },
+    };
+    let menuDrop = document.getElementById("dropdownMenu");
+    let btnDrop = document.getElementById("user-menu");
+
+    const toggleMenu = (e) => {
+      e.stopPropagation();
+      activeMenu.state = !activeMenu.state;
+      if (!activeMenu.state) {
+        activeMenu.showMenu(e);
+        window.removeEventListener("click", toggleMenu, true);
+      }
+    };
+    btnDrop.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (
+        dropdownRef.current !== null &&
+        !dropdownRef.current.contains(e.target)
+      ) {
+        activeMenu.state = !activeMenu.state;
+      }
+
+      activeMenu.showMenu(e);
+      if (activeMenu.state) {
+        window.addEventListener("click", toggleMenu, true);
+      }
+    });
+  }, [dropdownRef]);
 
   return (
     <>
@@ -63,7 +83,7 @@ const NavDropdown = (props) => {
           </p>
 
           <button
-            onClick={toggleMenu}
+            // onClick={toggleMenu}
             className="flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             id="user-menu"
             aria-haspopup="false"
@@ -78,11 +98,10 @@ const NavDropdown = (props) => {
         </div>
         <div
           ref={dropdownRef}
-          className={`menu ${
-            isActive ? "active" : "inactive"
-          } nav-dropdown-content absolute right-0 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-gray-900 py-1`}
+          id="dropdownMenu"
+          className={`menu nav-dropdown-content absolute right-0 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-gray-900 py-1`}
         >
-          <div onClick={toggleMenu}>
+          <div>
             <Link href="/user/profile">
               <a
                 className="block h-12 border-b border-gray-500 border-opacity-50 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800"

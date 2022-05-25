@@ -12,18 +12,19 @@ const upload = multer({ storage });
 const handler = nextConnect();
 
 handler.post(upload.single("file"), async (req, res) => {
-  console.log(req);
+  console.log(req.body);
   // console.log(req.body.title);
   //===== create one post function =====
   const createNewPost = async (session) => {
     if (req.method === "POST") {
-      const user = await User.findById(session.user.id);
-      // console.log(user);
+      console.log("createNewPost func", session.user.id);
+      const user = await User.findById({ _id: session.user.id });
+      console.log("user", user);
       // console.log(session);
       console.log("this is the post image route");
       await dbConnect();
       const { title, imageUrl, content } = req.body;
-      // console.log(title, imageUrl, content);
+      console.log(title, imageUrl, content);
 
       // if (req.file) {
       //   let image = {
@@ -89,7 +90,7 @@ handler.post(upload.single("file"), async (req, res) => {
       await user.save();
 
       const postCreated = await newPost.save();
-      // console.log(postCreated);
+      console.log(postCreated);
       // //Send success response
       res.status(201).json({
         success: true,
@@ -114,6 +115,7 @@ handler.post(upload.single("file"), async (req, res) => {
     await createNewPost(session);
   } else {
     // Not Signed in
+    console.log('you are not signed in');
     res.status(401).json({ message: "oh no you must be logged in" });
     res.end();
   }

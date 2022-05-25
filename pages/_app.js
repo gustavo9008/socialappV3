@@ -6,8 +6,8 @@ import Layout from "@/components/layout";
 import { ToastWrapper } from "context/state";
 import "../styles/custom.css";
 import "../styles/globals.css";
-
 import "../styles/jodit3.css";
+
 // import { appToastContext } from "context/state";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
