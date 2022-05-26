@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 // import user from "models/user";
 
 export default function Layout({ children }) {
+  // console.log("redering...");
   const { userSession, setUserSession, statusAuth, setStatusAuth } =
     React.useContext(appToastContext);
   // console.log(children);
@@ -39,6 +40,7 @@ export default function Layout({ children }) {
     <>
       <Header />
       {children}
+
       <Footer />
     </>
   );

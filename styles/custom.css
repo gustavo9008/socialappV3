@@ -79,9 +79,9 @@ video {
   visibility: visible;
   transform: translateY(0);
 }
-.inactive {
+/* .inactive {
   visibility: hidden;
-}
+} */
 .commentMenu.active {
   opacity: 1;
   visibility: visible;

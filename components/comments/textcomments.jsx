@@ -8,6 +8,8 @@ import EditCommentModal from "./EditCommentModal";
 import DeleteCommentModal from "./DeleteCommentModal";
 
 export default function TextComments(props) {
+  const [isPending, startTransition] = React.useTransition();
+
   const { userSession: session } = React.useContext(CommentContext);
   //===== modals state =====
   const [openCommentModal, setOpenCommentModal] = React.useState(false);
@@ -19,7 +21,9 @@ export default function TextComments(props) {
     false
   );
   const commentDropdwn = () => {
-    setIsActive(!isActive);
+    startTransition(() => {
+      setIsActive(!isActive);
+    });
   };
   //===== comments props states, for main comment and replies =====
   const [commentReply, setCommentReply] = React.useState(props.comment);
