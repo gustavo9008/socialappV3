@@ -4,7 +4,6 @@ import {
   useCallback,
   useContext,
   useState,
-  useMemo,
 } from "react";
 import Head from "next/head";
 // import { MongoClient } from "mongodb";
@@ -33,13 +32,13 @@ function HomePage(props) {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [typeSort, setTypeSort] = useState("TOP");
-  const [popState, setPopState] = useState(null);
+  // const [popState, setPopState] = useState(null);
   // const [btnSelected, setBtnSelected] = useState("");
   //===== save last load =====
   const saveLastLoadPost = () => {
     let currentList = {
       timestamp: new Date().getTime(),
-      type: typeSort,
+      type: posts.typeSort,
       posts,
     };
     localStorage.setItem("postLoaded", JSON.stringify(currentList));
@@ -67,7 +66,8 @@ function HomePage(props) {
 
   const handleUpdatePost = useCallback(
     async (type) => {
-      async function getNewPost() {
+      async function getNewPost(type) {
+
         const res = await getMorePost(
           "GET",
           `/api/post/getposts?next=${0}&type=${type ?? "TOP"}`
@@ -88,17 +88,15 @@ function HomePage(props) {
       let twentyMin = 1200000;
       var fiveMin = 1000 * 60 * 1;
       let loaded = JSON.parse(localStorage.getItem("postLoaded"));
+      // console.log(loaded);
       if (new Date().getTime() - loaded?.popState?.timestamp < 3000) {
         if (new Date().getTime() - loaded.timestamp < fiveMin) {
-          setTypeSort(loaded.type);
-          setPosts(loaded.posts);
-          setIsLoading(false);
           setPosts(loaded.posts);
         } else {
-          getNewPost();
+          getNewPost(loaded.type);
         }
       } else {
-        getNewPost();
+        getNewPost(type);
       }
     },
     [getMorePost, transformPosts]
@@ -127,8 +125,7 @@ function HomePage(props) {
         // setIsLoading(true);
         const res = await getMorePost(
           "GET",
-          `/api/post/getposts?next=${posts.previousLimit}&type=${
-            posts.typeSort ?? "TOP"
+          `/api/post/getposts?next=${posts.previousLimit}&type=${posts.typeSort ?? "TOP"
           }`
         );
         const newUpdatePost = await transformPosts(res.data.data);
@@ -175,30 +172,28 @@ function HomePage(props) {
       <Card>
         <aside className="mb-2 grid grid-cols-2 gap-1 px-4 pb-2">
           <a
-            href="#Top"
+
             onClick={(e) => {
               // e.preventDefault();
               posts.typeSort === "LATEST" && handleUpdatePost("TOP");
               return;
             }}
-            className={`order-1 row-span-1 w-24 p-2  hover:border-slate-400 ${
-              posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
-            }`}
+            className={`order-1 row-span-1 w-24 p-2  hover:border-slate-400 cursor-pointer ${posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
+              }`}
           >
             <span id="Top" className="text-lg font-medium">
               Top
             </span>
           </a>
           <a
-            href="#Latest"
+
             onClick={(e) => {
               // e.preventDefault();
               posts.typeSort === "TOP" && handleUpdatePost("LATEST");
               return;
             }}
-            className={`order-2 row-span-2 w-24 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 ${
-              posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
-            }`}
+            className={`order-2 row-span-2 w-24 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 cursor-pointer ${posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
+              }`}
           >
             <span id="Latest" className="text-lg font-medium">
               Latest

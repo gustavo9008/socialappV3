@@ -1,9 +1,5 @@
 function Card(props) {
-  return (
-    <main className="Psm:m-0 main-container cursor-pointer">
-      {props.children}
-    </main>
-  );
+  return <main className="main-container Psm:m-0">{props.children}</main>;
 }
 
 export default Card;

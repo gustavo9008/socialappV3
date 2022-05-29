@@ -5,6 +5,7 @@ import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
 
 const updateUserProfileHandler = async (req, res) => {
+  console.log(req.body);
   //===== create one post functionk =====
   const updateProfile = async (session) => {
     if (req.method === "PUT") {
@@ -32,6 +33,7 @@ const updateUserProfileHandler = async (req, res) => {
 
       //===== bookmark post func =====
       async function bookmarkPost() {
+        console.log(req.body);
         const bookmark = {
           postId: req.body.post,
           title: req.body.postTitle,
@@ -153,7 +155,7 @@ const updateUserProfileHandler = async (req, res) => {
   const session = await getSession({ req });
   if (session) {
     // Signed in
-    req.body.type === "UPDATE_PROFILE" && (await updateProfile(session)) && (res.end());
+    session && (await updateProfile(session)) && (res.end());
     // await updateProfile(session);
   } else {
     // Not Signed in

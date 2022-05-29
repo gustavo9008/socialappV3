@@ -12,7 +12,6 @@ export default function PostSideMenu(props) {
   //===== context imports =====
   const { useFetch, userSession, showToast } =
     React.useContext(appToastContext);
-  // console.log("userSession state", userSession);
   //===== btn imports =====
   const [
     btnDisabled,
@@ -45,9 +44,6 @@ export default function PostSideMenu(props) {
   //===== if false like func is to unlike post, if true like func is to like post =====
   const [likeFunc, setLikeFunc] = React.useState(null);
   const bookmarkpost = useFetch;
-  let bookmarkColor;
-  // console.log(post.likes);
-  // console.log(likeFunc);
   //===== btn icons for side menu =====
   const bookmarkBtnIcon = (
     <i className={`${btnColor} far fa-bookmark`}>
@@ -108,8 +104,6 @@ export default function PostSideMenu(props) {
   //===== end of btn icons =====
   //===== func to update reading list on local storage =====
   async function updateLocalStorage(updatedList) {
-    // console.log("running update local storage func");
-    // console.log(updatedList);
     // let currentList = localStorage.getItem("reading_list");
     localStorage.setItem("user_lists", JSON.stringify(updatedList));
     // localStorage.setItem("reading_list", JSON.stringify(updatedList));
@@ -123,7 +117,6 @@ export default function PostSideMenu(props) {
       user: userSession.user.id,
       type: "BOOKMARK_POST",
     };
-
     const res = await bookmarkpost("PUT", "/api/user/updateuserprofile", data);
     res.data.success === true &&
       res.data.message &&
@@ -139,10 +132,7 @@ export default function PostSideMenu(props) {
       user: userSession.user.id,
       type: "DELETE_BOOKMARK_POST",
     };
-
     const res = await bookmarkpost("PUT", "/api/user/updateuserprofile", data);
-
-    // console.log(res);
 
     res.data.success === true &&
       res.data.message &&
@@ -158,11 +148,8 @@ export default function PostSideMenu(props) {
       user: userSession.user.id,
       type: "LIKE_POST",
     };
-    // console.log(data);
 
     const res = await bookmarkpost("PUT", "/api/post/updatepost", data);
-
-    // console.log(res.data.reading_list);
 
     res.statusText === "Created" &&
       res.data.message &&
@@ -179,11 +166,8 @@ export default function PostSideMenu(props) {
       user: userSession.user.id,
       type: "UNLIKE_POST",
     };
-    // console.log(data);
 
     const res = await bookmarkpost("PUT", "/api/post/updatepost", data);
-
-    // console.log(res);
 
     res.statusText === "Created" &&
       res.data.message &&
@@ -197,11 +181,7 @@ export default function PostSideMenu(props) {
   React.useEffect(() => {
     if (userSession && localStorage.getItem("user_lists") !== "[]") {
       let reading_list = JSON.parse(localStorage.getItem("user_lists"));
-      // console.log(reading_list);
-      // const bookmarkPost = readingList.reading_list.some(
-      //   (b) => b.postId === post._id
-      // );
-      // console.log(readingList);
+
       if (reading_list.likesList.some((L) => L.postId === post._id)) {
         setLikeSvgColor("fill-red-500 text-red-500");
         setLikeFunc(false);
@@ -214,8 +194,6 @@ export default function PostSideMenu(props) {
       } else {
         setBookFunction(true);
       }
-      // console.log(readingList);
-      // console.log(readingList.some((b) => b.postId === post._id));
     }
   }, [userSession, post._id, setBtnColor]);
   return (

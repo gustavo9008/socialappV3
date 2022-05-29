@@ -129,6 +129,14 @@ const NavDropdown = (props) => {
                 Write a post
               </a>
             </Link>
+            <Link href="/user/readinglist">
+              <a
+                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                role="menuitem"
+              >
+                Reading List
+              </a>
+            </Link>
 
             <Link href="/user/profile/settings">
               <a
