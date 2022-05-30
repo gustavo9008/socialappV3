@@ -28,7 +28,7 @@ function SinglePost(props) {
         timestamp: new Date().getTime(),
       };
       localStorage.setItem("postLoaded", JSON.stringify(loaded));
-      console.log(loaded);
+      // console.log(loaded);
       console.log("this is from the before pop state router");
       return true;
     });

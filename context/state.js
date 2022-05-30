@@ -1,10 +1,15 @@
 import React from "react";
 import { useSession } from "next-auth/react";
 import useFetch from "@/hooks/fetch";
+import { usePostsState } from "@/hooks/usePosts";
 
 export const appToastContext = React.createContext(null);
 
 export function ToastWrapper(props) {
+  // console.log("taost wrapper");
+  const [posts, setPosts, saveLastLoadPost] = usePostsState(null, null, true, null)
+  // const { data: session, status } = useSession();
+
   const [list, setList] = React.useState([]);
   const [userSession, setUserSession] = React.useState(null);
   const [statusAuth, setStatusAuth] = React.useState(null);
@@ -81,6 +86,9 @@ export function ToastWrapper(props) {
         setTokenRefreshInterval,
         statusAuth,
         setStatusAuth,
+        posts,
+        setPosts,
+        saveLastLoadPost
       }}
     >
       {props.children}
