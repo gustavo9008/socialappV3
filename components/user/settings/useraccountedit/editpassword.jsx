@@ -64,11 +64,11 @@ export default function EditPassword(props) {
     async function updatePassword() {
       setBtnDisabled(true);
       setLabel("Saving...");
-      const type = "EDIT_USER_PASSWORD";
+      // const type = "EDIT_USER_PASSWORD";
       const data = {
         oldPassword: oldPasswordRef.current.value,
         newPassword: newPasswordRef.current.value,
-        type,
+        type: "EDIT_USER_PASSWORD",
       };
 
       const res = await sendAccountData("PUT", "/api/user/editaccount", data);

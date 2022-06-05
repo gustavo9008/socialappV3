@@ -60,14 +60,14 @@ export default function UserAccount(props) {
     // console.log(data);
     const res = await sendAccountData("PUT", "/api/user/editaccount", data);
     console.log(await res);
-    if (res.statusText === "Created") {
-      showToast("success", res.data.message);
+    if (res.status === 201 || 200) {
+      showToast(res.data.type, res.data.message);
       newEmailRef.current.value = "";
       newNameRef.current.value = "";
       stopBtnAnimate(idTagChangeUser);
       setLabel("Update");
       setBtnColor("bg-slate-700");
-      props.updateSession();
+      res.data.type === "success" && props.updateSession();
     }
   };
   //===== function check if form are valid to enable btn =====

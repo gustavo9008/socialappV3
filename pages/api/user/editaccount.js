@@ -100,39 +100,40 @@ const updateuseraccounthandler = async (req, res) => {
           }
           // console.log(savedUser);
           // res.status(201).json({ message: "your account has been updated" });
+          res.status(201).json({ type: "success", message: "your account has been updated" });
+          res.end();
         })
         .catch((err) => {
           console.log("inside catch error");
-          console.log(err);
+          // console.log(err);
           if (err.keyPattern.name) {
-            console.log(err);
+            // console.log(err.keyPattern);
             res
               .status(200)
               .json({ type: "error", message: "Username exists already!" });
             res.end();
           }
           if (err.keyPattern.email) {
-            console.log(err);
+            // console.log(err.keyPattern);
             res.status(200).json({
               type: "error",
               message: "User with email already exists!",
             });
             res.end();
           }
-          if (err) {
-            console.log(err);
-            res.status(200).json({
-              type: "error",
-              message: "Something went wrong, try again later",
-            });
-            // res.end();
-          }
-          res.end();
+          // if (err) {
+          //   // console.log(err);
+          //   res.status(200).json({
+          //     type: "error",
+          //     message: "Something went wrong, try again later",
+          //   });
+          //   res.end();
+          // }
+          // res.end();
         });
 
       // await updateUserToken();
-      res.status(201).json({ message: "your account has been updated" });
-      res.end();
+
     };
     //===== edit user password funtion =====
     const editUserPassword = async (session) => {
