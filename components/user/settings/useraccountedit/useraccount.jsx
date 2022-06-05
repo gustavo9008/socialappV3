@@ -31,10 +31,10 @@ export default function UserAccount(props) {
   const newEmailRef = useRef();
   const idTagChangeUser = "svgSpinChangUser";
 
-  const refreshToeknTrigger = () => {
-    setTokenRefreshInterval(432000);
-  };
-  const emailErrorMessage = "You must provide valid email.";
+  // const refreshToeknTrigger = () => {
+  //   setTokenRefreshInterval(432000);
+  // };
+  // const emailErrorMessage = "You must provide valid email.";
   // console.log(sendAccountData);
 
   // const stopBtnAnimate = () => {
@@ -59,19 +59,15 @@ export default function UserAccount(props) {
     };
     // console.log(data);
     const res = await sendAccountData("PUT", "/api/user/editaccount", data);
+    console.log(await res);
     if (res.statusText === "Created") {
-      // console.log(userSession);
-      setTokenRefreshInterval(2);
-      setTimeout(() => {
-        console.log("setTimeout Triggered!");
-        refreshToeknTrigger();
-      }, 4000);
       showToast("success", res.data.message);
       newEmailRef.current.value = "";
       newNameRef.current.value = "";
       stopBtnAnimate(idTagChangeUser);
       setLabel("Update");
       setBtnColor("bg-slate-700");
+      props.updateSession();
     }
   };
   //===== function check if form are valid to enable btn =====

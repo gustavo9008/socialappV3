@@ -34,7 +34,7 @@ const updateuseraccounthandler = async (req, res) => {
       // console.log(user);
       user.name = updatedUser.name;
       user.email = updatedUser.email;
-      user
+      await user
         .save()
         .then((savedUser) => {
           console.log("this is savedUser callback");

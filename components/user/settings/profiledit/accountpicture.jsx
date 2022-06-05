@@ -22,15 +22,12 @@ export default function AccountPicture(props) {
     btnColor,
     setBtnColor,
   ] = useBtnState(true, "Save Picture/Color", "bg-slate-700", "block");
-  // console.log(props.user);
-  // const [show, setShow] = useState(true);
   const [newcolorstate, setNewColorState] = useState([]);
   const profilePictureRef = useRef();
   const oldProfilePic = useRef();
   const newColor = useRef();
   const router = useRouter();
   const updateNewColorPic = useFetch;
-  // console.log(newcolorstate);
 
   const changeBtnColorActive = () => {
     btnDisabled === true && setBtnDisabled(false);
@@ -62,17 +59,10 @@ export default function AccountPicture(props) {
     //===== form data creation =====
     const formData = new FormData();
     const oldFilename = oldProfilePic.current.getAttribute("data-filename");
-    // console.log(newColor.current.getAttribute("data-color"));
     if (oldFilename) {
       formData.append("oldFileName", oldFilename);
     }
-    // updateImageSubmit(formData);
-    // console.log();
-
     if (profilePictureRef.current.files[0]) {
-      // btnAnimate();
-      // formData.append("file", profilePictureRef.current.files[0]);
-      // console.log(formData);
       let imageForm = profilePictureRef.current.files[0];
       new Compressor(imageForm, {
         quality: 0.4,
@@ -92,11 +82,8 @@ export default function AccountPicture(props) {
     function updateColor() {
       // btnAnimate();
       if (newColor.current.getAttribute("data-color")) {
-        // console.log(newcolorstate);
         formData.append("newColor", JSON.stringify(newcolorstate));
         updateImageSubmit(formData);
-      } else {
-        console.log("nothing has change");
       }
     }
 
@@ -104,32 +91,18 @@ export default function AccountPicture(props) {
   };
 
   const updateImageSubmit = async (formData) => {
-    // console.log(message);
-    // const res = await fetch("/api/user/uploadimage", {
-    //   method: "PUT",
-    //   body: formData,
-    // });
     const res = await updateNewColorPic(
       "PUT",
       "/api/user/uploadimage",
       formData
     );
-    // Await for data for any desirable next steps
-    console.log(res.data.message);
-    if (res.data.success === true) {
-      const res = await updateNewColorPic(
-        "GET",
-        "/api/auth/session?updateUserSession=true"
-      );
+    if ((await res.data.success) === true) {
       showToast("success", "Picture updated.");
       setBtnColor("bg-slate-700");
       setBtnDisabled(true);
       stopBtnAnimate("sendNewColorBtn");
+      props.updateSession();
     }
-
-    // if (res.ok === true) {
-    //   router.reload();
-    // }
   };
 
   async function generateRandomColors(num) {
@@ -159,9 +132,7 @@ export default function AccountPicture(props) {
 
     changeBtnColorActive();
     let newColorpic = await generateRandomColors(6);
-    // console.log(newColorPic);
     setNewColorState(newColorpic);
-    // console.log(newcolorstate);
     const colorCircle = document.querySelector("#colorPic");
     colorCircle.style.backgroundImage = `linear-gradient(225deg, ${newColorpic[0]}, ${newColorpic[1]}, ${newColorpic[2]}, ${newColorpic[3]}, ${newColorpic[4]}, ${newColorpic[5]})`;
     colorCircle.setAttribute("data-color", newColor);

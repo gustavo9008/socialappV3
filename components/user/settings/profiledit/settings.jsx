@@ -69,7 +69,7 @@ export default function Settings(props) {
         "GET",
         `/api/auth/session?updateUserSession=true`
       );
-      // console.log("resSession",resSession);
+      // console.log("resSession", resSession);
 
       // setTokenRefreshInterval(2);
       // setTimeout(() => {

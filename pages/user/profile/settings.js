@@ -3,33 +3,36 @@ import Settings from "../../../components/user/settings/profiledit/settings";
 import AccountPicture from "@/components/user/settings/profiledit/accountpicture";
 import Account from "@/components/user/settings/useraccountedit/account";
 import { useSession, getSession } from "next-auth/react";
-// import { appToastContext } from "context/state";
+import { appToastContext } from "context/state";
 import { useRouter } from "next/router";
+import Spinner from "@/components/ui/Spinner";
 // import profile from "@/models/profile";
 
 export default function ProfilePage(props) {
   const router = useRouter();
 
-  // const { userSession } = React.useContext(appToastContext);
-  // console.log("userSession",userSession);
-  const { data: session, status } = useSession();
-  // console.log("session", session);
-  // console.log("status", status);
+  const { userSession, setUserSession, useFetch } = React.useContext(appToastContext);
+  const updateUser = useFetch;
   const [showProfile, setShowProfile] = useState(true);
   const [showAccount, setShowAccount] = useState(false);
   const profileBtnRef = useRef();
   const settingBtnRef = useRef();
-  // if (userSession === null) {
-  //   router.push("/");
-  // }
+  const updateSession = async () => {
+    const resSession = await updateUser(
+      "GET",
+      "/api/auth/session?updateUserSession=true"
+    );
+    resSession.status === 200 && setUserSession(resSession.data);
+
+  }
 
   const showProfileSetting = (e) => {
     e.preventDefault();
     if (showProfile) {
       return;
     }
-    profileBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
-    settingBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
+    // profileBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
+    // settingBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
     setShowAccount(!showAccount);
     setShowProfile(!showProfile);
   };
@@ -38,17 +41,18 @@ export default function ProfilePage(props) {
     if (showAccount) {
       return;
     }
-    profileBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
-    settingBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
+    // profileBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
+    // settingBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
     setShowProfile(!showProfile);
     setShowAccount(!showAccount);
   };
-  React.useEffect(() => {
-    profileBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
-  }, []);
+  // React.useEffect(() => {
+  //   userSession !== null && showProfile && profileBtnRef.current.classList.add("bg-gray-200", "text-gray-700");
+  //   userSession !== null && showAccount && settingBtnRef.current.classList.remove("bg-gray-200", "text-gray-700");
+  // }, [userSession]);
   return (
     <>
-      {status === "authenticated" ? (
+      {userSession !== null ? (
         <main className="mx-auto flex max-w-screen-md Psm:flex-col">
           <div className="h-full w-48 px-4 py-8 Psm:w-72">
             <div className="mt-6 flex flex-1 flex-col justify-between Psm:flex-row">
@@ -57,7 +61,7 @@ export default function ProfilePage(props) {
                   <a
                     ref={profileBtnRef}
                     onClick={showProfileSetting}
-                    className="mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
+                    className={`${showProfile && (`bg-gray-200 text-gray-700`)} mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700`}
                   >
                     <svg
                       className="h-5 w-5"
@@ -89,7 +93,7 @@ export default function ProfilePage(props) {
                   <a
                     ref={settingBtnRef}
                     onClick={showAcccountSetting}
-                    className="mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700"
+                    className={`${showAccount && (`bg-gray-200 text-gray-700`)} mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700`}
                     href="#"
                   >
                     <svg
@@ -126,41 +130,23 @@ export default function ProfilePage(props) {
             <>
               <aside>
                 <Settings
-                  user={session.user || null}
-                  profile={session.user.profile || null}
+                  user={userSession.user || null}
+                  profile={userSession.user.profile || null}
+                  updateSession={updateSession}
+
                 />
                 <AccountPicture
-                  user={session.user || null}
-                  profile={session.user.profile || null}
+                  user={userSession.user || null}
+                  profile={userSession.user.profile || null}
+                  updateSession={updateSession}
                 />
               </aside>
             </>
           )}
-          {showAccount && <Account user={session.user} />}
+          {showAccount && <Account user={userSession.user} updateSession={updateSession} />}
         </main>
       ) : (
-        <div className="flex flex-row justify-center">
-          {" "}
-          <svg
-            className="-ml-1 mr-3 h-20 w-20 animate-spin text-white"
-            viewBox="0 0 24 24"
-            style={{ display: "block" }}
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
-        </div>
+        <Spinner />
       )}
 
     </>

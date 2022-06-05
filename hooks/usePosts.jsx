@@ -17,5 +17,7 @@ export function usePostsState(initPosts, initLimit, initLoading, initType) {
     // localStorage.setItem("reading_list", JSON.stringify(updatedList));
     return;
   };
+  // console.log(posts);
+
   return [posts, setPosts, saveLastLoadPost];
 }

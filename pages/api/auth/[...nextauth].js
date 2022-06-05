@@ -45,6 +45,7 @@ export default async function auth(req, res) {
               id: user._id,
               profile: user.profile,
               created: user.createdAt,
+              updated: user.updatedAt,
             };
             return loginUser;
           }
@@ -82,7 +83,7 @@ export default async function auth(req, res) {
     },
     callbacks: {
       async jwt({ token, user }) {
-        let reading_list;
+        // console.log(user);
         if (user) {
           const userList = {
             user: user.name,
@@ -100,6 +101,7 @@ export default async function auth(req, res) {
             (token.name = user.name),
             (token.email = user.email),
             (token.created = user.created),
+            (token.updated = user.updated),
             (token.profile = {
               about: user.profile.about,
               location: user.profile.location,
@@ -110,10 +112,12 @@ export default async function auth(req, res) {
         if (
           req.query.updateUserSession === "true"
         ) {
+          console.log("updating user session");
           await dbConnect();
           const user = await User.findById(token.sub);
           token.name = user.name;
           token.email = user.email;
+          token.updated = user.updatedAt;
           token.profile.about = user.profile.about;
           token.profile.location = user.profile.location
           token.profile.image = user.profile.image;
@@ -122,20 +126,22 @@ export default async function auth(req, res) {
           // }
 
         }
+        // console.log(token);
+
         return token;
       },
       async session({ session, token }) {
-
-        if (session.user.name !== token.name) {
-          session.user.name = token.name;
-          session.user.email = token.email;
-          session.user.image = token.profile.image.url;
-        }
+        // console.log(token);
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.profile.image.url;
         session.user.id = token.sub;
         session.user.profile = token.profile;
         session.user.genericImage = token.profile.image.genericPic;
         session.user.created = token.created;
-
+        session.user.updated = token.updated;
+        // console.log(token);
+        // console.log(session);
         return session;
       },
       async redirect({ url, baseUrl }) {

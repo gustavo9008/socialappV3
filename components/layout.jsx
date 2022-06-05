@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 
 export default function Layout({ children }) {
   // console.log("redering...");
-  const { userSession, setUserSession, statusAuth, setStatusAuth } =
+  const { userSession, setUserSession, setTokenRefreshInterval } =
     React.useContext(appToastContext);
   // console.log(children);
 
@@ -23,17 +23,21 @@ export default function Layout({ children }) {
     if (status === "authenticated" && userSession === null) {
       // console.log(session);
       // console.log(userSession);
-      if (userSession === null) {
-        // if (!localStorage.getItem("reading_list")) {
-        //   console.log(localStorage.getItem("reading_list") === "[]");
-        //   console.log(localStorage.getItem("reading_list"));
-        //   // console.log(JSON.parse(localStorage.getItem("reading_list")).length);
-        // }
-        // console.log("setting user session");
-        setUserSession(session);
-        // console.log(session);
-      }
+
+      // session.user.updated === userSession
+      setUserSession(session);
     }
+    // if (userSession?.user.updated !== session?.user.updated) {
+    //   console.log("updated does not match");
+    //   // if (!localStorage.getItem("reading_list")) {
+    //   //   console.log(localStorage.getItem("reading_list") === "[]");
+    //   //   console.log(localStorage.getItem("reading_list"));
+    //   //   // console.log(JSON.parse(localStorage.getItem("reading_list")).length);
+    //   // }
+    //   // console.log("setting user session");
+    //   setUserSession(session);
+    //   // console.log(session);
+    // }
   }, [session, setUserSession, status, userSession]);
 
   return (

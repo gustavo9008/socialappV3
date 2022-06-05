@@ -69,7 +69,6 @@ function PasswordInput(props, ref) {
       props.setBtnColor("bg-slate-700");
       return;
     }
-    console.log("password input had been used!");
     props.containerWarning.current.classList.remove("hidden");
 
     clearTimeout(timeout);
@@ -101,7 +100,6 @@ function PasswordInput(props, ref) {
   };
 
   function passwordMatch() {
-    console.log("matches!!!");
     // setPasswordMatchColor("bg-green-100 border-green-400");
     // prettier-ignore
     props.repeatPasswordCheck.current.classList.add("bg-green-100", "border-green-400");
@@ -113,7 +111,6 @@ function PasswordInput(props, ref) {
   }
 
   function passwordNotMatch() {
-    console.log("does not match!!");
     // setPasswordMatchColor("bg-yellow-100 border-yellow-400");
     // prettier-ignore
     props.repeatPasswordCheck.current.classList.add("bg-yellow-100", "border-yellow-400");

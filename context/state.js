@@ -6,9 +6,11 @@ import { usePostsState } from "@/hooks/usePosts";
 export const appToastContext = React.createContext(null);
 
 export function ToastWrapper(props) {
+  // console.log("state updating...");
   // console.log("taost wrapper");
   const [posts, setPosts, saveLastLoadPost] = usePostsState(null, null, true, null)
   // const { data: session, status } = useSession();
+  // console.log("state session", session?.user.updated);
 
   const [list, setList] = React.useState([]);
   const [userSession, setUserSession] = React.useState(null);
@@ -16,6 +18,7 @@ export function ToastWrapper(props) {
   const setTokenRefreshInterval = props.setRefreshInterval;
 
   let toastProperties = null;
+  // console.log(userSession?.user.updated);
 
   const showToast = (type, description) => {
     const id = Math.floor(Math.random() * 100 + 1);
