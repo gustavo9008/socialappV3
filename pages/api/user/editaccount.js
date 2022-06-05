@@ -140,7 +140,8 @@ const updateuseraccounthandler = async (req, res) => {
       const passwordMatch = await compare(oldPassword, user.password);
       if (!passwordMatch) {
         res.status(200).json({
-          error: { message: "The current password you entered is incorrect." },
+          error: true,
+          errorMessage: { message: "The current password you entered is incorrect." },
         });
       }
       if (passwordMatch) {

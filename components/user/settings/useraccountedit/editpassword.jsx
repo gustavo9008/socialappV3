@@ -31,7 +31,7 @@ export default function EditPassword(props) {
     repeatPasswordRef,
     repeatPasswordCheck,
   ] = usePasswordInputState();
-  const sendAccountData = props.send;
+  const sendAccountData = useFetch;
   const oldPasswordRef = React.useRef();
   // const newPasswordRef = React.useRef();
   // const strengthBadge = React.useRef();
@@ -64,17 +64,15 @@ export default function EditPassword(props) {
     async function updatePassword() {
       setBtnDisabled(true);
       setLabel("Saving...");
-      console.log("change password submit");
       const type = "EDIT_USER_PASSWORD";
       const data = {
         oldPassword: oldPasswordRef.current.value,
         newPassword: newPasswordRef.current.value,
         type,
       };
-      console.log(data);
 
       const res = await sendAccountData("PUT", "/api/user/editaccount", data);
-      if (res.statusText === "Created") {
+      if (res.status === 201) {
         res.data.message &&
           (showToast("success", res.data.message),
           stopBtnAnimate(idTagPass),
@@ -85,19 +83,15 @@ export default function EditPassword(props) {
           containerWarning.current.classList.add("hidden"),
           repeatPasswordCheck.current.classList.add("hidden"),
           setBtnColor("bg-slate-700"),
-          setBtnDisabled(true),
-          console.log(res.data));
+          setBtnDisabled(true));
       }
-      if (res.statusText === "OK") {
-        console.log(res.data);
-        res.data.error &&
-          (showToast("error", res.data.error.message),
-          stopBtnAnimate(idTagPass),
-          setLabel("Save New Password"),
-          (oldPasswordRef.current.value = ""),
-          setBtnDisabled(false));
-      }
-      console.log(res);
+
+      res.data.error &&
+        (showToast("error", res.data.errorMessage.message),
+        stopBtnAnimate(idTagPass),
+        setLabel("Save New Password"),
+        (oldPasswordRef.current.value = ""),
+        setBtnDisabled(false));
     }
   };
 
