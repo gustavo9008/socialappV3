@@ -5,14 +5,11 @@ import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
 
 const updateUserProfileHandler = async (req, res) => {
-  console.log(req.body);
   //===== create one post functionk =====
   const updateProfile = async (session) => {
     if (req.method === "PUT") {
-      // console.log(req.body);
       await dbConnect();
       const user = await User.findById(req.body.user);
-      // console.log(user._id.toString() === session.user.id);
       //===== for update user profile info =====
       user._id.toString() === session.user.id &&
         req.body.type === "UPDATE_PROFILE" &&
@@ -33,7 +30,6 @@ const updateUserProfileHandler = async (req, res) => {
 
       //===== bookmark post func =====
       async function bookmarkPost() {
-        console.log(req.body);
         const bookmark = {
           postId: req.body.post,
           title: req.body.postTitle,
@@ -55,15 +51,11 @@ const updateUserProfileHandler = async (req, res) => {
       }
       //===== delete bookmark =====
       async function deleteBookmarkPost() {
-        // console.log(user.profile);
-        // console.log("you have deleted bookmarked " + req.body.bookmark);
-
         const delBook = await user.profile.readingList.filter(
           (bookId) => bookId.postId !== req.body.bookmark
         );
 
         user.profile.readingList = delBook;
-        // console.log(delBook);
         await user.save();
 
         let updatedBookmark = user.profile.readingList;
@@ -81,19 +73,13 @@ const updateUserProfileHandler = async (req, res) => {
 
       //===== update info in user profile =====
       async function updateUserProfile() {
-        // console.log("user does match found user");
-        // console.log(user._id.toString(), session.user.id);
-        // console.log(req.body);
         const { about, location, links } = req.body;
-        // console.log(location);
 
 
         user.profile.about = about;
         user.profile.location = location;
         user.profile.links = links;
         await user.save();
-
-        // console.log(updatedProfile);
 
         res.status(201).json({ success: true, message: "Profile has been update." });
       }
