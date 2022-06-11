@@ -59,7 +59,7 @@ export default async function findPostHandler(req, res) {
       post.comments = await allReplies;
       // console.log(post.comments);
     }
-    res.status(200).json({ success: true, data: post });
+    res.status(200).json({ success: true, post });
   } catch (error) {
     res.status(400).json({ success: false });
   }
