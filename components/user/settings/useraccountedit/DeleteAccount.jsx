@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/user/settings/useraccountedit/DeleteModal";
 
 export default function DeleteAccount(props) {
   const [showModal, setShowModal] = React.useState(false);
@@ -26,7 +26,7 @@ export default function DeleteAccount(props) {
           <button
             onClick={() => setShowModal(true)}
             id="loginModal"
-            className="rounded w-20 hover:text-white bg-red-700 hover:bg-red-800 p-2"
+            className="w-20 rounded bg-red-700 p-2 hover:bg-red-800 hover:text-white"
             aria-roledescription="pop-up delete button"
           >
             Delete
@@ -36,6 +36,7 @@ export default function DeleteAccount(props) {
             user={props.user}
             showModal={showModal}
             setShowModal={setShowModal}
+            useAxiosFetch={props.useAxiosFetch}
           />
         </div>
       </section>

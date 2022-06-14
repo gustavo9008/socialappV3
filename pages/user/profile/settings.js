@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import Settings from "../../../components/user/settings/profiledit/settings";
 import AccountPicture from "@/components/user/settings/profiledit/accountpicture";
-import Account from "@/components/user/settings/useraccountedit/account";
+import Account from "@/components/user/settings/useraccountedit/AccountIndex";
 import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "context/state";
 import { useRouter } from "next/router";
@@ -143,7 +143,7 @@ export default function ProfilePage(props) {
               </aside>
             </>
           )}
-          {showAccount && <Account user={userSession.user} updateSession={updateSession} />}
+          {showAccount && <Account user={userSession.user} updateSession={updateSession} useAxiosFetch={useFetch} />}
         </main>
       ) : (
         <Spinner />

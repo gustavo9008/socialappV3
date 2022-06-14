@@ -150,7 +150,7 @@ const updateuseraccounthandler = async (req, res) => {
         user.password = password;
         user.save();
         console.log("account password has been update");
-        res.status(201).json({ message: "Your password has been update." });
+        res.status(201).json({ message: "Your password has been updated." });
       }
 
       // res.end();
@@ -180,6 +180,7 @@ const updateuseraccounthandler = async (req, res) => {
 
     const deleteEverything = async () => {
       // console.log(req.body);
+      // database delete comment, reply, replies comments and user
       const commentDeleted = await Comment.deleteMany({
         "userProfile.id": user._id,
       });

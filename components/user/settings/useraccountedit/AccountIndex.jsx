@@ -1,8 +1,8 @@
 import React from "react";
 
-import UserAccount from "./useraccount";
-import EditPassword from "./editpassword";
-import DeleteAccount from "./deleteaccount";
+import UserAccount from "./EditUserEmailName";
+import EditPassword from "./EditPassword";
+import DeleteAccount from "./DeleteAccount";
 
 export default function Account(props) {
   return (
@@ -10,7 +10,7 @@ export default function Account(props) {
       <aside className="">
         <UserAccount user={props.user} updateSession={props.updateSession} />
         <EditPassword />
-        <DeleteAccount user={props.user} />
+        <DeleteAccount user={props.user} useAxiosFetch={props.useAxiosFetch} />
       </aside>
     </>
   );
