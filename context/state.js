@@ -2,12 +2,13 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import useFetch from "@/hooks/fetch";
 import { usePostsState } from "@/hooks/usePosts";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export const appToastContext = React.createContext(null);
 
 export function ToastWrapper(props) {
-  // console.log("state updating...");
-  // console.log("taost wrapper");
+  const router = useRouter();
   const [posts, setPosts, saveLastLoadPost] = usePostsState(null, null, true, null)
   // const { data: session, status } = useSession();
   // console.log("state session", session?.user.updated);
@@ -20,6 +21,21 @@ export function ToastWrapper(props) {
   let toastProperties = null;
   // console.log(userSession?.user.updated);
 
+  // logout func
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    router.push("/");
+    // signOut({ callbackUrl: "10.0.0.60:3000/" });
+    const logoutData = await signOut({
+      callbackUrl: "/",
+      redirect: false,
+    });
+    console.log(logoutData);
+    logoutData.url &&
+      (localStorage.removeItem("user_lists"),
+
+        setUserSession(null));
+  };
   const showToast = (type, description) => {
     const id = Math.floor(Math.random() * 100 + 1);
     // console.log(id);
@@ -91,7 +107,8 @@ export function ToastWrapper(props) {
         setStatusAuth,
         posts,
         setPosts,
-        saveLastLoadPost
+        saveLastLoadPost,
+        handleLogout
       }}
     >
       {props.children}

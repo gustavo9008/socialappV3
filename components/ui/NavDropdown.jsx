@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
+// import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useDetectOutsideClick } from "./useDetectClick";
 import { appToastContext } from "context/state";
@@ -10,24 +10,30 @@ const NavDropdown = (props) => {
   // console.log("redering...");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const { showToast, setUserSession } = React.useContext(appToastContext);
+  const { showToast, setUserSession, handleLogout } =
+    React.useContext(appToastContext);
   // console.log(userSession);
   if (props.user === null) {
     router.push("/");
   }
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    router.push("/");
-    // signOut({ callbackUrl: "10.0.0.60:3000/" });
-    const logoutData = await signOut({
-      callbackUrl: "/",
-      redirect: false,
-    });
-    console.log(logoutData);
-    logoutData.url &&
-      (localStorage.removeItem("user_lists"),
-      showToast("success", "You have been logged out."),
-      setUserSession(null));
+  // const handleLogout = async (e) => {
+  //   e.preventDefault();
+  //   router.push("/");
+  //   // signOut({ callbackUrl: "10.0.0.60:3000/" });
+  //   const logoutData = await signOut({
+  //     callbackUrl: "/",
+  //     redirect: false,
+  //   });
+  //   console.log(logoutData);
+  //   logoutData.url &&
+  //     (localStorage.removeItem("user_lists"),
+  //     showToast("success", "You have been logged out."),
+  //     setUserSession(null));
+  // };
+
+  const logoutHandler = async (e) => {
+    handleLogout(e);
+    showToast("success", "You have been logged out.");
   };
 
   const dropdownRef = React.useRef(null);
@@ -148,7 +154,7 @@ const NavDropdown = (props) => {
             </Link>
 
             <a
-              onClick={handleLogout}
+              onClick={logoutHandler}
               id="logoutbtn"
               className="block h-12 border-t border-gray-500 border-opacity-50 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
               role="menuitem"

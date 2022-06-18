@@ -10,7 +10,11 @@ export default function Comments(props) {
   return (
     <aside id="commentSection" className="edit-comment-container">
       {props.comments.map((comment) => (
-        <TextComments key={comment._id} comment={comment} />
+        <TextComments
+          key={comment._id}
+          comment={comment}
+          originalCommentId={comment._id}
+        />
       ))}
     </aside>
   );

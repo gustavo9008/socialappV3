@@ -7,6 +7,7 @@ import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
 
 const postHandler = async (req, res) => {
+  console.log(req.body.type);
   async function addComment() {
     await dbConnect();
     const { comment, userProfile, postUrl, postId } = req.body;
@@ -36,14 +37,15 @@ const postHandler = async (req, res) => {
   }
 
   async function addReplyComment() {
-    const { reply, userProfile, postUrl, postId, commentId } = req.body;
+    const { reply, userProfile, postUrl, postId, commentId, originalCommentId } = req.body;
 
     const comment = await Comment.findById(commentId);
     const newReply = new Reply({
       comment: reply,
       userProfile,
       postUrl,
-      originalCommentId: commentId,
+      originalCommentId: originalCommentId,
+      originalReplyId: commentId,
       originalPostId: postId,
     });
     await comment.replies.push(newReply._id);
@@ -55,13 +57,14 @@ const postHandler = async (req, res) => {
     res.status(201).json(replyCreated);
   }
   async function addReply() {
-    const { reply, userProfile, postUrl, postId, commentId } = req.body;
+    const { reply, userProfile, postUrl, postId, commentId, originalCommentId } = req.body;
     const originalReply = await Reply.findById(commentId);
     const newReply = new Reply({
       comment: reply,
       userProfile,
       postUrl,
-      originalCommentId: commentId,
+      originalCommentId: originalCommentId,
+      originalReplyId: commentId,
       originalPostId: postId,
     });
     originalReply.replies.push(newReply._id);

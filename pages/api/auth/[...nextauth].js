@@ -22,7 +22,7 @@ export default async function auth(req, res) {
     providers: [
       CredentialsProvider({
         async authorize(credentials, req) {
-
+          console.log(credentials);
           //Connect to DB
           const client = await MongoClient.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
@@ -34,6 +34,16 @@ export default async function auth(req, res) {
           const user = await userProfile.findOne({
             email: credentials.email,
           });
+          // console.log(user)
+          if (user === null) {
+            client.close();
+            // const error = new Error("No user found with the email");
+            // console.log(error);
+            throw new Error("No user found with the email");
+
+            // return error;
+          }
+
           const checkPassword = await compare(
             credentials.password,
             user.password
@@ -50,10 +60,6 @@ export default async function auth(req, res) {
             return loginUser;
           }
           //Not found - send error res
-          if (!user) {
-            client.close();
-            throw new Error("No user found with the email");
-          }
 
           //Incorrect password - send response
           if (!checkPassword) {

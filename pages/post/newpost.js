@@ -28,9 +28,6 @@ export default function NewPost(props) {
       URL.revokeObjectURL(output.src); // free memory
     };
   };
-  const { data: session, status } = useSession();
-  // console.log(props);
-
   const titleRef = useRef();
   const imageRef = useRef();
   const editor = useRef();
@@ -58,7 +55,6 @@ export default function NewPost(props) {
   //   minHeight: "400",
   //   readonly: false, // all options from https://xdsoft.net/jodit/doc/
   // };
-  // console.log(userSession);
   //===== submits new post =====
   const handleNewPost = async (e) => {
     e.preventDefault();
@@ -85,25 +81,20 @@ export default function NewPost(props) {
       setDisable(true);
       btnAnimate();
       let postImage = postCustomImage.current.files[0];
-      console.log(postImage);
       new Compressor(postImage, {
         quality: 0.4,
         success(result) {
           let newImage = result;
-          console.log(newImage);
           formData.append("file", newImage, newImage.name);
-          console.log(Object.fromEntries(formData));
           submitNewPost(formData);
         },
       });
     }
-    // console.log(editorState);
     //===== check input refs =====
     if (!titleRef.current.value) {
       //===== checks of title ref is empty =====
       let err = "Title is required";
       showToast("error", err);
-      // console.log(postCustomImage.current.files[0]);
     } else {
       //===== check if image ref are empty =====
       if (postCustomImage.current.files[0] === undefined) {
@@ -131,10 +122,8 @@ export default function NewPost(props) {
     // });
     // // Await for data for any desirable next steps
     // const data = await res.json();
-    // console.log(data);
 
     const res = await sendNewPost("POST", "/api/post/newpost", formData);
-    console.log(res);
     if (res.data.success === true) {
       showToast("success", res.data.message);
       router.push(`/post/${res.data.newPostId}`);

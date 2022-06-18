@@ -7,6 +7,7 @@ import User from "../../../models/user";
 import Comment from "../../../models/comment";
 import dbConnect from "../../../middleware/mongodb";
 import Reply from "../../../models/replies";
+import { cloudinary } from "../../../middleware/cloudinary/postStorage";
 // import useFetch from "../../../hooks/fetch";
 // import { server } from "../../../config/index";
 
@@ -19,30 +20,21 @@ const updateuseraccounthandler = async (req, res) => {
   const updateAccount = async (session) => {
     //===== search user account =====
     await dbConnect();
-    // console.log(req.body);
-    const user = await User.findById(session.user.id);
-    // const sendNewUser = user.name;
-    // console.log(userName);
+    const user = await User.findById(session.user.id).lean();
 
     const editUserAccount = async () => {
-      // console.log(req.body.newName, req.body.newEmail);
-      console.log("edit user account function");
       let updatedUser = {
         name: req.body.newName,
         email: req.body.newEmail,
       };
-      // console.log(user);
       user.name = updatedUser.name;
       user.email = updatedUser.email;
       await user
         .save()
         .then((savedUser) => {
-          console.log("this is savedUser callback");
-          // console.log(savedUser)
           //===== check and updates post user name =====
           if (user.profile.posts) {
             let postsLength = Object.keys(user.profile.posts);
-            // console.log(postsLength);
             //===== loop to update post username =====
             for (let i = 0; i < postsLength.length; i++) {
               Post.findById(user.profile.posts[i], (err, post) => {
@@ -57,19 +49,13 @@ const updateuseraccounthandler = async (req, res) => {
           }
           //===== loop to update commment username =====
           if (user.profile.comments) {
-            // console.log("inside change comment username loop");
 
             let commentLength = Object.keys(user.profile.comments);
-            // console.log(commentLength);
             for (let i = 0; i < commentLength.length; i++) {
               Comment.findById(user.profile.comments[i], (err, comment) => {
                 if (err) {
                   return;
                 }
-                // if (comment.replies) {
-                //   deepIterator(comment.replies, savedUser.name);
-                // }
-                // console.log(comment);
                 if (comment !== null) {
                   comment.userProfile.name = savedUser.name;
                   comment.save();
@@ -78,62 +64,37 @@ const updateuseraccounthandler = async (req, res) => {
             }
           }
           if (user.profile.commentReplies) {
-            // console.log("inside change replies username loop");
             let repliesLength = Object.keys(user.profile.commentReplies);
-            // console.log(repliesLength);
             for (let i = 0; i < repliesLength.length; i++) {
-              // console.log(user.profile.commentReplies[i]);
               Reply.findById(user.profile.commentReplies[i], (err, reply) => {
                 if (err) {
-                  console.log(err);
+                  res.status(201).json({ type: "false", message: "Something went wrong try again later." });
                 }
-                // console.log(reply);
                 if (reply !== null) {
                   reply.userProfile.name = savedUser.name;
                   reply.save();
                 }
-
-                // console.log("inside change reply loop");
-                // console.log(reply._id);
               });
             }
           }
-          // console.log(savedUser);
-          // res.status(201).json({ message: "your account has been updated" });
           res.status(201).json({ type: "success", message: "your account has been updated" });
           res.end();
         })
         .catch((err) => {
-          console.log("inside catch error");
-          // console.log(err);
           if (err.keyPattern.name) {
-            // console.log(err.keyPattern);
             res
               .status(200)
               .json({ type: "error", message: "Username exists already!" });
             res.end();
           }
           if (err.keyPattern.email) {
-            // console.log(err.keyPattern);
             res.status(200).json({
               type: "error",
               message: "User with email already exists!",
             });
             res.end();
           }
-          // if (err) {
-          //   // console.log(err);
-          //   res.status(200).json({
-          //     type: "error",
-          //     message: "Something went wrong, try again later",
-          //   });
-          //   res.end();
-          // }
-          // res.end();
         });
-
-      // await updateUserToken();
-
     };
     //===== edit user password funtion =====
     const editUserPassword = async (session) => {
@@ -149,19 +110,13 @@ const updateuseraccounthandler = async (req, res) => {
         const password = await hash(newPassword, 10);
         user.password = password;
         user.save();
-        console.log("account password has been update");
         res.status(201).json({ message: "Your password has been updated." });
       }
 
       // res.end();
     };
     //===== check what kind of edit must be performed =====
-    // console.log(user._id.toString() === session.user.id.toString());
-    //===== check if is user account edit =====
-    // async function updateUserToken() {
-    //   // const csrfToken = await getCsrfToken({ req });
-    //   // console.log(csrfToken);
-    // }
+
 
     user._id.toString() === session.user.id.toString() &&
       req.body.type === "EDIT_USER_ACCOUNT" &&
@@ -174,49 +129,52 @@ const updateuseraccounthandler = async (req, res) => {
   const deleteAccount = async (session) => {
     await dbConnect();
     const user = await User.findById(session.user.id);
-    // const userName = user.name;
-    // console.log(userName);
-    // console.log(req.body);
 
     const deleteEverything = async () => {
-      // console.log(req.body);
       // database delete comment, reply, replies comments and user
+      if (user.profile.posts.length > 0) {
+        user.profile.posts.forEach(async (postId) => {
+          const userPost = await Post.findOneAndDelete({ _id: postId }).lean();
+          if (userPost !== null && userPost?.image[0]) {
+
+            const deletedImage = await cloudinary.uploader.destroy(userPost.image[0].filename);
+          }
+
+          const postCommentsDelete = await Comment.deleteMany({ "originalPostId": userPost._id });
+          const portRepliesDelete = await Reply.deleteMany({ "originalPostId": userPost._id });
+
+        });
+      }
+      // delete all comments with user id provided
       const commentDeleted = await Comment.deleteMany({
         "userProfile.id": user._id,
       });
-      console.log(commentDeleted);
+      // delete all replies with user id provided
       const repliesDeleted = await Reply.deleteMany({
         "userProfile.id": user._id,
       });
-      console.log(repliesDeleted);
-      const postsDeleted = await Post.deleteMany({
-        "userProfile.id": user._id,
-      });
-      console.log(postsDeleted);
-      // if(user.profile.image.filename){
 
-      // }
       const userDelete = await User.findByIdAndDelete(session.user.id);
-      console.log(userDelete);
-      res.status(201).json({ message: "your account has been delete" });
-      res.end();
+
+
+      if (userDelete.profile.image.filename !== "") {
+        const deletedUserImage = await cloudinary.uploader.destroy(userDelete.profile.image.filename);
+      }
+      res.status(201).json({ success: true, message: "Your account has been deleted" });
+      // res.end();
     };
-    // const checkPass = await compare(req.body.auth, user.password);
-    // console.log(await compare(req.body.auth, user.password));
-    // console.log(checkPass);
+    // checks for what type of edit need to be perform
     (await compare(req.body.auth, user.password)) &&
       req.body.type === "DELETE_ACCOUNT" &&
-      deleteEverything(session);
+      (await deleteEverything(session));
 
     (await compare(req.body.auth, user.password)) === false &&
-      res.status(203).json({ message: "incorect password" });
+      res.status(203).json({ success: false, message: "Incorect password." });
     res.end();
   };
   //===== checks if user is logged in  =====
   const checkSession = async () => {
     const session = await getSession({ req });
-    // const csrfToken = await getCsrfToken({ req });
-    // console.log(session);
     session && (await updateAccount(session));
     !session &&
       res.status(401).json({ message: "oh no you must be logged in" });
@@ -224,8 +182,6 @@ const updateuseraccounthandler = async (req, res) => {
   };
   const checkDeleteSession = async () => {
     const session = await getSession({ req });
-
-    // console.log(session);
     session && (await deleteAccount(session));
     !session &&
       res.status(401).json({ message: "oh no you must be logged in" });

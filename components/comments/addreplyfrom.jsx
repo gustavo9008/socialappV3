@@ -27,7 +27,7 @@ export default function AddReply(props) {
   const replyFormState = { display: `${displayReplyForm}` };
   const openCloseCommentReply = props.openorclose;
   const formStyle = props.formStyle;
-  // console.log(replyFormState);
+  console.log("Original top comment id", props.originalCommentId);
   // const formId = `hiddenInput_${props.comment._id}`;
 
   const enableReplyBtn = (e) => {
@@ -47,7 +47,7 @@ export default function AddReply(props) {
   const submitReplyHandler = async (e) => {
     e.preventDefault();
     const session = await getSession(props);
-    const type = props.type;
+    // const type = props.type;
     // console.log(props.commentId);
     const data = {
       reply: replyRef.current.value,
@@ -63,7 +63,8 @@ export default function AddReply(props) {
       },
       postId: postId,
       commentId: props.commentId,
-      type,
+      originalCommentId: props.originalCommentId,
+      type: props.type,
     };
 
     const res = await addReply("POST", "/api/comments/addcomment", data);

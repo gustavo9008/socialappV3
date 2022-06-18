@@ -1,10 +1,15 @@
 import React from "react";
 import { appToastContext } from "@/context/state";
+import { useSession } from "next-auth/react";
 
 // import useFetch from "@/hooks/fetch";
 
 export default function Modal(props) {
-  const { userSession, setUserSession, useFetch, showToast } =
+  // const { status } = useSession({
+  //   required: true,
+  // });
+  // console.log(status);
+  const { handleLogout, useFetch, showToast } =
     React.useContext(appToastContext);
 
   const deleteUserAccount = useFetch;
@@ -13,7 +18,6 @@ export default function Modal(props) {
   //   const [showModal, setShowModal] = React.useState(false);
 
   const deleteAccount = async (e) => {
-    console.log(deleteAccountRef.current.value);
     if (deleteAccountRef.current.value) {
       const data = {
         account: props.user._id,
@@ -26,7 +30,10 @@ export default function Modal(props) {
         "/api/user/editaccount",
         data
       );
-      console.log(res);
+      res.data.success === true &&
+        (showToast("success", res.data.message), handleLogout(e));
+      res.data.success === false &&
+        (console.log(res.data.success), showToast("error", res.data.message));
     }
     // console.log(deleteAccountRef.current.value);
   };

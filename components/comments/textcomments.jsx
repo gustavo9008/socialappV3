@@ -200,6 +200,7 @@ export default function TextComments(props) {
             <AddReply
               updateComment={updateCommentReplies}
               commentId={commentReply._id}
+              originalCommentId={props.originalCommentId}
               formStyle={replyFormState}
               formId={formId}
               openorclose={openCloseCommentReply}
@@ -211,6 +212,7 @@ export default function TextComments(props) {
             <AddReply
               updateComment={updateCommentReplies}
               commentId={props.comment._id}
+              originalCommentId={props.originalCommentId}
               formStyle={replyFormState}
               formId={formId}
               openorclose={openCloseCommentReply}
@@ -226,6 +228,7 @@ export default function TextComments(props) {
             <TextComments
               key={reply._id}
               comment={reply}
+              originalCommentId={props.originalCommentId}
               type={"ADD_REPLY"}
               cardStyle={"reply-container"}
               cardSize={cardSize}
