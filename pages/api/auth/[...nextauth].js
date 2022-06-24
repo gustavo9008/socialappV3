@@ -22,7 +22,6 @@ export default async function auth(req, res) {
     providers: [
       CredentialsProvider({
         async authorize(credentials, req) {
-          console.log(credentials);
           //Connect to DB
           const client = await MongoClient.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
@@ -34,11 +33,9 @@ export default async function auth(req, res) {
           const user = await userProfile.findOne({
             email: credentials.email,
           });
-          // console.log(user)
           if (user === null) {
             client.close();
-            // const error = new Error("No user found with the email");
-            // console.log(error);
+
             throw new Error("No user found with the email");
 
             // return error;
@@ -89,7 +86,6 @@ export default async function auth(req, res) {
     },
     callbacks: {
       async jwt({ token, user }) {
-        // console.log(user);
         if (user) {
           const userList = {
             user: user.name,
@@ -118,7 +114,6 @@ export default async function auth(req, res) {
         if (
           req.query.updateUserSession === "true"
         ) {
-          console.log("updating user session");
           await dbConnect();
           const user = await User.findById(token.sub);
           token.name = user.name;
@@ -132,12 +127,10 @@ export default async function auth(req, res) {
           // }
 
         }
-        // console.log(token);
 
         return token;
       },
       async session({ session, token }) {
-        // console.log(token);
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.profile.image.url;
@@ -146,8 +139,6 @@ export default async function auth(req, res) {
         session.user.genericImage = token.profile.image.genericPic;
         session.user.created = token.created;
         session.user.updated = token.updated;
-        // console.log(token);
-        // console.log(session);
         return session;
       },
       async redirect({ url, baseUrl }) {

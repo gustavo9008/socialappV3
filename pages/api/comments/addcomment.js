@@ -7,7 +7,6 @@ import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
 
 const postHandler = async (req, res) => {
-  console.log(req.body.type);
   async function addComment() {
     await dbConnect();
     const { comment, userProfile, postUrl, postId } = req.body;

@@ -7,12 +7,9 @@ import { appToastContext } from "@/context/state";
 
 
 export default function ProfilePage(props) {
-  // console.log(props);
   const {
     userSession,
   } = React.useContext(appToastContext);
-  // const { data: session, status } = useSession();
-  console.log("profile session", userSession?.user.updated);
   return (
     <>
       {userSession ? (

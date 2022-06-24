@@ -5,6 +5,7 @@ import Link from "next/link";
 // import { useSession } from "next-auth/react";
 
 import NavDropdown from "@/components/ui/NavDropdown";
+import SearchBar from "../ui/SearchBar";
 
 export default function Header() {
   const { userSession } = React.useContext(appToastContext);
@@ -91,16 +92,17 @@ export default function Header() {
                     </span>
                   </a>
                 </Link>
+                <SearchBar />
               </div>
             </div>
             {/* {noUserBtns} */}
             {!userSession && noUserBtns}
             {userSession && (
-              <div className="Psm:ml-2 relative ml-3 flex">
+              <div className="relative ml-3 flex Psm:ml-2">
                 <div className="flex items-center">
                   <Link href="/post/newpost">
                     <a
-                      className="Psm:mr-3 mr-1.5 rounded bg-indigo-500 p-2 font-medium tracking-wide text-black hover:bg-indigo-600"
+                      className="mr-1.5 rounded bg-indigo-500 p-2 font-medium tracking-wide text-black hover:bg-indigo-600 Psm:mr-3"
                       role="menuitem"
                       aria-label="Post and article or picture"
                     >

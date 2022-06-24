@@ -37,6 +37,8 @@ let postSchema = new Schema(
   },
   { timestamps: true }
 );
+// postSchema.path("title").index({ text: true })
+// postSchema.path("body").index({ text: true })
 // const Post = mongoose.model("Post", postSchema);
 
 export default mongoose.models.Post || mongoose.model("Post", postSchema);

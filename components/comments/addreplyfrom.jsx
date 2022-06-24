@@ -18,22 +18,20 @@ export default function AddReply(props) {
     btnVisibility,
     setBtnVisibility,
   ] = useBtnState(true, "Reply", "bg-slate-700", "block");
-  // console.log(props.commentId);
+
   const addReply = useFetch;
   const { title, postId } = React.useContext(CommentContext);
-  // console.log(postId);
   const replyRef = React.useRef();
   const [displayReplyForm, setDisplayReplyFrom] = React.useState("none");
   const replyFormState = { display: `${displayReplyForm}` };
   const openCloseCommentReply = props.openorclose;
   const formStyle = props.formStyle;
-  console.log("Original top comment id", props.originalCommentId);
+
   // const formId = `hiddenInput_${props.comment._id}`;
 
   const enableReplyBtn = (e) => {
     e.preventDefault();
     if (replyRef.current.value !== "") {
-      // console.log(replyRef.current.value);
       setBtnDisabled(false);
       setBtnColor("bg-indigo-500 hover:bg-indigo-600");
       return;
@@ -48,7 +46,6 @@ export default function AddReply(props) {
     e.preventDefault();
     const session = await getSession(props);
     // const type = props.type;
-    // console.log(props.commentId);
     const data = {
       reply: replyRef.current.value,
       userProfile: {

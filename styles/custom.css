@@ -245,8 +245,22 @@ video {
   box-shadow: 4px 4px 0px 0px #6b7280;
   max-height: 87vh;
 }
+.search-modal {
+  scrollbar-width: none; /* Firefox */
+  width: clamp(310px, 95vw, 700px);
+  max-height: 87vh;
+  transition: opacity 0.25s ease;
+}
 .post-modal::-webkit-scrollbar {
   display: none;
+}
+.search-modal::-webkit-scrollbar {
+  display: none;
+}
+.search-modal-backdrop {
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 }
 /* .edit-post-modal {
   max-width: 24rem !important;

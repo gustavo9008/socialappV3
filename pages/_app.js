@@ -15,18 +15,18 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   // const refreshInterval = 5;
 
   return (
-    // <React.StrictMode>
-    <SessionProvider session={session} refetchInterval={refreshInterval}>
-      <ToastWrapper
-        refreshInterval={refreshInterval}
-        setRefreshInterval={setRefreshInterval}
-      >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ToastWrapper>
-    </SessionProvider>
-    // </React.StrictMode>
+    <React.StrictMode>
+      <SessionProvider session={session} refetchInterval={refreshInterval}>
+        <ToastWrapper
+          refreshInterval={refreshInterval}
+          setRefreshInterval={setRefreshInterval}
+        >
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ToastWrapper>
+      </SessionProvider>
+    </React.StrictMode>
 
   );
 }
