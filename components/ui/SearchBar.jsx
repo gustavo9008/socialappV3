@@ -1,10 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { appToastContext } from "@/context/state";
+import { useRouter } from "next/router";
 import parse from "html-react-parser";
 import ProfileColorAvatar from "@/components/ui/ProfileColorAvatar";
 import Link from "next/link";
 
 function SearchBar(props) {
+  const router = useRouter();
   const { handleLogout, useFetch, showToast } =
     React.useContext(appToastContext);
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
@@ -18,21 +20,29 @@ function SearchBar(props) {
 
   const searchDB = async (e) => {
     async function getResults() {
-      console.log("getResult run...");
+      // console.log("getResult run...");
       const res = await useFetch(
         "GET",
         `/api/search/?request=${searchRef.current.value}`
       );
-      console.log(res.data.results.length);
+      // console.log(res.data.results.length);
       if (res.data.success === true) {
         res.data.results.length > 0 && setSearchResults(res.data.results);
       }
       return;
     }
-    console.log(searchRef.current.value);
+    // console.log(searchRef.current.value);
     searchRef.current.value.length > 2 && (await getResults());
     // console.log(res);
   };
+
+  const routeToLink = async (href) => {
+    // console.log(href);
+
+    displayBar();
+    router.push(href);
+  };
+
   return (
     <div className={`relative flex`}>
       <button onClick={displayBar} className="px-2">
@@ -114,6 +124,7 @@ function SearchBar(props) {
         text-gray-700
          focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none `}
                   type="search"
+                  autoFocus
                 />
                 <button
                   onClick={searchDB}
@@ -135,7 +146,7 @@ function SearchBar(props) {
                   </svg>
                 </button>
               </div>
-              {/*body*/}
+              {/*body, main search element*/}
               {searchResults !== null && (
                 <>
                   <div className="grid grid-cols-1 ">
@@ -163,14 +174,19 @@ function SearchBar(props) {
                                     />
                                     <div className="author-container">
                                       <span className="text-sm text-gray-300">
-                                        <Link
-                                          href={"/user/" + post.userProfile.id}
+                                        <a
+                                          onClick={(e) => {
+                                            e.preventDefault();
+
+                                            routeToLink(
+                                              `/user/${post.userProfile.id}`
+                                            );
+                                          }}
+                                          className="clickable"
                                         >
-                                          <a className="clickable">
-                                            {" "}
-                                            {post.userProfile.name}{" "}
-                                          </a>
-                                        </Link>
+                                          {" "}
+                                          {post.userProfile.name}{" "}
+                                        </a>
                                       </span>
                                       <span className="text-xs text-gray-400">
                                         {post.created}
@@ -198,15 +214,22 @@ function SearchBar(props) {
                                     </span>
                                   </aside>
                                 </div>
-                                <Link href={"/post/" + post._id}>
-                                  <a
-                                    id=""
-                                    className="article-link my-0 ml-12 text-xl tracking-wide text-gray-300 Psm:ml-0"
-                                    aria-label="article title"
-                                  >
-                                    {post.title}
-                                  </a>
-                                </Link>
+
+                                <a
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    // router.push({
+                                    //   pathname: `/post/${post._id}`,
+                                    // });
+
+                                    routeToLink(`/post/${post._id}`);
+                                  }}
+                                  id=""
+                                  className="article-link my-0 ml-12 text-xl tracking-wide text-gray-300 Psm:ml-0"
+                                  aria-label="article title"
+                                >
+                                  {post.title}
+                                </a>
                               </section>
                             </div>
                           </div>

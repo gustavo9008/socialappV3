@@ -43,6 +43,9 @@ function SinglePost(props) {
 
   React.useEffect(() => {
     const queryParams = new URL(document.location.href).pathname;
+    ;
+    // console.log(post.isLoading);
+    post.post !== null && (queryParams !== `/post/${post.post._id}`) && setPost({ isLoading: true, post: null });
     post.isLoading && getPost(queryParams)
 
 

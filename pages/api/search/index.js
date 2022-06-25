@@ -5,7 +5,7 @@ import Reply from "../../../models/replies";
 import dbConnect from "../../../middleware/mongodb";
 
 export default async function findPostHandler(req, res) {
-    console.log(req.query.request);
+    // console.log(req.query.request);
 
     await dbConnect();
     const { postId } = req.query;
@@ -24,7 +24,7 @@ export default async function findPostHandler(req, res) {
                 }
             }
         }])
-        console.log(results);
+        // console.log(results);
         // console.log(postResults);
         // console.log(userResults);
 

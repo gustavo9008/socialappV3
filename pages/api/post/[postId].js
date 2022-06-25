@@ -14,6 +14,7 @@ import dbConnect from "../../../middleware/mongodb";
 export default async function findPostHandler(req, res) {
   await dbConnect();
   const { postId } = req.query;
+  // console.log(req.query);
 
   try {
     const post = await Post.findById(postId).populate({

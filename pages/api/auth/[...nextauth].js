@@ -15,7 +15,7 @@ export const config = {
 
 export default async function auth(req, res) {
 
-  console.log(req.query);
+  // console.log(req.query);
 
   const NextAuthCredential = await NextAuth(req, res, {
 
