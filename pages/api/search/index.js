@@ -24,11 +24,17 @@ export default async function findPostHandler(req, res) {
                 }
             }
         }])
-        // console.log(results);
+
+        let success;
+
+        results.length === 0 && (success = false)
+        results.length !== 0 && (success = true)
+
+        // console.log(results.length);
         // console.log(postResults);
         // console.log(userResults);
 
-        res.status(200).json({ success: true, results: results });
+        res.status(200).json({ success: success, results: results });
     } catch (error) {
         console.log(error);
         res.status(400).json({ success: false });

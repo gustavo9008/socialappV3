@@ -1,20 +1,27 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useTransition } from "react";
 import { appToastContext } from "@/context/state";
 import { useRouter } from "next/router";
 import parse from "html-react-parser";
 import ProfileColorAvatar from "@/components/ui/ProfileColorAvatar";
-import Link from "next/link";
+import { useDetectOutsideClick } from "@/components/ui/useDetectClick";
 
 function SearchBar(props) {
   const router = useRouter();
   const { handleLogout, useFetch, showToast } =
     React.useContext(appToastContext);
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
-  const [searchResults, setSearchResults] = useState(null);
+  const [searchResults, setSearchResults] = useState({
+    results: false,
+  });
   const searchRef = useRef();
+  const modalSearchRef = useRef();
+  const [isActive, setIsActive] = useDetectOutsideClick(modalSearchRef, false);
+  const [isPending, startTransition] = useTransition();
 
   const displayBar = () => {
-    setDisplaySearchBar(!displaySearchBar);
+    startTransition(() => {
+      setIsActive(!isActive);
+    });
     setSearchResults(null);
   };
 
@@ -28,6 +35,10 @@ function SearchBar(props) {
       // console.log(res.data.results.length);
       if (res.data.success === true) {
         res.data.results.length > 0 && setSearchResults(res.data.results);
+      } else {
+        setSearchResults({
+          results: false,
+        });
       }
       return;
     }
@@ -61,7 +72,7 @@ function SearchBar(props) {
           />
         </svg>
       </button>
-      {displaySearchBar ? (
+      {isActive ? (
         // <input
         //   className={`form-control m-0
         // block
@@ -79,7 +90,10 @@ function SearchBar(props) {
         //   onChange={searchDB}
         //   type="search"
         // />
-        <aside className="items-[normal] fixed top-[65px] bottom-0 right-0 left-0 z-50 flex justify-center overflow-x-auto overflow-y-auto bg-black bg-opacity-90 outline-none focus:outline-none">
+        <aside
+          ref={modalSearchRef}
+          className="items-[normal] fixed top-[65px] bottom-0 right-0 left-0 z-50 flex justify-center overflow-x-auto overflow-y-auto bg-black bg-opacity-90 outline-none focus:outline-none"
+        >
           <div className="sticky top-0 z-50 mx-auto w-auto max-w-3xl">
             {/*content*/}
             <div className="search-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none Psm:max-h-1/2">
@@ -147,14 +161,14 @@ function SearchBar(props) {
                 </button>
               </div>
               {/*body, main search element*/}
-              {searchResults !== null && (
+              {searchResults !== null && searchResults?.results !== false && (
                 <>
                   <div className="grid grid-cols-1 ">
                     {searchResults.map((post, i) => (
                       <div key={i}>
                         <div id={i} key={i} className="relative flex-auto p-3">
                           <div className="container mx-auto mt-4 Psm:max-w-full">
-                            <div className="m-2 transform cursor-pointer rounded-lg border border-gray-400 bg-gray-800 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+                            <div className="m-2 transform rounded-lg border border-gray-400 bg-gray-800 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
                               {/* <div className="m-3">
                                 <h2 className="mb-2 text-lg">{post.title}</h2>
                                 <h3 className="mb-2 text-xs font-light">
@@ -173,7 +187,7 @@ function SearchBar(props) {
                                       profile={post.userProfile}
                                     />
                                     <div className="author-container">
-                                      <span className="text-sm text-gray-300">
+                                      <span className="cursor-pointer text-sm text-gray-300">
                                         <a
                                           onClick={(e) => {
                                             e.preventDefault();
@@ -189,7 +203,7 @@ function SearchBar(props) {
                                         </a>
                                       </span>
                                       <span className="text-xs text-gray-400">
-                                        {post.created}
+                                        {new Date(post.created).toDateString()}
                                       </span>
                                     </div>
                                   </aside>
@@ -225,7 +239,7 @@ function SearchBar(props) {
                                     routeToLink(`/post/${post._id}`);
                                   }}
                                   id=""
-                                  className="article-link my-0 ml-12 text-xl tracking-wide text-gray-300 Psm:ml-0"
+                                  className="article-link my-0 ml-12 cursor-pointer text-xl tracking-wide text-gray-300 Psm:ml-0"
                                   aria-label="article title"
                                 >
                                   {post.title}
@@ -238,6 +252,14 @@ function SearchBar(props) {
                     ))}
                   </div>
                 </>
+              )}
+
+              {searchResults?.results === false && (
+                <div>
+                  <div className="relative flex-auto p-3">
+                    <p className="text-white"> No results match that query</p>
+                  </div>
+                </div>
               )}
             </div>
           </div>

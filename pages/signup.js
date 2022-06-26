@@ -43,23 +43,23 @@ const SignupPage = () => {
 
     nameRef.current.value.length === 0 &&
       (nameRefCheck.current.classList.remove("hidden"),
-      stopBtnAnimate("signUpBtn"));
+        stopBtnAnimate("signUpBtn"));
     emailRef.current.value.length === 0 &&
       (emailRefCheck.current.classList.remove("hidden"),
-      stopBtnAnimate("signUpBtn"));
+        stopBtnAnimate("signUpBtn"));
 
     emailRef.current.value.length !== 0 &&
       nameRef.current.value.length !== 0 &&
       (nameRefCheck.current.classList.add("hidden"),
-      emailRefCheck.current.classList.add("hidden"),
-      sendData());
+        emailRefCheck.current.classList.add("hidden"),
+        sendData());
 
     //Getting value from useRef()
 
     // const email = e.currentTarget.email.value;
     // const name = e.currentTarget.name.value;
     // const password = e.currentTarget.password.value;
-    // console.log(data);
+
     //Validation
 
     //POST form values
@@ -69,14 +69,7 @@ const SignupPage = () => {
         name: nameRef.current.value,
         password: newPasswordRef.current.value,
       };
-      console.log(data);
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const res = await useFetch("POST", "/api/auth/signup", data);
       //Await for data for any desirable next steps
       if (res.ok === true) {
         console.log("success");

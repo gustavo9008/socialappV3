@@ -6,7 +6,7 @@ import dbConnect from "../../../middleware/mongodb";
 
 async function signUpHandler(req, res) {
   //Only POST mothod is accepted
-  console.log(req.body);
+
   if (req.method === "POST") {
     await dbConnect();
     //Getting email and password from body
@@ -39,7 +39,7 @@ async function signUpHandler(req, res) {
     } //==========
 
     let newcolors = await generateRandomColors(6);
-    console.log(newcolors);
+
     // let profileRegistered = false;
     let hashPass = await hash(password, 12);
 
@@ -63,7 +63,6 @@ async function signUpHandler(req, res) {
       comments: [],
       commentReplies: [],
     };
-    console.log(newProfile);
     const newUser = new User({
       name: name,
       email: email,
@@ -72,7 +71,6 @@ async function signUpHandler(req, res) {
     });
 
     const usercreated = await newUser.save();
-    // console.log(usercreated);
     //Send success response
     res.status(201).json(usercreated);
   } else {

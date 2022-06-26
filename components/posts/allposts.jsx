@@ -41,6 +41,8 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
             layout="fill"
             alt="this is a picture"
             priority="true"
+            placeholder="blur"
+            blurDataURL={props.posts.image}
           />
         ) : (
           <Image
@@ -48,6 +50,8 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
             src={props.posts.imageUrl}
             layout="fill"
             alt="this is a picture"
+            placeholder="blur"
+            blurDataURL={props.posts.imageUrl}
           />
         )}
       </figure>

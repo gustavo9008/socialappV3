@@ -12,11 +12,11 @@ const updatePostHandler = async (req, res) => {
   // updates post
   async function updatePost(session) {
     const { post: updatePost, postId } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const post = await Post.findById(postId);
-    console.log(post.userProfile.id.toString() === session.user.id);
+    // console.log(post.userProfile.id.toString() === session.user.id);
     if (post.userProfile.id.toString() === session.user.id) {
-      console.log("you are the owner of this post");
+      // console.log("you are the owner of this post");
       post.title = updatePost.title;
       post.body = updatePost.content;
 
