@@ -174,17 +174,17 @@ function HomePage(props) {
 
   useEffect(() => {
     // age state check for posts data 
-    if (new Date().getTime() - posts?.timestamp > 1200000) {
-      // console.log("home page useeffect");
+    // if (new Date().getTime() - posts?.timestamp > 1200000) {
+    //   // console.log("home page useeffect");
 
-      setPosts((prev) => ({
-        posts: null,
-        previousLimit: null,
-        isLoading: true,
-        typeSort: posts.typeSort,
-        timestamp: new Date().getTime(),
-      }));
-    }
+    //   setPosts((prev) => ({
+    //     posts: null,
+    //     previousLimit: null,
+    //     isLoading: true,
+    //     typeSort: posts.typeSort,
+    //     timestamp: new Date().getTime(),
+    //   }));
+    // }
 
     // funct for data fetching
     posts.isLoading && handleUpdatePost(posts.typeSort);
