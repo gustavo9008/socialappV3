@@ -8,10 +8,12 @@ import {
 import Head from "next/head";
 // import { MongoClient } from "mongodb";
 import { appToastContext } from "context/state";
-import Card from "../components/ui/Card";
-import AllPost from "../components/posts/allposts";
+import Card from "../components/ui/Container";
+import AllPost from "../components/posts/AllPosts";
 import { useRouter } from "next/router";
 import Spinner from "@/components/ui/Spinner";
+import CardLoader from "@/components/ui/CardLoader";
+import post from "@/models/post";
 
 // import Post from "../models/post";
 // import Comment from "../models/comment";
@@ -73,7 +75,7 @@ function HomePage(props) {
 
         const res = await getMorePost(
           "GET",
-          `/api/post/getposts?next=${0}&type=${type ?? "LATEST"}`
+          `/api/post/getposts?next=${0}&type=${type}`
         );
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.data.success === true) {
@@ -83,7 +85,8 @@ function HomePage(props) {
               posts: [...new Set([...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
               isLoading: false,
-              typeSort: type ?? "LATEST",
+              typeSort: type,
+              timestamp: new Date().getTime(),
             }));
           }
         }
@@ -94,7 +97,7 @@ function HomePage(props) {
       let loaded = JSON.parse(localStorage.getItem("postLoaded"));
       // console.log(loaded);
       if (new Date().getTime() - loaded?.popState?.timestamp < 3000) {
-
+        console.log("less than 3 seconds");
         if (new Date().getTime() - loaded.timestamp < fiveMin) {
 
 
@@ -147,6 +150,7 @@ function HomePage(props) {
               previousLimit: parseInt(res.data.nextPost),
               isLoading: false,
               typeSort: posts.typeSort,
+              timestamp: new Date().getTime(),
             }));
           }
           // setIsLoading(false);
@@ -169,7 +173,21 @@ function HomePage(props) {
   // }, []);
 
   useEffect(() => {
-    posts.isLoading && handleUpdatePost();
+    // age state check for posts data 
+    if (new Date().getTime() - posts?.timestamp > 1200000) {
+      // console.log("home page useeffect");
+
+      setPosts((prev) => ({
+        posts: null,
+        previousLimit: null,
+        isLoading: true,
+        typeSort: posts.typeSort,
+        timestamp: new Date().getTime(),
+      }));
+    }
+
+    // funct for data fetching
+    posts.isLoading && handleUpdatePost(posts.typeSort);
   }, [posts, handleUpdatePost, setPosts, router]);
 
   return (
@@ -187,35 +205,69 @@ function HomePage(props) {
 
             onClick={(e) => {
               // e.preventDefault();
-              posts.typeSort === "TOP" && handleUpdatePost("LATEST");
+              setPosts((prev) => ({
+                posts: null,
+                previousLimit: null,
+                isLoading: true,
+                typeSort: "LATEST",
+                timestamp: null,
+              }));
+              // handleUpdatePost("LATEST");
+              // posts.typeSort === "LATEST" && handleUpdatePost("LATEST");
               return;
             }}
-            className={`order-1 row-span-1 w-24 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 cursor-pointer ${posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
+            className={`order-1 row-span-1 flex gap-4 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 cursor-pointer w-fit ${posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
               }`}
           >
             <span id="Latest" className="text-lg font-medium">
               Latest
             </span>
+            {
+              posts.isLoading && posts.typeSort === "LATEST" && (
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="animate-spin h-6 w-6 top-1 relative" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </span>
+              )
+            }
+
           </a>
           <a
 
             onClick={(e) => {
               // e.preventDefault();
-              posts.typeSort === "LATEST" && handleUpdatePost("TOP");
+              setPosts((prev) => ({
+                posts: null,
+                previousLimit: null,
+                isLoading: true,
+                typeSort: "TOP",
+                timestamp: null,
+              }));
+              // handleUpdatePost("TOP");
               return;
             }}
-            className={`order-2 row-span-2 w-24 p-2  hover:border-slate-400 cursor-pointer ${posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
+            className={`order-2 row-span-2 w-fit p-2 flex gap-4 hover:border-slate-400 cursor-pointer ${posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
               }`}
           >
             <span id="Top" className="text-lg font-medium">
               Top
             </span>
+            {posts.isLoading && posts.typeSort === "TOP" && (
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="animate-spin h-6 w-6 top-1 relative" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </span>
+
+            )}
+
           </a>
         </aside>
 
         <>
           {posts.isLoading ? (
-            <Spinner />
+            <CardLoader />
 
           ) : (
             <section>

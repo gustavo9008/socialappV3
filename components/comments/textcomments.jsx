@@ -3,7 +3,8 @@ import CommentCard from "../ui/CommentCard";
 import Link from "next/link";
 import { CommentContext } from "./commentsection";
 import AddReply from "./addreplyfrom";
-import { useDetectCommentOutsideClick } from "./useCommentDetectClick";
+import { useDetectOutsideClick } from "@/hooks/useDetectClick";
+
 import EditCommentModal from "./EditCommentModal";
 import DeleteCommentModal from "./DeleteCommentModal";
 
@@ -16,7 +17,7 @@ export default function TextComments(props) {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   //===== comment/reply menu dropdown state  =====
   const commentDropdownRef = React.useRef(null);
-  const [isActive, setIsActive] = useDetectCommentOutsideClick(
+  const [isActive, setIsActive] = useDetectOutsideClick(
     commentDropdownRef,
     false
   );

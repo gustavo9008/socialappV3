@@ -9,7 +9,7 @@ export const appToastContext = React.createContext(null);
 
 export function ToastWrapper(props) {
   const router = useRouter();
-  const [posts, setPosts, saveLastLoadPost] = usePostsState(null, null, true, null)
+  const [posts, setPosts, saveLastLoadPost] = usePostsState(null, null, true, "LATEST")
   // const { data: session, status } = useSession();
   // console.log("state session", session?.user.updated);
 

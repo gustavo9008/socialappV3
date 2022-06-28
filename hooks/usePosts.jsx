@@ -6,6 +6,7 @@ export function usePostsState(initPosts, initLimit, initLoading, initType) {
     previousLimit: initLimit,
     isLoading: initLoading,
     typeSort: initType,
+    timestamp: new Date().getTime(),
   });
   const saveLastLoadPost = () => {
     let currentList = {

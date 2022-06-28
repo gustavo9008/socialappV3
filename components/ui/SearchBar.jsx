@@ -3,7 +3,7 @@ import { appToastContext } from "@/context/state";
 import { useRouter } from "next/router";
 import parse from "html-react-parser";
 import ProfileColorAvatar from "@/components/ui/ProfileColorAvatar";
-import { useDetectOutsideClick } from "@/components/ui/useDetectClick";
+import { useDetectOutsideClick } from "@/hooks/useDetectClick";
 
 function SearchBar(props) {
   const router = useRouter();

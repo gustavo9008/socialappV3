@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '@/components/ui/Card';
+import Card from '@/components/ui/Container';
 import Spinner from '@/components/ui/Spinner';
 import Link from 'next/link';
 import { appToastContext } from "@/context/state"

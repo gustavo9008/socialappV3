@@ -2,7 +2,7 @@ import React, { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/router";
 // import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { useDetectOutsideClick } from "./useDetectClick";
+import { useDetectOutsideClick } from "../../hooks/useDetectClick";
 import { appToastContext } from "context/state";
 import ProfileColorAvatar from "./ProfileColorAvatar";
 
