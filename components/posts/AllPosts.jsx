@@ -92,9 +92,15 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
           )} */}
             <div className="author-container">
               <span className="text-sm text-gray-300">
-                <Link href={"/user/" + props.posts.userProfile.id}>
-                  <a className="clickable"> {props.posts.userProfile.name} </a>
-                </Link>
+                {/* <Link href={"/user/" + props.posts.userProfile.id}> */}
+                <a
+                  href={"/user/" + props.posts.userProfile.id}
+                  className="clickable"
+                >
+                  {" "}
+                  {props.posts.userProfile.name}{" "}
+                </a>
+                {/* </Link> */}
               </span>
               <span className="text-xs text-gray-400">
                 {props.posts.created}

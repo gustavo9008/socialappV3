@@ -19,7 +19,7 @@ function ProfilePage(props) {
     console.log(queryParams);
     const getUser = async (id) => {
       const res = await useFetch("GET", `/api${queryParams}`);
-      console.log(res);
+      // console.log(res);
       res.data.message === "found account" &&
         setUser(res.data.account);
     };
