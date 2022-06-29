@@ -17,20 +17,25 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
     router.push(url);
   };
 
-  const userLinkHandle = (e) => {};
+  const userLinkHandle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // console.log(e.target.pathname);
+    router.push(e.target.pathname);
+  };
 
-  useEffect(() => {
-    const clickableElements = document.querySelectorAll(".clickable");
+  // useEffect(() => {
+  //   const clickableElements = document.querySelectorAll(".clickable");
 
-    clickableElements.forEach((ele) =>
-      ele.addEventListener("click", (e) => {
-        // console.log(e.originalTarget.pathname);
-        e.preventDefault();
-        e.stopPropagation();
-        router.push(e.originalTarget.pathname);
-      })
-    );
-  }, []);
+  //   clickableElements.forEach((ele) =>
+  //     ele.addEventListener("click", (e) => {
+  //       // console.log(e.originalTarget.pathname);
+  //       e.preventDefault();
+  //       e.stopPropagation();
+  //       router.push(e.originalTarget.pathname);
+  //     })
+  //   );
+  // }, []);
 
   return (
     <article
@@ -94,6 +99,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
               <span className="text-sm text-gray-300">
                 {/* <Link href={"/user/" + props.posts.userProfile.id}> */}
                 <a
+                  onClick={userLinkHandle}
                   href={"/user/" + props.posts.userProfile.id}
                   className="clickable"
                 >
