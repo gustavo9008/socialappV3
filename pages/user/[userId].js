@@ -1,14 +1,8 @@
 import React from "react";
-import Profile from "../../components/user/profile";
 import useFetch from "@/hooks/fetch";
-import { server } from "../../config/index";
 import UserProfile from "@/components/user/usersProfile/UserProfile";
-
-import Post from "@/models/post";
 import User from "@/models/user";
-import Comment from "@/models/comment";
 import dbConnect from "../../middleware/mongodb";
-import Reply from "@/models/replies";
 
 const getPost = useFetch;
 

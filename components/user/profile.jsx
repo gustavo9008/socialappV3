@@ -1,9 +1,8 @@
 import React from "react";
 // import ReactDOM from "react-dom";
 import Link from "next/link";
-import { server } from "../../config/index";
+// import { server } from "../../config/index";
 import { appToastContext } from "../../context/state";
-import { getSortedRoutes } from "next/dist/shared/lib/router/utils";
 
 export default function Profile(props) {
   const { useFetch } = React.useContext(appToastContext);
