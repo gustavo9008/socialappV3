@@ -13,12 +13,7 @@ import AllPost from "../components/posts/AllPosts";
 import { useRouter } from "next/router";
 import Spinner from "@/components/ui/Spinner";
 import CardLoader from "@/components/ui/CardLoader";
-// import post from "@/models/post";
 
-// import Post from "../models/post";
-// import Comment from "../models/comment";
-// import Reply from "../models/replies";
-// import dbConnect from "../middleware/mongodb";
 
 function HomePage(props) {
   //===== context imports =====
@@ -75,7 +70,7 @@ function HomePage(props) {
 
         const res = await getMorePost(
           "GET",
-          `/api/post/getposts?next=${0}&type=${type ?? "LATEST"}`
+          `/api/post/getposts?next=${0}&type=${type}`
         );
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.data.success === true) {
@@ -85,7 +80,7 @@ function HomePage(props) {
               posts: [...new Set([...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
               isLoading: false,
-              typeSort: type ?? "LATEST",
+              typeSort: type,
               timestamp: new Date().getTime(),
             }));
           }
@@ -174,22 +169,21 @@ function HomePage(props) {
 
   useEffect(() => {
     // age state check for posts data 
-    // console.log(posts);
-    // if (new Date().getTime() - posts?.timestamp > 1200000) {
-    //   // console.log("home page useeffect");
+    if (new Date().getTime() - posts?.timestamp > 1200000) {
+      // console.log("home page useeffect");
 
-    //   setPosts((prev) => ({
-    //     posts: null,
-    //     previousLimit: null,
-    //     isLoading: true,
-    //     typeSort: posts.typeSort,
-    //     timestamp: new Date().getTime(),
-    //   }));
-    // }
+      setPosts((prev) => ({
+        posts: null,
+        previousLimit: null,
+        isLoading: true,
+        typeSort: posts.typeSort,
+        timestamp: new Date().getTime(),
+      }));
+    }
 
-    // func for data fetching
-    posts.isLoading && handleUpdatePost();
-  }, [posts, handleUpdatePost, setPosts]);
+    // funct for data fetching
+    posts.isLoading && handleUpdatePost(posts.typeSort);
+  }, [posts, handleUpdatePost, setPosts, router]);
 
   return (
     <>
@@ -206,15 +200,15 @@ function HomePage(props) {
 
             onClick={(e) => {
               // e.preventDefault();
-              // setPosts((prev) => ({
-              //   posts: null,
-              //   previousLimit: null,
-              //   isLoading: true,
-              //   typeSort: "LATEST",
-              //   timestamp: null,
-              // }));
+              setPosts((prev) => ({
+                posts: null,
+                previousLimit: null,
+                isLoading: true,
+                typeSort: "LATEST",
+                timestamp: null,
+              }));
               // handleUpdatePost("LATEST");
-              posts.typeSort === "TOP" && handleUpdatePost("LATEST");
+              // posts.typeSort === "LATEST" && handleUpdatePost("LATEST");
               return;
             }}
             className={`order-1 row-span-1 flex gap-4 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 cursor-pointer w-fit ${posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
@@ -238,15 +232,14 @@ function HomePage(props) {
 
             onClick={(e) => {
               // e.preventDefault();
-              // setPosts((prev) => ({
-              //   posts: null,
-              //   previousLimit: null,
-              //   isLoading: true,
-              //   typeSort: "TOP",
-              //   timestamp: null,
-              // }));
-              posts.typeSort === "LATEST" && handleUpdatePost("TOP");
-
+              setPosts((prev) => ({
+                posts: null,
+                previousLimit: null,
+                isLoading: true,
+                typeSort: "TOP",
+                timestamp: null,
+              }));
+              // handleUpdatePost("TOP");
               return;
             }}
             className={`order-2 row-span-2 w-fit p-2 flex gap-4 hover:border-slate-400 cursor-pointer ${posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"

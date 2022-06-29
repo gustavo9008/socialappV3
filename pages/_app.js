@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   // const refreshInterval = 5;
 
   return (
-
+    // <React.StrictMode>
     <SessionProvider session={session} refetchInterval={refreshInterval}>
       <ToastWrapper
         refreshInterval={refreshInterval}
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         </Layout>
       </ToastWrapper>
     </SessionProvider>
-
+    // </React.StrictMode>
 
   );
 }
