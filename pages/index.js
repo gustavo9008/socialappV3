@@ -75,7 +75,7 @@ function HomePage(props) {
 
         const res = await getMorePost(
           "GET",
-          `/api/post/getposts?next=${0}&type=${type}`
+          `/api/post/getposts?next=${0}&type=${type ?? "LATEST"}`
         );
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.data.success === true) {
@@ -85,7 +85,7 @@ function HomePage(props) {
               posts: [...new Set([...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
               isLoading: false,
-              typeSort: type,
+              typeSort: type ?? "LATEST",
               timestamp: new Date().getTime(),
             }));
           }
@@ -174,6 +174,7 @@ function HomePage(props) {
 
   useEffect(() => {
     // age state check for posts data 
+    // console.log(posts);
     // if (new Date().getTime() - posts?.timestamp > 1200000) {
     //   // console.log("home page useeffect");
 
@@ -186,9 +187,9 @@ function HomePage(props) {
     //   }));
     // }
 
-    // funct for data fetching
-    posts.isLoading && handleUpdatePost(posts.typeSort);
-  }, [posts, handleUpdatePost, setPosts, router]);
+    // func for data fetching
+    posts.isLoading && handleUpdatePost();
+  }, [posts, handleUpdatePost, setPosts]);
 
   return (
     <>
