@@ -13,7 +13,7 @@ import AllPost from "../components/posts/AllPosts";
 import { useRouter } from "next/router";
 import Spinner from "@/components/ui/Spinner";
 import CardLoader from "@/components/ui/CardLoader";
-import post from "@/models/post";
+// import post from "@/models/post";
 
 // import Post from "../models/post";
 // import Comment from "../models/comment";
