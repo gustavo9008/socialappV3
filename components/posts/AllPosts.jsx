@@ -17,11 +17,18 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
     router.push(url);
   };
 
+  const userLinkHandle = (e) => {};
+
   useEffect(() => {
     const clickableElements = document.querySelectorAll(".clickable");
 
     clickableElements.forEach((ele) =>
-      ele.addEventListener("click", (e) => e.stopPropagation())
+      ele.addEventListener("click", (e) => {
+        // console.log(e.originalTarget.pathname);
+        e.preventDefault();
+        e.stopPropagation();
+        router.push(e.originalTarget.pathname);
+      })
     );
   }, []);
 

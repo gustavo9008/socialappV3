@@ -45,6 +45,7 @@ function SinglePost(props) {
     const queryParams = new URL(document.location.href).pathname;
     ;
     // console.log(post.isLoading);
+    // check if post is null and is post id does not equal query id
     post.post !== null && (queryParams !== `/post/${post.post._id}`) && setPost({ isLoading: true, post: null });
     post.isLoading && getPost(queryParams)
 
