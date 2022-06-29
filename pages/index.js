@@ -206,15 +206,15 @@ function HomePage(props) {
 
             onClick={(e) => {
               // e.preventDefault();
-              setPosts((prev) => ({
-                posts: null,
-                previousLimit: null,
-                isLoading: true,
-                typeSort: "LATEST",
-                timestamp: null,
-              }));
+              // setPosts((prev) => ({
+              //   posts: null,
+              //   previousLimit: null,
+              //   isLoading: true,
+              //   typeSort: "LATEST",
+              //   timestamp: null,
+              // }));
               // handleUpdatePost("LATEST");
-              // posts.typeSort === "LATEST" && handleUpdatePost("LATEST");
+              posts.typeSort === "TOP" && handleUpdatePost("LATEST");
               return;
             }}
             className={`order-1 row-span-1 flex gap-4 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 cursor-pointer w-fit ${posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
@@ -238,14 +238,15 @@ function HomePage(props) {
 
             onClick={(e) => {
               // e.preventDefault();
-              setPosts((prev) => ({
-                posts: null,
-                previousLimit: null,
-                isLoading: true,
-                typeSort: "TOP",
-                timestamp: null,
-              }));
-              // handleUpdatePost("TOP");
+              // setPosts((prev) => ({
+              //   posts: null,
+              //   previousLimit: null,
+              //   isLoading: true,
+              //   typeSort: "TOP",
+              //   timestamp: null,
+              // }));
+              posts.typeSort === "LATEST" && handleUpdatePost("TOP");
+
               return;
             }}
             className={`order-2 row-span-2 w-fit p-2 flex gap-4 hover:border-slate-400 cursor-pointer ${posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"

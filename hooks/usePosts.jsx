@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-export function usePostsState(initPosts, initLimit, initLoading, initType, initStamp) {
+export function usePostsState(initPosts, initLimit, initLoading, initType) {
   const [posts, setPosts] = useState({
     posts: initPosts,
     previousLimit: initLimit,
     isLoading: initLoading,
     typeSort: initType,
-    timestamp: initStamp,
+    timestamp: null,
   });
   const saveLastLoadPost = () => {
     let currentList = {
