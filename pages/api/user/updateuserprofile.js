@@ -75,7 +75,7 @@ const updateUserProfileHandler = async (req, res) => {
       async function updateUserProfile() {
         const { about, location, links } = req.body;
 
-
+        // console.log(links);
         user.profile.about = about;
         user.profile.location = location;
         user.profile.links = links;

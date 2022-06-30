@@ -50,7 +50,7 @@ export default function Settings(props) {
       links: {
         personalWebsite: personalWebsiteRef.current.value,
         instagram: instagramRef.current.value,
-        twiter: twitterRef.current.value,
+        twitter: twitterRef.current.value,
         youtube: youtubeRef.current.value,
         linkedin: linkedinRef.current.value,
       },
