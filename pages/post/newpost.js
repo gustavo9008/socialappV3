@@ -20,6 +20,9 @@ export default function NewPost(props) {
   const sendNewPost = useFetch;
   const postCustomImage = useRef();
   const router = useRouter();
+  //===== commented state below was for image conversion to blob webp, migth implented in future =====
+  // const [customImg, setCustomImg] = useState()
+  //=====  =====
 
   const loadImage = (event) => {
     const output = document.getElementById("output");
@@ -56,6 +59,70 @@ export default function NewPost(props) {
   //   readonly: false, // all options from https://xdsoft.net/jodit/doc/
   // };
   //===== submits new post =====
+  //===== commented code below is a experimental image convert to webp but stayed with compressor js =====
+  // const handleNewPost = async (e) => {
+  //   e.preventDefault();
+  //   // console.log(customImg);
+  //   let formData = new FormData();
+  //   // newPic(customImg)
+  //   //===== function test =====
+
+  //   //=====  =====
+  //   //===== animate spinner on button function =====
+  //   function btnAnimate() {
+  //     document.querySelector("#svgSpin").classList.add("animate-spin");
+  //     document.querySelector("#svgSpin").style.display = "inline-block";
+  //     document.querySelector("#postText").style.display = "none";
+  //     document.querySelector("#postingText").style.display = "inline";
+  //   }
+  //   //===== add title and image url data ref to form =====
+  //   function appendFormData() {
+  //     formData.append("title", titleRef.current.value);
+  //     formData.append("content", content);
+  //   }
+  //   //===== compression for new custom image =====
+  //   function newPic(customImg) {
+  //     setDisable(true);
+  //     btnAnimate();
+  //     // let postImage = postCustomImage.current.files[0];
+  //     new Compressor(customImg, {
+  //       quality: 0.4,
+  //       mimeType: 'image/webp',
+  //       success(result) {
+  //         let newImage = result;
+  //         newImage.name = `img${newImage.size.toString()}`
+  //         console.log(result);
+  //         formData.append("file", newImage, newImage.name);
+  //         // submitNewPost(formData);
+  //       },
+  //     });
+  //   }
+  //   //===== check input refs =====
+  //   if (!titleRef.current.value) {
+  //     //===== checks of title ref is empty =====
+  //     let err = "Title is required";
+  //     showToast("error", err);
+  //   } else {
+  //     //===== check if image ref are empty =====
+  //     if (customImg === undefined || null) {
+  //       // check if url image input is empty
+  //       if (!imageRef.current.value) {
+  //         let err =
+  //           "Please choose and image. It can either be an url or a custom image. ";
+  //         showToast("error", err);
+  //       } else {
+  //         setDisable(true);
+  //         btnAnimate();
+  //         appendFormData();
+  //         formData.append("imageUrl", imageRef.current.value);
+  //         submitNewPost(formData);
+  //       }
+  //     } else {
+  //       appendFormData();
+  //       newPic(customImg);
+  //     }
+  //   }
+  // };
   const handleNewPost = async (e) => {
     e.preventDefault();
 
@@ -81,8 +148,13 @@ export default function NewPost(props) {
       setDisable(true);
       btnAnimate();
       let postImage = postCustomImage.current.files[0];
+      let mimeType = "image/webp";
+      let OS;
+      if (navigator.userAgent.indexOf("Safari") != -1) { OS = "Safari"; mimeType = "image/jpeg" } else { mimeType = "image/webp" };
+
       new Compressor(postImage, {
         quality: 0.4,
+        mimeType: mimeType,
         success(result) {
           let newImage = result;
           formData.append("file", newImage, newImage.name);
@@ -128,13 +200,12 @@ export default function NewPost(props) {
       showToast("success", res.data.message);
       router.push(`/post/${res.data.newPostId}`);
     }
-    // if (res.data.createdPost === false) {
-    //   showToast("error", res.data.error);
-    // }
+    if (res.data.createdPost === false) {
+      showToast("error", res.data.error);
+    }
   };
 
-  // if (data.message) {
-  // }
+
 
   // useEffect(() => {
   //   if (userSession === null) {
@@ -178,6 +249,7 @@ export default function NewPost(props) {
             <PictureUpload
               loadUrlImage={loadImage}
               postImageRef={postCustomImage}
+            // setCustomImg={setCustomImg}
             />
             <div className="pt-4">
               <JoditEditor

@@ -31,6 +31,14 @@ function Post(props) {
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [post, setPost] = React.useState(props.post);
   const [showLoginModal, setShowLoginModal] = React.useState(false);
+  // React.useEffect(() => {
+  //   const img = document.getElementById("img");
+  //   // console.log(img.complete);
+  //   img.onload = function () {
+  //     console.log(img.complete);
+
+  //   };
+  // }, []);
 
   return (
     <>
@@ -47,12 +55,14 @@ function Post(props) {
             <div className="w-full">
               {post.image[0] ? (
                 <img
+                  id="img"
                   className="m-auto object-cover"
                   src={post.image[0].url}
                   alt="this is a picture"
                 />
               ) : (
                 <img
+                  id="img"
                   className="m-auto object-cover"
                   src={post.imageUrl}
                   alt="this is a picture"

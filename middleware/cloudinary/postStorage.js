@@ -11,7 +11,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "/socialApp/postImages",
-    allowedFormats: ["jpeg", "png", "jpg", "JPG", "webp"],
+    allowedFormats: ["jpeg", "png", "jpg", "JPG", "webp", "avif"],
   },
 });
 

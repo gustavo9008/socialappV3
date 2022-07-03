@@ -159,7 +159,7 @@ export default function Profile(props) {
                       <a
                         href={`${myProfile.myProfile.profile.links.personalWebsite}`}
                         target="_blank"
-                        className="text-sky-400 hover:text-sky-300"
+                        className="text-sky-500 hover:text-sky-300"
                       >
                         Personal Website
                       </a>
@@ -225,7 +225,7 @@ export default function Profile(props) {
                       <a
                         href={`${myProfile.myProfile.profile.links.instagram}`}
                         target="_blank"
-                        className="text-sky-400 hover:text-sky-300"
+                        className="text-sky-500 hover:text-sky-300"
                       >
                         Instagram
                       </a>
@@ -253,7 +253,7 @@ export default function Profile(props) {
                       <a
                         href={`${myProfile.myProfile.profile.links.twitter}`}
                         target="_blank"
-                        className="text-sky-400 hover:text-sky-300"
+                        className="text-sky-500 hover:text-sky-300"
                       >
                         Twitter
                       </a>
@@ -281,7 +281,7 @@ export default function Profile(props) {
                       <a
                         href={`${myProfile.myProfile.profile.links.linkedin}`}
                         target="_blank"
-                        className="text-sky-400 hover:text-sky-300"
+                        className="text-sky-500 hover:text-sky-300"
                       >
                         Linkedin
                       </a>
