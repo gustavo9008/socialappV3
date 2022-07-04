@@ -164,7 +164,7 @@ export default function NewPost(props) {
         success(result) {
           let newImage = result;
           formData.append("file", newImage, newImage.name);
-          // submitNewPost(formData);
+          submitNewPost(formData);
         },
       });
     }
