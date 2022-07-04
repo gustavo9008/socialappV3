@@ -150,15 +150,21 @@ export default function NewPost(props) {
       let postImage = postCustomImage.current.files[0];
       let mimeType = "image/webp";
       let OS;
-      if (navigator.userAgent.indexOf("Safari") != -1) { OS = "Safari"; mimeType = "image/jpeg" } else { mimeType = "image/webp" };
+      if (navigator.userAgent.indexOf("Safari") != -1) {
+        OS = "Safari"; mimeType = "image/jpeg";
+        if (navigator.userAgent.indexOf("Chrome") != -1) {
+          mimeType = "image/webp"
 
+        }
+
+      };
       new Compressor(postImage, {
         quality: 0.4,
         mimeType: mimeType,
         success(result) {
           let newImage = result;
           formData.append("file", newImage, newImage.name);
-          submitNewPost(formData);
+          // submitNewPost(formData);
         },
       });
     }
