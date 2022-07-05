@@ -19,7 +19,7 @@ function Comments(props) {
     setBtnColor,
     btnVisibility,
     setBtnVisibility,
-  ] = useBtnState(true, "Comment", "bg-slate-700", "hidden-btn");
+  ] = useBtnState(true, "Comment", "bg-slate-700 text-gray-400", "block");
   const { setPostComments } = React.useContext(CommentContext);
   const { showToast, userSession } = React.useContext(appToastContext);
   // console.log(props.context);
@@ -43,12 +43,12 @@ function Comments(props) {
     if (commentRef.current.value !== "") {
       // console.log(commentRef.current.value);
       setBtnDisabled(false);
-      setBtnColor("bg-indigo-500 hover:bg-indigo-600");
+      setBtnColor("bg-indigo-500 text-white hover:bg-indigo-600");
       return;
     } else {
       // if(disabledBtn !== true)
       setBtnDisabled(true);
-      setBtnColor("bg-slate-700");
+      setBtnColor("bg-slate-700 text-gray-400");
       return;
     }
   };
@@ -138,14 +138,16 @@ function Comments(props) {
           to join the discussion.
         </p>
       ) : (
-        <div id="comment-submit-container" className="mb-6">
+        <div
+          id="comment-submit-container"
+          className="comment-submit-container mb-6"
+        >
           <form id="submit-comment-form" method="POST">
             <textarea
               ref={commentRef}
-              onFocus={expandTextareaComment}
               onChange={enableCommentSubmitBtn}
               id="comment-textarea"
-              className="comment-textarea border-gray-500 bg-gray-700 py-2 pl-1 text-white focus:bg-gray-900 focus:text-gray-300 focus:outline-none"
+              className="comment-textarea border-gray-500 py-2 pl-1 focus:outline-none dark:bg-gray-700 dark:focus:bg-gray-900 dark:focus:text-gray-300"
               rows="3"
               type="text"
               name="comment[text]"
@@ -155,7 +157,7 @@ function Comments(props) {
 
           <Button
             label={label}
-            className={`${btnVisibility} ${btnColor} ml-2 mr-1.5 mt-2 mb-2 rounded  p-2 hover:text-white `}
+            className={`${btnVisibility} ${btnColor} ml-2 mr-1.5 mt-2 mb-2 rounded  p-2`}
             disabled={btnDisabled}
             idTag={"mainAddCommentForm"}
             handleClick={handleCommentSubmit}

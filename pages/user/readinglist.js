@@ -45,7 +45,7 @@ function ReadingList(Props) {
     return (
         <Card>
             <div>
-                <p className="text-2xl text-gray-50">Reading List (<span className="px-1">{readingList !== null && readingList.length}</span>)</p>
+                <p className="text-2xl">Reading List (<span className="px-1">{readingList !== null && readingList.length}</span>)</p>
                 {
                     isLoading ? (
                         <Spinner />
@@ -66,10 +66,10 @@ function ReadingList(Props) {
 
                                                 <div className="flex">
                                                     <Link href={`/post/${article.postId}`}>
-                                                        <a className="w-full bg-gray-800 hover:bg-gray-600 border-b border-gray-900 overflow-hidden p-4"> <h6>{article.title}  </h6></a>
+                                                        <a className="w-full bg-gray-100 dark:bg-gray-800 hover:dark:bg-gray-600 hover:bg-gray-300 border-b border-gray-900 overflow-hidden p-4"> <h6>{article.title}  </h6></a>
                                                     </Link>
 
-                                                    <button onClick={() => deleteBookmarkHandler(article.postId)} id="delete-article-list" className="delete-article-list bg-gray-700 block w-14 p-4 font-medium border-b border-gray-900 text-gray-300 hover:bg-gray-600" aria-label="Delete post from reading list">
+                                                    <button onClick={() => deleteBookmarkHandler(article.postId)} id="delete-article-list" className="delete-article-list bg-gray-400 dark:bg-gray-700 block w-14 p-4 font-medium border-b border-gray-900 hover:dark:bg-gray-600 hover:bg-gray-500" aria-label="Delete post from reading list">
                                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>

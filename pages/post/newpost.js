@@ -234,7 +234,7 @@ export default function NewPost(props) {
               <label>Title</label>
               <input
                 ref={titleRef}
-                className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 leading-tight text-gray-300 focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="mb-1 h-10 w-full appearance-none rounded bg-gray-200 dark:bg-gray-800 focus:dark:bg-gray-700 py-2 px-3 leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="text"
                 name="title"
                 placeholder="title"
@@ -246,7 +246,7 @@ export default function NewPost(props) {
               <input
                 ref={imageRef}
                 onChange={loadImage}
-                className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 leading-tight text-gray-300 focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="mb-1 h-10 w-full appearance-none rounded bg-gray-200 py-2 px-3 leading-tight focus:border-transparent focus:bg-white focus:dark:bg-gray-700 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="text"
                 name="imageUrl"
                 placeholder="image url"

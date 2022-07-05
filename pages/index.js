@@ -211,7 +211,7 @@ function HomePage(props) {
               // posts.typeSort === "LATEST" && handleUpdatePost("LATEST");
               return;
             }}
-            className={`order-1 row-span-1 flex gap-4 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 cursor-pointer w-fit ${posts.typeSort === "LATEST" ? "border-b-4" : "hover:border-b-4"
+            className={`order-1 row-span-1 flex gap-4 justify-self-start p-2 hover:border-b-4 hover:border-slate-400 cursor-pointer w-fit ${posts.typeSort === "LATEST" ? "border-b-4 border-gray-500" : "hover:border-b-4 hover:border-gray-900"
               }`}
           >
             <span id="Latest" className="text-lg font-medium">
@@ -265,7 +265,7 @@ function HomePage(props) {
             <CardLoader />
 
           ) : (
-            <section>
+            <section className="grid grid-rows-1 gap-5 Psm:gap-3">
               {posts.posts.map((post, i) => {
                 if (posts.posts.length === i + 1) {
                   return (

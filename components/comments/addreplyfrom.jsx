@@ -91,7 +91,7 @@ export default function AddReply(props) {
           ref={replyRef}
           onChange={enableReplyBtn}
           id="reply-textarea"
-          className="submit-reply-form comment-textarea border-gray-500 bg-gray-700 py-2 pl-1 text-white focus:bg-gray-900 focus:text-gray-300 focus:outline-none"
+          className="submit-reply-form comment-textarea border-gray-500 py-2 pl-1 focus:outline-none dark:bg-gray-700 dark:focus:bg-gray-900 dark:focus:text-gray-300"
           autoComplete="off"
           rows="3"
           type="text"
@@ -117,7 +117,7 @@ export default function AddReply(props) {
         </button> */}
         <Button
           label={label}
-          className={`${btnVisibility} ${btnColor} reply-button mr-1.5 mb-2 rounded p-2 hover:text-white`}
+          className={`${btnVisibility} ${btnColor} reply-button mr-1.5 mb-2 rounded p-2 `}
           handleClick={submitReplyHandler}
           disabled={btnDisabled}
           idTag={"addReplyForm"}

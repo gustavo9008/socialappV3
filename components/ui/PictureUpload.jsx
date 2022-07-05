@@ -99,7 +99,7 @@ export default function PictureUpload(props) {
     <div className="field mt-4 mb-4 flex flex-wrap">
       <label
         htmlFor="imagePost"
-        className="mr-32 self-start rounded bg-gray-500 p-2 hover:bg-gray-600 hover:text-white Psm:mr-0 Psm:w-full"
+        className="mr-32 self-start rounded bg-gray-200 p-2 hover:bg-gray-400 dark:bg-gray-600 hover:dark:bg-gray-600 Psm:mr-0 Psm:w-full"
       >
         <i className="far fa-image relative pr-2 text-xl">
           <svg

@@ -48,7 +48,7 @@ function Post(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>{" "}
       <main className="main-container mt-3 flex flex-row Psm:m-0 Psm:mt-3 Psm:flex-col-reverse">
-        <article className="main-article-card overflow-hidden rounded-lg border border-indigo-900 border-opacity-50 bg-gray-800 Psm:w-full Psm:rounded-none Psm:border-none">
+        <article className="main-article-card overflow-hidden rounded-lg border border-indigo-900 border-opacity-50 bg-gray-100 dark:bg-gray-800 Psm:w-full Psm:rounded-none Psm:border-none">
           {/* //===== bookmark btn ===== */}
 
           <div className="blog-content">
@@ -81,13 +81,13 @@ function Post(props) {
                   <Link href={"/user/" + post.userProfile.id}>
                     <a className="clickable"> {post.userProfile.name} </a>
                   </Link>
-                  <span className=" pt-1 text-center text-xs text-gray-400">
+                  <span className=" pt-1 text-center text-xs text-gray-600 dark:text-gray-400">
                     Posted on {new Date(post.created).toDateString()}
                   </span>
                 </div>
               </h2>
               <p>
-                <span className="ml-2 text-blue-300">
+                <span className="ml-2 text-blue-600 dark:text-blue-300">
                   <a href="#commentSection">
                     {post.comments.length}{" "}
                     {post.comments.length <= 1 ? "Comment" : "Comments"}

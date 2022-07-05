@@ -45,17 +45,17 @@ export default function Modal(props) {
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-70 outline-none focus:outline-none">
             <div className="relative my-6 mx-auto w-auto max-w-3xl">
               {/*content*/}
-              <div className="modal flex flex-col rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none">
+              <div className="modal flex flex-col rounded border-2 border-gray-300 bg-gray-100 shadow-[4px_4px_0px_0px_#e2e8f0] outline-none focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:shadow-[4px_4px_0px_0px_#374151]">
                 {/*header*/}
-                <div className="border-blueGray-200 flex items-start justify-between rounded-t border-b border-solid p-5">
+                <div className="flex items-start justify-between rounded-t border-b border-solid border-gray-200 p-5">
                   <h3 className="text-3xl font-semibold text-red-700">
                     Delete Comment
                   </h3>
                   <button
-                    className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black outline-none focus:outline-none"
+                    className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none outline-none focus:outline-none"
                     onClick={() => props.setShowDeleteModal(false)}
                   >
-                    <span className=" block h-6 w-6 text-2xl text-white outline-none focus:outline-none">
+                    <span className=" block h-6 w-6 text-2xl outline-none focus:outline-none">
                       ×
                     </span>
                   </button>

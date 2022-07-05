@@ -28,18 +28,18 @@ export default function UserProfile(props) {
   // const spanSyle = css2obj(props.user.genericImage);
   // console.log(spanSyle);
   return (
-    <main className="Psm:m-0 profile-container Psm:mt-3 mt-3">
-      <header className="Psm:w-full mx-auto mb-2">
-        <figure className="Psm:border-l-0 Psm:border-r-0 Psm:rounded-none flex-grow overflow-hidden rounded-md border border-gray-600 bg-gray-800 p-8 md:flex md:p-0">
-          <div className="Psm:flex-col flex w-full">
+    <main className="profile-container mt-3 Psm:m-0 Psm:mt-3">
+      <header className="mx-auto mb-2 Psm:w-full">
+        <figure className="flex-grow overflow-hidden rounded-md border border-gray-600 bg-gray-100 p-8 dark:bg-gray-800 Psm:rounded-none Psm:border-l-0 Psm:border-r-0 md:flex md:p-0">
+          <div className="flex w-full Psm:flex-col">
             {!props.user.profile.image.url ? (
               <span
-                className="profile-circle-avatar Psm:mx-auto h-32 w-32 rounded-full object-cover md:h-auto md:w-48 md:rounded-none"
+                className="profile-circle-avatar h-32 w-32 rounded-full object-cover Psm:mx-auto md:h-auto md:w-48 md:rounded-none"
                 style={btnStyle}
               ></span>
             ) : (
               <img
-                className="profile-circle-avatar Psm:mx-auto h-32 w-32 rounded-full object-cover md:h-auto md:w-48 md:rounded-none"
+                className="profile-circle-avatar h-32 w-32 rounded-full object-cover Psm:mx-auto md:h-auto md:w-48 md:rounded-none"
                 src={props.user.profile.image.url}
                 alt=""
                 width="384"
@@ -100,17 +100,17 @@ export default function UserProfile(props) {
       <section className="mx-auto flex flex-row flex-wrap justify-evenly gap-4">
         {/* post section  */}
         {props.user.profile.posts.length > 0 && (
-          <article className="Psm:w-screen profile-post-comment-containers flex flex-auto flex-col flex-wrap self-start ">
+          <article className="profile-post-comment-containers flex flex-auto flex-col flex-wrap self-start Psm:w-screen ">
             {props.user.profile.posts.map((post) => (
               <div
-                className="Psm:rounded-none profile-article-cards Psm:border-l-0 Psm:border-r-0 border border-gray-700 bg-gray-800"
+                className="profile-article-cards border border-gray-700 bg-gray-100 dark:bg-gray-800 Psm:rounded-none Psm:border-l-0 Psm:border-r-0"
                 key={post._id}
               >
                 <h3 className="text-lg font-medium">{post.title}</h3>
                 <span className="text-sm text-gray-400">
                   {new Date(post.created).toDateString()}
                   <Link href={`/post/${post._id}`}>
-                    <a className="text-blue-300"> Read Post</a>
+                    <a className="text-blue-500"> Read Post</a>
                   </Link>
                 </span>
               </div>
@@ -120,13 +120,13 @@ export default function UserProfile(props) {
 
         {/* comment section */}
         {sortedCommentReplies.length > 0 && (
-          <article className="Psm:w-screen profile-post-comment-containers Psm:border-l-0 Psm:border-r-0 Psm:rounded-none mb-4 flex flex-auto flex-col flex-wrap self-start overflow-hidden rounded-md border border-gray-500">
-            <h3 className="p-2 pl-6"> Recent Comments</h3>
+          <article className="profile-post-comment-containers mb-4 flex flex-auto flex-col flex-wrap self-start overflow-hidden rounded-md border border-gray-500 Psm:w-screen Psm:rounded-none Psm:border-l-0 Psm:border-r-0">
+            <h3 className="border-b-2 p-2 pl-6"> Recent Comments</h3>
             {sortedCommentReplies.map((comment) => (
               <Link key={comment._id} href={`${comment.postUrl.address}`}>
                 <a
                   key={comment._id}
-                  className="w-full overflow-hidden border-b border-gray-900 bg-gray-800 p-4"
+                  className="w-full overflow-hidden border-b border-gray-900 bg-gray-100 p-4 dark:bg-gray-800"
                 >
                   <h4 className="text-lg font-medium">{comment.comment}</h4>
                   <span className="text-sm text-gray-400">

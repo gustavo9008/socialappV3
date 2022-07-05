@@ -78,7 +78,8 @@ export default function TextComments(props) {
             cardSize={props.cardSize ? props.cardSize : undefined}
           >
             <div className="comment-header flex justify-between pt-2">
-              <span className="comment-info self-center text-sm text-gray-400">
+              {/* user info */}
+              <span className="comment-info self-center text-sm text-gray-600">
                 <Link href={"/user/" + commentReply.userProfile.id}>
                   <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
                     {commentReply.userProfile.name}
@@ -145,7 +146,7 @@ export default function TextComments(props) {
                         ref={commentDropdownRef}
                         className={`commentMenu ${
                           isActive ? "active" : "inactive"
-                        } nav-dropdown-content absolute right-0 z-10 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-gray-900 py-1`}
+                        } nav-dropdown-content absolute right-0 z-10 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-white py-1 dark:bg-gray-900`}
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="user-menu"
@@ -155,7 +156,7 @@ export default function TextComments(props) {
                           <button
                             onClick={() => setOpenCommentModal(true)}
                             id=""
-                            className="block w-full px-4 py-2 text-left font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                            className="block w-full px-4 py-2 text-left font-medium tracking-wider hover:bg-gray-300  dark:hover:bg-gray-800"
                           >
                             Edit
                           </button>
@@ -163,7 +164,7 @@ export default function TextComments(props) {
                           <button
                             onClick={() => setShowDeleteModal(true)}
                             id="delete-comment"
-                            className="delete-comment block w-full px-4 py-2 text-left font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                            className="delete-comment block w-full px-4 py-2 text-left font-medium tracking-wider hover:bg-gray-300 dark:hover:bg-gray-800"
                           >
                             Delete
                           </button>
@@ -192,7 +193,7 @@ export default function TextComments(props) {
                   )}
               </div>
             </div>
-            <p className="py-2 text-gray-100" aria-label="user comment reply">
+            <p className="py-2" aria-label="user comment reply">
               {commentReply.comment}
             </p>
           </CommentCard>

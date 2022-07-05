@@ -91,7 +91,7 @@ const NavDropdown = (props) => {
       <div id="dropdownbtn">
         <div className="flex items-center">
           <p>
-            <span className="w-32 px-4 Psm:hidden">
+            <span className="w-32 px-4 font-semibold tracking-wide opacity-90 Psm:hidden">
               Signed in as: {props.user ? props.user.name : null}
             </span>
           </p>
@@ -115,12 +115,12 @@ const NavDropdown = (props) => {
           id="dropdownMenu"
           className={`${
             isActive ? "active" : "inactive"
-          } menu nav-dropdown-content absolute right-0 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-gray-900 py-1`}
+          } menu nav-dropdown-content absolute right-0 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-gray-100 py-1 dark:bg-gray-900`}
         >
           <div onClick={toggleMenu}>
             <Link href="/user/profile">
               <a
-                className="block h-12 border-b border-gray-500 border-opacity-50 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                className="block h-12 border-b border-gray-500 border-opacity-50 px-4 py-3 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
                 role="menuitem"
                 aria-label="login button"
               >
@@ -129,7 +129,7 @@ const NavDropdown = (props) => {
             </Link>
             <Link href="/post/newpost">
               <a
-                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                className="block px-4 py-2 font-semibold tracking-wider opacity-90  hover:bg-gray-300"
                 role="menuitem"
               >
                 Write a post
@@ -137,7 +137,7 @@ const NavDropdown = (props) => {
             </Link>
             <Link href="/user/readinglist">
               <a
-                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
                 role="menuitem"
               >
                 Reading List
@@ -146,7 +146,7 @@ const NavDropdown = (props) => {
 
             <Link href="/user/profile/settings">
               <a
-                className="block px-4 py-2 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+                className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
                 role="menuitem"
               >
                 Settings
@@ -156,7 +156,7 @@ const NavDropdown = (props) => {
             <a
               onClick={logoutHandler}
               id="logoutbtn"
-              className="block h-12 border-t border-gray-500 border-opacity-50 px-4 py-3 font-medium tracking-wider text-gray-300 hover:bg-gray-800"
+              className="block h-12 border-t border-gray-500 border-opacity-50 px-4 py-3 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
               role="menuitem"
             >
               Sign out

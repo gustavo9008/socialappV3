@@ -56,7 +56,10 @@ function SearchBar(props) {
 
   return (
     <div className={`relative flex`}>
-      <button onClick={displayBar} className="px-2">
+      <button
+        onClick={displayBar}
+        className="px-2 text-slate-800 dark:text-gray-200"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -96,14 +99,14 @@ function SearchBar(props) {
         >
           <div className="sticky top-0 z-50 mx-auto w-auto max-w-3xl">
             {/*content*/}
-            <div className="search-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none Psm:max-h-1/2">
+            <div className="search-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-100 outline-none focus:outline-none dark:bg-gray-900 Psm:max-h-1/2">
               {/*header*/}
-              <div className=" border-blueGray-200 sticky top-0 z-50 flex items-start justify-between rounded-t border-b border-solid bg-slate-900 p-5">
+              <div className=" border-blueGray-200 sticky top-0 z-50 flex items-start justify-between rounded-t border-b border-solid bg-white p-5 dark:bg-slate-900">
                 <button
                   onClick={displayBar}
                   className="float-right border-0 p-1 text-3xl font-semibold leading-none"
                 >
-                  <span className="block h-7 w-7 text-2xl text-gray-400 outline-none hover:text-gray-100 focus:outline-none">
+                  <span className="block h-7 w-7 text-2xl text-gray-900 outline-none  hover:text-gray-600 focus:outline-none dark:text-gray-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
@@ -168,7 +171,7 @@ function SearchBar(props) {
                       <div key={i}>
                         <div id={i} key={i} className="relative flex-auto p-3">
                           <div className="container mx-auto mt-4 Psm:max-w-full">
-                            <div className="m-2 transform rounded-lg border border-gray-400 bg-gray-800 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+                            <div className="m-2 transform rounded-lg border border-gray-800 transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-400 dark:bg-gray-800">
                               {/* <div className="m-3">
                                 <h2 className="mb-2 text-lg">{post.title}</h2>
                                 <h3 className="mb-2 text-xs font-light">
@@ -187,7 +190,7 @@ function SearchBar(props) {
                                       profile={post.userProfile}
                                     />
                                     <div className="author-container">
-                                      <span className="cursor-pointer text-sm text-gray-300">
+                                      <span className="cursor-pointer text-sm text-gray-800 dark:text-gray-300">
                                         <a
                                           onClick={(e) => {
                                             e.preventDefault();
@@ -202,7 +205,7 @@ function SearchBar(props) {
                                           {post.userProfile.name}{" "}
                                         </a>
                                       </span>
-                                      <span className="text-xs text-gray-400">
+                                      <span className="text-xs text-gray-700 dark:text-gray-400">
                                         {new Date(post.created).toDateString()}
                                       </span>
                                     </div>
@@ -239,7 +242,7 @@ function SearchBar(props) {
                                     routeToLink(`/post/${post._id}`);
                                   }}
                                   id=""
-                                  className="article-link my-0 ml-12 cursor-pointer text-xl tracking-wide text-gray-300 Psm:ml-0"
+                                  className="article-link my-0 ml-12 cursor-pointer text-xl tracking-wide text-gray-800 dark:text-gray-300 Psm:ml-0"
                                   aria-label="article title"
                                 >
                                   {post.title}
@@ -257,7 +260,7 @@ function SearchBar(props) {
               {searchResults?.results === false && (
                 <div>
                   <div className="relative flex-auto p-3">
-                    <p className="text-white"> No results match that query</p>
+                    <p className=""> No results match that query</p>
                   </div>
                 </div>
               )}

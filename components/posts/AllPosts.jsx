@@ -43,7 +43,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
       href={"/post/" + props.posts.id}
       onClick={linkHandleClick}
       id={`${props.id}`}
-      className="link-card homepage-card card cursor-pointer bg-gray-800 Psm:mb-2 Psm:w-full Psm:rounded-none Psm:border-l-0 Psm:border-r-0 Psm:border-t Psm:border-b Psm:border-indigo-900 Psm:shadow-none"
+      className="link-card homepage-card card cursor-pointer bg-neutral-100  dark:bg-gray-800 Psm:w-full Psm:rounded-none Psm:border-l-0 Psm:border-r-0 Psm:border-t Psm:border-b Psm:border-gray-400 Psm:shadow-none Psm:dark:border-indigo-900"
     >
       <figure className="aspect-w-4 aspect-h-2 mb-2">
         {props.posts.image ? (
@@ -96,7 +96,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
             </span>
           )} */}
             <div className="author-container">
-              <span className="text-sm text-gray-300">
+              <span className="text-sm text-gray-900 dark:text-gray-300">
                 {/* <Link href={"/user/" + props.posts.userProfile.id}> */}
                 <a
                   onClick={userLinkHandle}
@@ -108,7 +108,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
                 </a>
                 {/* </Link> */}
               </span>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
                 {props.posts.created}
               </span>
             </div>
@@ -137,7 +137,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
         <Link href={"/post/" + props.posts.id}>
           <a
             id=""
-            className="article-link my-0 ml-12 text-xl tracking-wide text-gray-300 Psm:ml-0"
+            className="article-link my-0 ml-12 text-xl tracking-wide Psm:ml-0"
             aria-label="article title"
           >
             {props.posts.title}

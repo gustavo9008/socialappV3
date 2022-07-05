@@ -53,7 +53,7 @@ export default function Header() {
     <>
       <nav
         id="navbar"
-        className="fixed top-0 z-50 mb-4 w-full border-b-2 border-gray-900 bg-gray-800 text-white"
+        className="fixed top-0 z-50 mb-4 w-full border-b-2 border-gray-300 bg-white  dark:border-gray-900 dark:bg-gray-800"
         role="menubar"
       >
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -62,7 +62,7 @@ export default function Header() {
               <div className="flex">
                 <Link href="/">
                   <a
-                    className="gen rounded bg-gray-700 p-2 hover:bg-gray-600 hover:text-white"
+                    className="gen rounded bg-gray-800 p-2 font-semibold text-white hover:bg-gray-600 dark:bg-gray-700"
                     role="menuitem"
                     aria-label="home page button"
                   >
@@ -87,7 +87,7 @@ export default function Header() {
                       </svg>
                     </span>
 
-                    <span className="nav-logo font-medium antialiased">
+                    <span className="dark:nav-logo pl-2 tracking-wide antialiased">
                       Dev.me
                     </span>
                   </a>

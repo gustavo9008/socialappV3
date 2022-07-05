@@ -47,7 +47,7 @@ export default function EditCommentModal(props) {
         // <!-- ===== edit comment modal ===== -->
         <div className="fixed left-0 top-0 z-20 flex h-screen w-full items-center justify-center bg-black bg-opacity-50">
           {/* <!-- ===== modal ===== --> */}
-          <div className="modal rounded border-2 border-gray-500 bg-gray-800">
+          <div className="modal rounded border-2 border-gray-300 bg-gray-100 shadow-[4px_4px_0px_0px_#e2e8f0] dark:border-gray-600 dark:bg-gray-800 dark:shadow-[4px_4px_0px_0px_#374151]">
             {/* <!-- ===== modal header ===== --> */}
             <div className="flex items-center justify-between border-b px-4 py-2">
               <h3 className="text-lg font-semibold">Edit Comment</h3>
@@ -81,7 +81,7 @@ export default function EditCommentModal(props) {
                     ref={commentRef}
                     defaultValue={props.comment.comment}
                     id="update-reply-comment"
-                    className="comment-textarea rounded-md border border-gray-500 bg-gray-700 py-2 pl-1 text-white focus:border-purple-800 focus:bg-gray-900 focus:text-gray-300 focus:outline-none"
+                    className="comment-textarea rounded-md border border-gray-500 bg-gray-200 py-2 pl-1 focus:border-purple-800 focus:bg-white focus:text-gray-800 focus:outline-none dark:bg-gray-700 dark:focus:bg-gray-900"
                     autoComplete="off"
                     rows="3"
                     type="text"

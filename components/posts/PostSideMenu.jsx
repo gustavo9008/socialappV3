@@ -198,7 +198,7 @@ export default function PostSideMenu(props) {
   }, [userSession, post._id, setBtnColor]);
   return (
     <section className="fixed w-12 Psm:bottom-0 ">
-      <aside className="flex flex-col gap-4 text-gray-300 Psm:w-screen Psm:flex-row Psm:justify-between Psm:bg-gray-900 Psm:px-8 Psm:py-1">
+      <aside className="flex flex-col gap-4 Psm:w-screen Psm:flex-row Psm:justify-between Psm:bg-white Psm:px-8 Psm:py-1 Psm:dark:bg-gray-900">
         {userSession ? (
           <>
             {bookFunction ? (
