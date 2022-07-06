@@ -81,11 +81,7 @@ export default function AddReply(props) {
       style={formStyle}
       className="comment-submit-container mb-4 hidden"
     >
-      <form
-        id="submit-reply-form"
-        action="/blogs/<%= blog._id %>/comments/<%= comments._id %>"
-        method="POST"
-      >
+      <form id="submit-reply-form" method="POST">
         {/* <!-- <input type="text" name="commentReply"> --> */}
         <textarea
           ref={replyRef}

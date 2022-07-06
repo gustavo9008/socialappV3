@@ -22,10 +22,10 @@ export default function Header() {
 
   // no user button options
   const noUserBtns = (
-    <>
+    <aside className="flex flex-row gap-2">
       <Link href="/login">
         <a
-          className="mr-1.5 rounded bg-blue-400 p-2 font-medium text-gray-900 antialiased hover:bg-blue-600"
+          className="rounded  bg-blue-600 p-2 font-semibold tracking-wide text-white antialiased hover:bg-blue-500 dark:bg-blue-400"
           role="menuitem"
           aria-label="login button"
         >
@@ -35,14 +35,14 @@ export default function Header() {
 
       <Link href="/signup">
         <a
-          className="rounded bg-gray-700 p-2 font-medium hover:bg-gray-600"
+          className="rounded bg-purple-600 p-2 font-semibold tracking-wide text-white hover:bg-purple-500 dark:bg-purple-400"
           role="menuitem"
           aria-label="create account button"
         >
           Create Account
         </a>
       </Link>
-    </>
+    </aside>
   );
 
   // user logged in options

@@ -3,6 +3,7 @@ import React from "react";
 import Head from "next/head";
 
 import LoginForm from "@/components/ui/LoginForm";
+import Card from "@/components/ui/Container";
 
 export default function LoginPage({ csrfToken }) {
   return (
@@ -11,11 +12,14 @@ export default function LoginPage({ csrfToken }) {
         <title>Dev.to Sign in</title>
       </Head>
 
-      <section className="login-form">
-        <div className="login-form-card flex w-full items-center justify-center">
+
+      <Card>
+        <div className="login-form-card h-[85vh] Psm:h-[80vh] flex w-full items-center justify-center">
           <LoginForm title={"Log in"} redirect={true} />
         </div>
-      </section>
+      </Card>
+
+
     </>
   );
 }
