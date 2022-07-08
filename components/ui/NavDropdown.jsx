@@ -120,7 +120,7 @@ const NavDropdown = (props) => {
           <div onClick={toggleMenu}>
             <Link href="/user/profile">
               <a
-                className="block h-12 border-b border-gray-500 border-opacity-50 px-4 py-3 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
+                className="block h-12 border-b border-gray-500 border-opacity-50 px-4 py-3 font-semibold tracking-wider opacity-90 hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"
                 aria-label="login button"
               >
@@ -129,7 +129,7 @@ const NavDropdown = (props) => {
             </Link>
             <Link href="/post/newpost">
               <a
-                className="block px-4 py-2 font-semibold tracking-wider opacity-90  hover:bg-gray-300"
+                className="block px-4 py-2 font-semibold tracking-wider opacity-90  hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"
               >
                 Write a post
@@ -137,7 +137,7 @@ const NavDropdown = (props) => {
             </Link>
             <Link href="/user/readinglist">
               <a
-                className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
+                className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"
               >
                 Reading List
@@ -146,7 +146,7 @@ const NavDropdown = (props) => {
 
             <Link href="/user/profile/settings">
               <a
-                className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
+                className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"
               >
                 Settings
@@ -156,7 +156,7 @@ const NavDropdown = (props) => {
             <a
               onClick={logoutHandler}
               id="logoutbtn"
-              className="block h-12 border-t border-gray-500 border-opacity-50 px-4 py-3 font-semibold tracking-wider opacity-90 hover:bg-gray-300"
+              className="block h-12 cursor-pointer border-t border-gray-500 border-opacity-50 px-4 py-3 font-semibold tracking-wider opacity-90 hover:bg-gray-300 hover:dark:bg-gray-600"
               role="menuitem"
             >
               Sign out

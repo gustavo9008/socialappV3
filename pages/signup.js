@@ -75,7 +75,7 @@ const SignupPage = () => {
         console.log("success");
         router.push("/login");
       }
-      const resData = await res.json();
+      // const resData = await res.json();
       console.log(res);
     }
   };
