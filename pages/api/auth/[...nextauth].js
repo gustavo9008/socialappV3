@@ -23,6 +23,7 @@ export default async function auth(req, res) {
       CredentialsProvider({
         async authorize(credentials, req) {
           //Connect to DB
+          // console.log(credentials);
           const client = await MongoClient.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,

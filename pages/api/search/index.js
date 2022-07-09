@@ -15,7 +15,7 @@ export default async function findPostHandler(req, res) {
         // const userResults = await User.find({ $text: { $search: req.query.request } })
         const results = await Post.aggregate([{
             $search: {
-                index: 'title_body_text',
+                index: 'default',
                 text: {
                     query: req.query.request,
                     path: {
