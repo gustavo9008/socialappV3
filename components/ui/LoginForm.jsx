@@ -17,7 +17,7 @@ function LoginForm(props) {
     setLabel,
     btnColor,
     setBtnColor,
-  ] = useBtnState(true, "Sign In", "bg-blue-900", "block");
+  ] = useBtnState(true, "Continue", "bg-blue-900", "block");
   const { showToast, userSession } = React.useContext(appToastContext);
 
   const [loading, setLoading] = useState(true);
@@ -56,6 +56,7 @@ function LoginForm(props) {
       }
       if (status.error !== null) {
         showToast("error", status.error);
+        stopBtnAnimate("loginformbtn");
       }
     }
     if (email.includes("@")) {
@@ -104,13 +105,13 @@ function LoginForm(props) {
       {userSession ? (
         <Spinner></Spinner>
       ) : (
-        <div className="modal rounded border-2 border-gray-500 bg-white dark:bg-gray-800">
+        <div className="modal rounded border-2 border-gray-500 bg-gray-100 dark:bg-gray-800">
           {/* === sing in header */}
-          <div className="flex items-center justify-between border-b px-4 py-2">
+          <div className="flex items-center justify-between  border-b-2 border-gray-500 px-4 py-2">
             <div className="flex flex-row justify-between">
               <span className="text-sm">Don&#39;t have an account?</span>
               <Link href="/signup">
-                <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
+                <a className="pl-2 text-sm font-semibold text-blue-600 hover:text-blue-400">
                   Sign up
                 </a>
               </Link>
@@ -118,7 +119,29 @@ function LoginForm(props) {
             {props.closeBtn}
           </div>
           <div className="p-3">
-            <h2 className=" text-2xl font-bold">{props.title}</h2>
+            <h2 className=" text-center text-2xl font-bold">
+              <span className="laptop-code pt-1 pr-1">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M3 6C3 4.89543 3.89543 4 5 4H19C20.1046 4 21 4.89543 21 6V14C21 15.1046 20.1046 16 19 16H5C3.89543 16 3 15.1046 3 14V6ZM5 6H19V14H5V6Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M2 18C1.44772 18 1 18.4477 1 19C1 19.5523 1.44772 20 2 20H22C22.5523 20 23 19.5523 23 19C23 18.4477 22.5523 18 22 18H2Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              {props.title}
+            </h2>
 
             <form id="formLogin" method="post" onSubmit={onSubmit}>
               {/* {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null} */}
@@ -134,7 +157,7 @@ function LoginForm(props) {
                 <input
                   ref={emailRef}
                   onChange={checkFormInputs}
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 leading-tight text-gray-900 focus:border-transparent focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 leading-tight text-gray-900 focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   id="email"
                   type="email"
                   name="email"
@@ -152,7 +175,7 @@ function LoginForm(props) {
                 <input
                   ref={passRef}
                   onChange={checkFormInputs}
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 leading-tight text-gray-900 focus:border-transparent focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 leading-tight text-gray-900 focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   id="password"
                   type="password"
                   name="password"
@@ -161,7 +184,7 @@ function LoginForm(props) {
                 <p>
                   Forgot password? &#160;
                   <Link href="/forget-password">
-                    <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
+                    <a className="text-sm font-semibold text-blue-600 hover:text-blue-400">
                       Click here
                     </a>
                   </Link>

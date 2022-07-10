@@ -40,7 +40,7 @@ async function signUpHandler(req, res) {
 
     let newcolors = await generateRandomColors(6);
 
-    // let profileRegistered = false;
+    //===== creates user =====
     let hashPass = await hash(password, 12);
 
     const newProfile = {
@@ -69,10 +69,26 @@ async function signUpHandler(req, res) {
       password: hashPass,
       profile: newProfile,
     });
+    // console.log(newUser);
+    try {
+      //===== save user func =====
+      await newUser.save();
 
-    const usercreated = await newUser.save();
-    //Send success response
-    res.status(201).json(usercreated);
+      //Send success response
+
+      res.status(201).json({ created: true, message: "You have created an account succesfuly. " });
+
+    } catch (error) {
+      //===== checks what kind of error occurs =====
+      let errMessage;
+      error.keyPattern.email === 1 && (errMessage = `A user with email ${error.keyValue.email} already exist. Please try different email.`)
+      error.keyPattern.name === 1 && (errMessage = `A user with given name ${error.keyValue.name} already exist. Please try different name.`)
+      //===== error response =====
+      res.status(200).json({ created: false, message: errMessage });
+
+    }
+
+
   } else {
     //Response for other than POST method
     res.status(500).json({ message: "Route not valid" });

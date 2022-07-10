@@ -143,7 +143,7 @@ function PasswordInput(props, ref) {
         ref={props.newPasswordRef}
         onChange={checkPassword}
         id="new-password"
-        className={`mb-4 h-10 w-full appearance-none rounded py-2 px-3 pb-2 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props?.bgColor}`}
+        className={`mb-4 h-10 w-full appearance-none rounded py-2 px-3 pb-2 leading-tight text-gray-900 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props?.bgColor}`}
         type="password"
         name="newPassword"
         placeholder="Password"
@@ -205,7 +205,7 @@ function PasswordInput(props, ref) {
       <input
         ref={props.repeatPasswordRef}
         onChange={checkPasswordMatch}
-        className={`mb-2 h-10 w-full appearance-none rounded bg-gray-500 py-2 px-3 pb-2 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+        className={`focus:border-transparentfocus:outline-none mb-2 h-10 w-full appearance-none rounded py-2 px-3 pb-2 text-sm leading-tight text-gray-900 focus:ring-2 focus:ring-indigo-500 ${props?.bgColor}`}
         id="password"
         name="password"
         type="password"

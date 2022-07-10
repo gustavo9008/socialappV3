@@ -21,7 +21,7 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        'gradientDark': `linear-gradient( 94.3deg,  rgba(26,33,64,1) 10.9%, rgba(81,84,115,1) 87.1% );`,
+        'gradientDark': `linear-gradient( 94.3deg, rgb(30, 31, 39) 10.9%, rgb(38, 38, 40) 87.1% );`,
         'gradientLight': `linear-gradient( 94.3deg,  rgb(226, 226, 226) 10.9%, rgb(255, 255, 255) 87.1% );`
       }
     },

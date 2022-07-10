@@ -54,7 +54,7 @@ const profileSchema = new Schema({
 
 const userSchema = new Schema(
   {
-    name: { type: String, unique: true, required: true, text: true },
+    name: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
     password: String,
     profile: profileSchema,
@@ -64,7 +64,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.path("name").index({ text: true })
+// userSchema.path("name").index({ text: true })
 mongoose.models = {};
 export default mongoose.models.User || mongoose.model("User", userSchema);
 
