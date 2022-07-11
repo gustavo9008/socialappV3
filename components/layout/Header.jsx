@@ -1,6 +1,7 @@
 import React from "react";
 import { appToastContext } from "context/state";
 // import Head from "next/head";
+import { useRouter } from "next/router";
 import Link from "next/link";
 // import { useSession } from "next-auth/react";
 
@@ -8,10 +9,9 @@ import NavDropdown from "@/components/ui/NavDropdown";
 import SearchBar from "../ui/SearchBar";
 
 export default function Header() {
-  const { userSession } = React.useContext(appToastContext);
-  // console.log(userSession);
-
-  // console.log(session);
+  const router = useRouter();
+  const { userSession, createPostBtn, setCreatePostBtn } =
+    React.useContext(appToastContext);
 
   const handleLogout = async () => {
     await fetch("/api/auth", {
@@ -49,6 +49,11 @@ export default function Header() {
   // const userLoggedIn = (
 
   // );
+  React.useEffect(() => {
+    if (router.pathname !== "/post/newpost") {
+      setCreatePostBtn(true);
+    }
+  }, [router]);
   return (
     <>
       <nav
@@ -100,15 +105,17 @@ export default function Header() {
             {userSession && (
               <div className="relative ml-3 flex Psm:ml-2">
                 <div className="flex items-center">
-                  <Link href="/post/newpost">
-                    <a
-                      className="mr-1.5 rounded bg-indigo-500 p-2 font-medium tracking-wide text-black hover:bg-indigo-600 Psm:mr-3"
-                      role="menuitem"
-                      aria-label="Post and article or picture"
-                    >
-                      Post
-                    </a>
-                  </Link>
+                  {createPostBtn && (
+                    <Link href="/post/newpost">
+                      <a
+                        className="mr-1.5 rounded bg-indigo-500 p-2 font-medium tracking-wide text-black hover:bg-indigo-600 Psm:mr-3"
+                        role="menuitem"
+                        aria-label="Post and article or picture"
+                      >
+                        Post
+                      </a>
+                    </Link>
+                  )}
                   <NavDropdown user={userSession.user} />
                 </div>
               </div>

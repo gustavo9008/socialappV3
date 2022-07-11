@@ -16,6 +16,7 @@ export function ToastWrapper(props) {
   const [list, setList] = React.useState([]);
   const [userSession, setUserSession] = React.useState(null);
   const [statusAuth, setStatusAuth] = React.useState(null);
+  const [createPostBtn, setCreatePostBtn] = React.useState(true)
   const setTokenRefreshInterval = props.setRefreshInterval;
 
   let toastProperties = null;
@@ -30,7 +31,7 @@ export function ToastWrapper(props) {
       callbackUrl: "/",
       redirect: false,
     });
-    console.log(logoutData);
+
     logoutData.url &&
       (localStorage.removeItem("user_lists"),
 
@@ -38,7 +39,7 @@ export function ToastWrapper(props) {
   };
   const showToast = (type, description) => {
     const id = Math.floor(Math.random() * 100 + 1);
-    // console.log(id);
+
     switch (type) {
       case "success":
         toastProperties = {
@@ -108,7 +109,9 @@ export function ToastWrapper(props) {
         posts,
         setPosts,
         saveLastLoadPost,
-        handleLogout
+        handleLogout,
+        setCreatePostBtn,
+        createPostBtn
       }}
     >
       {props.children}

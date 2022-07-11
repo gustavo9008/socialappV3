@@ -75,7 +75,6 @@ function HomePage(props) {
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.data.success === true) {
           if (res.data.data.length > 0) {
-            // console.log(res.data);
             setPosts((prev) => ({
               posts: [...new Set([...newUpdatePost])],
               previousLimit: parseInt(res.data.nextPost),
@@ -90,9 +89,7 @@ function HomePage(props) {
       let twentyMin = 1200000;
       var fiveMin = 1000 * 60 * 1;
       let loaded = JSON.parse(localStorage.getItem("postLoaded"));
-      // console.log(loaded);
       if (new Date().getTime() - loaded?.popState?.timestamp < 3000) {
-        console.log("less than 3 seconds");
         if (new Date().getTime() - loaded.timestamp < fiveMin) {
 
 
@@ -111,7 +108,6 @@ function HomePage(props) {
 
   const lastBookElementRef = useCallback(
     (node) => {
-      // console.log("book run");
       const transformPosts = async (posts) => {
         let transformed = posts.map((posts) => ({
           title: posts.title,
@@ -130,7 +126,6 @@ function HomePage(props) {
         return transformed;
       };
       const handleUpdatePost = async () => {
-        // console.log("update post has been triggered");
         // setIsLoading(true);
         const res = await getMorePost(
           "GET",
@@ -170,7 +165,6 @@ function HomePage(props) {
   useEffect(() => {
     // age state check for posts data 
     if (new Date().getTime() - posts?.timestamp > 1200000) {
-      // console.log("home page useeffect");
 
       setPosts((prev) => ({
         posts: null,
@@ -190,7 +184,7 @@ function HomePage(props) {
       <Head>
         <title>Dev.me</title>
         <meta name="description" content="Generic Social App" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/laptop.ico" />
       </Head>
 
       <Card>

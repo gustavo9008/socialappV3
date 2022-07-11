@@ -96,10 +96,10 @@ export default function PictureUpload(props) {
   //   refs.fileSelector.value = "";
   // }
   return (
-    <div className="field mt-4 mb-4 flex flex-wrap">
+    <div className="field mt-4 flex flex-wrap">
       <label
         htmlFor="imagePost"
-        className="mr-32 self-start rounded bg-gray-200 p-2 hover:bg-gray-400 dark:bg-gray-600 hover:dark:bg-gray-600 Psm:mr-0 Psm:w-full"
+        className="mr-32 self-start rounded bg-blue-700 p-2 text-gray-100 hover:bg-blue-500 Psm:mr-0 Psm:w-full"
       >
         <i className="far fa-image relative pr-2 text-xl">
           <svg

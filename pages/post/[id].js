@@ -26,12 +26,12 @@ function SinglePost(props) {
   })
   // const [postId, setPostId] = React.useState(null)
   // const queryParams = new URL(document.location.href).pathname;
-  // console.log(post);
+
 
   const getPost = async (params) => {
-    // console.log("getPost run");
+
     const res = await useFetch("GET", `/api${params}`);
-    // console.log(res.data);
+
     res.data.success === true && (setPost(
       {
         isLoading: false,
@@ -44,7 +44,7 @@ function SinglePost(props) {
   React.useEffect(() => {
     const queryParams = new URL(document.location.href).pathname;
     ;
-    // console.log(post.isLoading);
+
     // check if post is null and is post id does not equal query id
     post.post !== null && (queryParams !== `/post/${post.post._id}`) && setPost({ isLoading: true, post: null });
     post.isLoading && getPost(queryParams)
@@ -56,8 +56,7 @@ function SinglePost(props) {
         timestamp: new Date().getTime(),
       };
       localStorage.setItem("postLoaded", JSON.stringify(loaded));
-      // console.log(loaded);
-      // console.log("this is from the before pop state router");
+
       return true;
     });
     // return true;

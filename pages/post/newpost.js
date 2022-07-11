@@ -14,12 +14,13 @@ const JoditEditor = dynamic(importJodit, {
 
 export default function NewPost(props) {
 
-  const { useFetch, showToast, userSession } =
+  const { useFetch, showToast, userSession, createPostBtn, setCreatePostBtn } =
     React.useContext(appToastContext);
   const [disable, setDisable] = React.useState(false);
   const sendNewPost = useFetch;
   const postCustomImage = useRef();
   const router = useRouter();
+
   //===== commented state below was for image conversion to blob webp, migth implented in future =====
   // const [customImg, setCustomImg] = useState()
   //=====  =====
@@ -213,51 +214,63 @@ export default function NewPost(props) {
 
 
 
-  // useEffect(() => {
-  //   if (userSession === null) {
-  //     // showToast("error", "You must be sign in.");
-  //     // router.push("/login");
-  //   }
-  // }, [router, userSession]);
+  React.useEffect(() => {
+
+    if (router.pathname === "/post/newpost") {
+
+      setCreatePostBtn(false)
+    }
+
+    // router.beforePopState(() => {
+    //   setCreatePostBtn(true)
+    //   return true;
+    // });
+    // // return true;
+  }, [router]);
   return (
     <>
       <Head>
-        <title>Create New Post</title>
+        <title>Create Post</title>
       </Head>
       {userSession !== null && (
         <main className="edit-card Psm:px-2">
           <header>
-            <p className="text-gray-500">New Post</p>
+            <h1 className="text-gray-500 text-3xl py-4">Create Post</h1>
+
           </header>
           <form id="create-form" className="">
-            <div className="field">
+            <div className="field pt-2">
               <label>Title</label>
               <input
                 ref={titleRef}
-                className="mb-1 h-10 w-full appearance-none rounded bg-gray-200 dark:bg-gray-800 focus:dark:bg-gray-700 py-2 px-3 leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 dark:bg-gray-800 focus:dark:bg-gray-700 py-2 px-3 leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="text"
                 name="title"
                 placeholder="title"
                 required
               />
             </div>
-            <div className="field">
+
+            <div className="field pt-4 pb-6 Psm:pb-2 border-b-2 border-opacity-50 border-gray-500">
+              <p className="text-lg opacity-60">You can choose between a link to your image or custrom image.</p>
               <label>Image</label>
               <input
                 ref={imageRef}
                 onChange={loadImage}
-                className="mb-1 h-10 w-full appearance-none rounded bg-gray-200 py-2 px-3 leading-tight focus:border-transparent focus:bg-white focus:dark:bg-gray-700 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 leading-tight focus:border-transparent focus:bg-white focus:dark:bg-gray-700 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="text"
                 name="imageUrl"
                 placeholder="image url"
               />
+              <PictureUpload
+                loadUrlImage={loadImage}
+                postImageRef={postCustomImage}
+              // setCustomImg={setCustomImg}
+              />
             </div>
-            <PictureUpload
-              loadUrlImage={loadImage}
-              postImageRef={postCustomImage}
-            // setCustomImg={setCustomImg}
-            />
-            <div className="pt-4">
+
+            <div className="pt-6">
+              <p className="text-lg opacity-60 pb-4">Write your post content below.</p>
               <JoditEditor
                 ref={editor}
                 value={content}

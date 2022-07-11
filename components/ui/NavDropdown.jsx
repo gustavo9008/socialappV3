@@ -7,12 +7,10 @@ import { appToastContext } from "context/state";
 import ProfileColorAvatar from "./ProfileColorAvatar";
 
 const NavDropdown = (props) => {
-  // console.log("redering...");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { showToast, setUserSession, handleLogout } =
     React.useContext(appToastContext);
-  // console.log(userSession);
   if (props.user === null) {
     router.push("/");
   }
