@@ -146,7 +146,7 @@ function PasswordInput(props, ref) {
         className={`mb-4 h-10 w-full appearance-none rounded py-2 px-3 pb-2 leading-tight text-gray-900 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props?.bgColor}`}
         type="password"
         name="newPassword"
-        placeholder="Password"
+        autoComplete="new-password"
       />
       <div
         ref={props.containerWarning}
@@ -209,7 +209,6 @@ function PasswordInput(props, ref) {
         id="password"
         name="password"
         type="password"
-        placeholder="Reapeat password"
       />
 
       <div

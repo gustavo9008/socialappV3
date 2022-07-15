@@ -21,7 +21,7 @@ export default function AccountPicture(props) {
     setLabel,
     btnColor,
     setBtnColor,
-  ] = useBtnState(true, "Save Picture/Color", "bg-slate-700", "block");
+  ] = useBtnState(true, "Save Picture/Color", "bg-gray-700", "block");
   const [newcolorstate, setNewColorState] = useState([]);
   const profilePictureRef = useRef();
   const oldProfilePic = useRef();
@@ -31,8 +31,7 @@ export default function AccountPicture(props) {
 
   const changeBtnColorActive = () => {
     btnDisabled === true && setBtnDisabled(false);
-    btnColor === "bg-slate-700" &&
-      setBtnColor("bg-indigo-500 hover:bg-indigo-600");
+    btnColor === "bg-gray-700" && setBtnColor("bg-blue-500 hover:bg-blue-600");
     return;
   };
 
@@ -98,7 +97,7 @@ export default function AccountPicture(props) {
     );
     if ((await res.data.success) === true) {
       showToast("success", "Picture updated.");
-      setBtnColor("bg-slate-700");
+      setBtnColor("bg-gray-700");
       setBtnDisabled(true);
       stopBtnAnimate("sendNewColorBtn");
       props.updateSession();
@@ -133,6 +132,7 @@ export default function AccountPicture(props) {
     changeBtnColorActive();
     let newColorpic = await generateRandomColors(6);
     setNewColorState(newColorpic);
+    setBtnColor("bg-blue-500 hover:bg-blue-600");
     const colorCircle = document.querySelector("#colorPic");
     colorCircle.style.backgroundImage = `linear-gradient(225deg, ${newColorpic[0]}, ${newColorpic[1]}, ${newColorpic[2]}, ${newColorpic[3]}, ${newColorpic[4]}, ${newColorpic[5]})`;
     colorCircle.setAttribute("data-color", newColor);
@@ -143,7 +143,7 @@ export default function AccountPicture(props) {
 
   return (
     <>
-      <section className="settings-card mt-4 p-4">
+      <section className="settings-card mt-4 border border-gray-500 bg-gray-100 p-4 dark:bg-gray-800">
         <h4 className="headings-style">Change Profile Picture/Color</h4>
         <h6 className="pb-4 text-sm font-medium tracking-wide">
           Pick between new random color or choose your own custom picture.
@@ -166,13 +166,13 @@ export default function AccountPicture(props) {
                 id="colorPic-container"
                 className="m-auto h-3/6 w-4/5 flex-col flex-wrap justify-center rounded-md bg-gray-800 bg-opacity-70 p-4"
               >
-                <h3 className="mb-4 mt-4 text-center font-medium antialiased">
+                <h3 className="mb-4 mt-4 text-center font-medium text-gray-200 antialiased">
                   Change your profile color
                 </h3>
                 <button
                   onClick={newColorPic}
                   id="changeColor"
-                  className="m-auto flex rounded bg-gray-600 p-2 text-center font-medium tracking-tighter antialiased hover:bg-gray-700"
+                  className="m-auto flex rounded bg-gray-400 p-2 text-center font-medium tracking-tighter text-gray-100 antialiased dark:bg-gray-600 dark:text-gray-200 hover:dark:bg-gray-700"
                 >
                   <span className="latop-code pr-2">
                     <svg
@@ -215,7 +215,7 @@ export default function AccountPicture(props) {
                 {/* uploadt image input */}
                 <label
                   htmlFor="profileImage"
-                  className="m-auto block rounded bg-gray-600 p-2 text-center text-white hover:bg-gray-700"
+                  className="m-auto block cursor-pointer rounded bg-purple-700 p-2 text-center text-white hover:bg-purple-600"
                 >
                   <i className="relative pr-2 text-xl">
                     <svg
@@ -261,8 +261,9 @@ export default function AccountPicture(props) {
             label={label}
             idTag={"sendNewColorBtn"}
             handleClick={newPic}
-            className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded bg-opacity-80 p-2 hover:text-white`}
+            className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded p-2 text-white`}
           />
+
           {/* <button
             onClick={newPic}
             id="edit-pic-btn"

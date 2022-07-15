@@ -91,9 +91,8 @@ export default function UserAccount(props) {
     if (newNameRef.current.value !== "") {
       emailError && setEmailError(false);
       !regEmail.test(newEmailRef.current.value) &&
-        btnColor !== "bg-indigo-500" &&
-        (setBtnColor("bg-indigo-500 hover:bg-indigo-600"),
-        setBtnDisabled(false));
+        btnColor !== "bg-blue-500" &&
+        (setBtnColor("bg-blue-500 hover:bg-blue-600"), setBtnDisabled(false));
     }
     //===== checks email input if valid it will enable btn =====
     if (regEmail.test(newEmailRef.current.value) === true) {
@@ -114,7 +113,7 @@ export default function UserAccount(props) {
 
   return (
     <>
-      <section className="settings-card mt-4 p-4">
+      <section className="settings-card mt-4 border border-gray-500 bg-gray-100 p-4 dark:bg-gray-800">
         <h4 className="headings-style">Edit User Account</h4>
         <form action="/blogs/changeuser?_method=PUT" method="POST">
           <div className="field pb-3">
@@ -129,7 +128,7 @@ export default function UserAccount(props) {
               onChange={enableBtn}
               ref={newNameRef}
               id="name"
-              className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
               type="text"
               name="name"
             />
@@ -146,7 +145,7 @@ export default function UserAccount(props) {
               onChange={enableBtn}
               ref={newEmailRef}
               id="email"
-              className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
               type="email"
               name="email"
             />

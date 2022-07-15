@@ -20,8 +20,7 @@ const updateuseraccounthandler = async (req, res) => {
   const updateAccount = async (session) => {
     //===== search user account =====
     await dbConnect();
-    const user = await User.findById(session.user.id).lean();
-
+    const user = await User.findById(session.user.id);
     const editUserAccount = async () => {
       let updatedUser = {
         name: req.body.newName,

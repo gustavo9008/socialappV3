@@ -27,7 +27,7 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
     setLabel,
     btnColor,
     setBtnColor,
-  ] = useBtnState(true, "Update", "bg-slate-700", "block");
+  ] = useBtnState(true, "Update", "bg-blue-700", "block");
   const { useFetch, showToast, userSession } =
     React.useContext(appToastContext);
   const sendNewPassword = useFetch;
@@ -70,15 +70,15 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
         {valid ? (
           <>
             <main className="flex flex-row justify-center">
-              <section className="modal rounded border-2 border-gray-500 bg-slate-900 p-8">
+              <section className="modal rounded border-2 border-gray-500 bg-gray-100 p-8 dark:bg-slate-900">
                 <p className="pb-4 text-center text-xl font-medium">
                   {" "}
-                  Enter Change Password
+                  Enter New Password
                 </p>
                 <PasswordCheck
                   newPasswordRef={newPasswordRef}
                   containerWarning={containerWarning}
-                  bgColor={"bg-gray-700"}
+                  bgColor={"bg-gray-200 focus:bg-white"}
                   inputLabel={"New Password"}
                   setBtnDisabled={setBtnDisabled}
                   setBtnColor={setBtnColor}
@@ -90,7 +90,7 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
                   label={`Reset Password`}
                   idTag={`resetPasswordSubmit`}
                   handleClick={handleSubmit}
-                  className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded bg-opacity-80 p-2 hover:text-white`}
+                  className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded bg-opacity-80 p-2 text-white`}
                 />
               </section>
             </main>

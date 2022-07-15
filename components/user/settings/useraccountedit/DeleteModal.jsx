@@ -51,9 +51,9 @@ export default function Modal(props) {
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-70 outline-none focus:outline-none">
             <div className="relative my-6 mx-auto w-auto max-w-3xl">
               {/*content*/}
-              <div className="modal flex flex-col rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none">
+              <div className="modal flex flex-col rounded border-2 border-gray-500 bg-gray-100 outline-none focus:outline-none dark:bg-gray-900">
                 {/*header*/}
-                <div className="border-blueGray-200 flex items-start justify-between rounded-t border-b border-solid p-5">
+                <div className="flex items-start justify-between rounded-t border-b border-solid border-gray-500 p-5">
                   <h3 className="text-3xl font-semibold text-red-700">
                     DELETE ACCOUNT
                   </h3>
@@ -68,14 +68,14 @@ export default function Modal(props) {
                 </div>
                 {/*body*/}
                 <div className="relative flex-auto p-6">
-                  <p className="text-blueGray-500 my-4 text-lg leading-relaxed">
+                  <p className="my-4 text-lg leading-relaxed">
                     Enter Password to delete account.
                   </p>
                   <div className="mt-4">
                     <div className="flex items-center justify-between">
                       <label
                         htmlFor="password"
-                        className="block text-sm text-white"
+                        className="block text-sm font-semibold"
                       >
                         Password
                       </label>
@@ -84,12 +84,12 @@ export default function Modal(props) {
                     <input
                       ref={deleteAccountRef}
                       type="password"
-                      className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 leading-tight text-gray-300 focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="mb-1 h-10 w-full appearance-none rounded bg-gray-400 py-2 px-3 leading-tight text-gray-100 focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 focus:dark:bg-gray-900"
                     />
                   </div>
                 </div>
                 {/*footer*/}
-                <div className="border-blueGray-200 flex items-center justify-between rounded-b border-t border-solid p-4">
+                <div className="flex items-center justify-between rounded-b border-t border-solid border-gray-500 p-4">
                   <button
                     className="mr-1 mb-1 rounded bg-green-700 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
                     type="button"

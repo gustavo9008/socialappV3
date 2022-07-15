@@ -54,14 +54,14 @@ export default function ProfilePage(props) {
     <>
       {userSession !== null ? (
         <main className="mx-auto flex max-w-screen-md Psm:flex-col">
-          <div className="h-full w-48 px-4 py-8 Psm:w-72">
-            <div className="mt-6 flex flex-1 flex-col justify-between Psm:flex-row">
-              <nav className="Psm:m-auto Psm:flex Psm:flex-row">
+          <div className="w-48 Psm:w-full">
+            <div className="flex flex-1 items-center flex-col justify-between Psm:flex-row">
+              <nav className="Psm:m-auto gap-4 Psm:flex Psm:flex-row">
                 <div>
                   <a
                     ref={profileBtnRef}
                     onClick={showProfileSetting}
-                    className={`${showProfile && (`bg-gray-200 text-gray-700`)} mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700`}
+                    className={`${showProfile && (`bg-gray-800 text-gray-200 dark:bg-gray-200 dark:text-gray-700`)} ${!showProfile && (` dark:text-gray-100 hover:text-gray-100 hover:bg-gray-800 hover:dark:text-gray-900`)} mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:dark:bg-gray-100  cursor-pointer`}
                   >
                     <svg
                       className="h-5 w-5"
@@ -93,7 +93,7 @@ export default function ProfilePage(props) {
                   <a
                     ref={settingBtnRef}
                     onClick={showAcccountSetting}
-                    className={`${showAccount && (`bg-gray-200 text-gray-700`)} mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700`}
+                    className={`${showAccount && (`bg-gray-800 text-gray-200 dark:bg-gray-200 dark:text-gray-700`)} ${!showAccount && (` dark:text-gray-100 hover:text-gray-100 hover:bg-gray-800 hover:dark:text-gray-900`)} mt-5 flex transform items-center rounded-md px-4 py-2 transition-colors duration-200 hover:dark:bg-gray-100  cursor-pointer`}
                     href="#"
                   >
                     <svg

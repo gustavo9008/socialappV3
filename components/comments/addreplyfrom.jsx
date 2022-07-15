@@ -17,7 +17,7 @@ export default function AddReply(props) {
     setBtnColor,
     btnVisibility,
     setBtnVisibility,
-  ] = useBtnState(true, "Reply", "bg-slate-700", "block");
+  ] = useBtnState(true, "Reply", "", "block");
 
   const addReply = useFetch;
   const { title, postId } = React.useContext(CommentContext);
@@ -33,11 +33,13 @@ export default function AddReply(props) {
     e.preventDefault();
     if (replyRef.current.value !== "") {
       setBtnDisabled(false);
-      setBtnColor("bg-indigo-500 hover:bg-indigo-600");
+      setBtnColor(
+        "text-blue-500 hover:bg-blue-500 border-blue-500 hover:text-white"
+      );
       return;
     } else {
       setBtnDisabled(true);
-      setBtnColor("bg-slate-700");
+      setBtnColor("");
       return;
     }
   };
@@ -95,10 +97,10 @@ export default function AddReply(props) {
           placeholder="Add to the discussion"
         ></textarea>
       </form>
-      <div className="flex justify-between px-4 pt-2">
+      <div className="flex justify-between p-2 pt-2">
         <Button
           label={"Cancel"}
-          className={`reply-button mr-1.5" mb-2 rounded bg-red-500 p-2 hover:bg-red-600 hover:text-white`}
+          className={`reply-button rounded border border-gray-400 bg-white p-1.5 font-semibold shadow hover:bg-gray-100 hover:text-red-500 dark:bg-gray-800 hover:dark:bg-gray-900 hover:dark:text-red-600`}
           handleClick={openCloseCommentReply}
           disabled={false}
           idTag={"addReplyForm"}
@@ -113,7 +115,7 @@ export default function AddReply(props) {
         </button> */}
         <Button
           label={label}
-          className={`${btnVisibility} ${btnColor} reply-button mr-1.5 mb-2 rounded p-2 `}
+          className={`${btnVisibility} ${btnColor} reply-button rounded border border-gray-400 bg-white p-1.5 font-semibold shadow dark:bg-gray-800`}
           handleClick={submitReplyHandler}
           disabled={btnDisabled}
           idTag={"addReplyForm"}

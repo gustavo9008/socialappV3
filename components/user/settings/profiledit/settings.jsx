@@ -20,7 +20,7 @@ export default function Settings(props) {
   ] = useBtnState(
     false,
     "Update Profile",
-    "bg-indigo-500 hover:bg-indigo-600",
+    "bg-blue-500 hover:bg-blue-600",
     "block"
   );
 
@@ -85,7 +85,7 @@ export default function Settings(props) {
 
   return (
     <>
-      <section className="settings-card mt-4 p-4">
+      <section className="settings-card bottom-2 mt-4 border border-gray-500 bg-gray-100 p-4 dark:bg-gray-800">
         <h4 className="headings-style">Edit Profile</h4>
         <form
           id="edit-profile-form"
@@ -101,7 +101,7 @@ export default function Settings(props) {
                 <input
                   ref={aboutRef}
                   id="about"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight text-gray-300 focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                   type="text"
                   name="about"
                   defaultValue={props.profile.about}
@@ -114,8 +114,7 @@ export default function Settings(props) {
                 <input
                   ref={locationRef}
                   id="location"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none
-                   focus:ring-2 focus:ring-indigo-500 "
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                   type="text"
                   name="location"
                   defaultValue={props.profile.location}
@@ -132,7 +131,7 @@ export default function Settings(props) {
                 <input
                   ref={personalWebsiteRef}
                   id="personal-Website"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                   type="text"
                   name="personal"
                   placeholder="http://..."
@@ -150,7 +149,7 @@ export default function Settings(props) {
                 <input
                   ref={instagramRef}
                   id="instagram"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                   type="text"
                   name="instagram"
                   placeholder="instagram.com/..."
@@ -166,7 +165,7 @@ export default function Settings(props) {
                 <input
                   ref={twitterRef}
                   id="twitter"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                   type="text"
                   name="twitter"
                   placeholder="twitter/..."
@@ -182,7 +181,7 @@ export default function Settings(props) {
                 <input
                   ref={youtubeRef}
                   id="youtube"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                   type="text"
                   name="youtube"
                   placeholder="channels/..."
@@ -198,7 +197,7 @@ export default function Settings(props) {
                 <input
                   ref={linkedinRef}
                   id="linkedin"
-                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                   type="text"
                   name="linkedin"
                   defaultValue={

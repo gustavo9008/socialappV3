@@ -44,7 +44,7 @@ function HomePage(props) {
   //   return;
   // };
 
-
+  // console.log(posts);
   //=====  =====
   const transformPosts = useCallback(async (posts) => {
     let transformed = posts.map((posts) => ({
@@ -236,7 +236,7 @@ function HomePage(props) {
               // handleUpdatePost("TOP");
               return;
             }}
-            className={`order-2 row-span-2 w-fit p-2 flex gap-4 hover:border-slate-400 cursor-pointer ${posts.typeSort === "TOP" ? "border-b-4" : "hover:border-b-4"
+            className={`order-2 row-span-2 w-fit p-2 flex gap-4 hover:border-slate-400 cursor-pointer ${posts.typeSort === "TOP" ? "border-b-4 border-gray-500" : "hover:border-b-4 hover:border-gray-900"
               }`}
           >
             <span id="Top" className="text-lg font-medium">
@@ -263,13 +263,19 @@ function HomePage(props) {
               {posts.posts.map((post, i) => {
                 if (posts.posts.length === i + 1) {
                   return (
-                    <AllPost
-                      id={`${post.id}`}
-                      ref={lastBookElementRef}
-                      posts={post}
-                      key={i}
-                      saveLastLoadPost={saveLastLoadPost}
-                    />
+                    <>
+                      <AllPost
+                        id={`${post.id}`}
+                        ref={lastBookElementRef}
+                        posts={post}
+                        key={i}
+                        saveLastLoadPost={saveLastLoadPost}
+                      />
+
+                      {/* {posts.posts.length > 1 && (posts.isLoading) && (<Spinner />)} */}
+
+                    </>
+
                     // <div
                     //   key={posts.posts.length + 1}
                     //   id={posts.posts.length + 1}
@@ -287,6 +293,8 @@ function HomePage(props) {
                   );
                 }
               })}
+              {/* {posts.posts.length > 1 && posts.isLoading === true && (<Spinner />)}
+              <p className="text-red-900 font-semibold">{posts.posts.length} {posts.isLoading.toString}</p> */}
             </section>
           )}
         </>

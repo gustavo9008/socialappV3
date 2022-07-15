@@ -252,7 +252,7 @@ export default function NewPost(props) {
             </div>
 
             <div className="field pt-4 pb-6 Psm:pb-2 border-b-2 border-opacity-50 border-gray-500">
-              <p className="text-lg opacity-60">You can choose between a link to your image or custrom image.</p>
+              <p className="text-lg opacity-60">You can choose between a link to your image or custom image.</p>
               <label>Image</label>
               <input
                 ref={imageRef}

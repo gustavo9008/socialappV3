@@ -24,7 +24,7 @@ export default function EditPassword(props) {
     setLabel,
     btnColor,
     setBtnColor,
-  ] = useBtnState(true, "Update", "bg-slate-700", "block");
+  ] = useBtnState(true, "Update", "bg-gray-700", "block");
   const [
     newPasswordRef,
     containerWarning,
@@ -97,7 +97,7 @@ export default function EditPassword(props) {
 
   return (
     <>
-      <section className="settings-card mt-4 p-4">
+      <section className="settings-card mt-4 border border-gray-500 bg-gray-100 p-4 dark:bg-gray-800">
         <h4 className="headings-style">Edit Password</h4>
         <form action="/blogs/changepassword" method="POST">
           <div className="field pb-4">
@@ -107,10 +107,9 @@ export default function EditPassword(props) {
             <input
               ref={oldPasswordRef}
               id="old-password"
-              className="mb-2 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mb-1 h-10 w-full appearance-none rounded bg-gray-300 py-2 px-3 text-sm leading-tight focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
               type="password"
               name="oldPassword"
-              placeholder="Password"
             />
             {/* <p ref={oldPassCheck} className="hidden">
                 You must provide current password.
@@ -136,7 +135,9 @@ export default function EditPassword(props) {
           <PasswordCheck
             newPasswordRef={newPasswordRef}
             containerWarning={containerWarning}
-            bgColor={"bg-gray-700"}
+            bgColor={
+              "bg-gray-300 focus:bg-white dark:bg-gray-700 focus:dark:bg-gray-900"
+            }
             inputLabel={"Enter New Password"}
             setBtnDisabled={setBtnDisabled}
             setBtnColor={setBtnColor}
@@ -156,7 +157,7 @@ export default function EditPassword(props) {
             label={label}
             idTag={idTagPass}
             handleClick={updateAccountPasswordSubmit}
-            className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded bg-opacity-80 p-2 hover:text-white`}
+            className={`${btnColor} mt-3 mr-1.5 h-10 w-full rounded bg-opacity-80 p-2 text-white`}
           />
         </form>
       </section>
