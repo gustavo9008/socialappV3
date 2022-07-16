@@ -1,7 +1,7 @@
 import React from "react";
 import Post from "../../components/posts/Post";
 import { useRouter } from "next/router";
-// import Comment from "../../models/comment";
+import Error from 'next/error';
 
 // import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "../../context/state";
@@ -31,13 +31,19 @@ function SinglePost(props) {
   const getPost = async (params) => {
 
     const res = await useFetch("GET", `/api${params}`);
-
-    res.data.success === true && (setPost(
+    // console.log(res);
+    res.data?.success === true && (setPost(
       {
         isLoading: false,
         post: res.data.post
       }
     ));
+    res.response?.status === 404 && (setPost(
+      {
+        isLoading: false,
+        post: null
+      }
+    ))
   };
 
 
@@ -88,8 +94,8 @@ function SinglePost(props) {
         ) : (
           <>
 
-            {!post.isLoading && (userSession ? <Post user={userSession.user} post={post.post} /> : <Post post={post.post} />)}
-            {/* {!userSession && <Post post={props.post} />} */}
+            {!post.isLoading && post.post !== null && (userSession ? <Post user={userSession.user} post={post.post} /> : <Post post={post.post} />)}
+            {post.post === null && (<Error statusCode={404} />)}
           </>)
       }
 

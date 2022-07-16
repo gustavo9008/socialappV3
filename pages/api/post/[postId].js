@@ -61,8 +61,11 @@ export default async function findPostHandler(req, res) {
       // console.log(post.comments);
     }
     res.status(200).json({ success: true, post });
+    res.end()
   } catch (error) {
-    res.status(400).json({ success: false });
+    // console.log(error);
+    res.status(404);
+    res.end()
   }
 
   // res.end(`Post: ${pid}`)

@@ -20,7 +20,7 @@ function HomePage(props) {
   const router = useRouter();
   const { useFetch, posts, setPosts, saveLastLoadPost } = useContext(appToastContext);
   const getMorePost = useFetch;
-  // const loader = useRef(null);
+  const [loadingPosts, setLoadingPosts] = useState(false);
   const observer = useRef();
   // const [posts, setPosts] = useState({
   //   posts: props.posts,
@@ -44,7 +44,7 @@ function HomePage(props) {
   //   return;
   // };
 
-  // console.log(posts);
+  // console.log(posts.isLoading);
   //=====  =====
   const transformPosts = useCallback(async (posts) => {
     let transformed = posts.map((posts) => ({
@@ -134,6 +134,7 @@ function HomePage(props) {
         );
         const newUpdatePost = await transformPosts(res.data.data);
         if (res.data.success === true) {
+          setLoadingPosts(false)
           if (res.data.data.length > 0) {
             setPosts((prev) => ({
               posts: [...new Set([...prev.posts, ...newUpdatePost])],
@@ -150,6 +151,7 @@ function HomePage(props) {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(async (entries) => {
         if (entries[0].isIntersecting) {
+          setLoadingPosts(true)
           await handleUpdatePost();
         }
       });
@@ -252,7 +254,17 @@ function HomePage(props) {
             )}
 
           </a>
+
         </aside>
+        {/* {posts.posts !== null && loadingPosts === true && (
+
+          <div class="loader flex justify-center p-5 rounded-full gap-4 delay-1000">
+            <div class="w-3 h-3 bg-gray-800 rounded-full animate-bounce"></div>
+            <div class="w-3 h-3 bg-gray-800 rounded-full animate-bounce"></div>
+            <div class="w-3 h-3 bg-gray-800 rounded-full animate-bounce"></div>
+          </div>
+
+        )} */}
 
         <>
           {posts.isLoading ? (
@@ -263,25 +275,21 @@ function HomePage(props) {
               {posts.posts.map((post, i) => {
                 if (posts.posts.length === i + 1) {
                   return (
-                    <>
-                      <AllPost
-                        id={`${post.id}`}
-                        ref={lastBookElementRef}
-                        posts={post}
-                        key={i}
-                        saveLastLoadPost={saveLastLoadPost}
-                      />
 
-                      {/* {posts.posts.length > 1 && (posts.isLoading) && (<Spinner />)} */}
+                    <AllPost
+                      id={`${post.id}`}
+                      ref={lastBookElementRef}
+                      posts={post}
+                      key={i}
+                      saveLastLoadPost={saveLastLoadPost}
+                    />
 
-                    </>
 
-                    // <div
-                    //   key={posts.posts.length + 1}
-                    //   id={posts.posts.length + 1}
-                    //   ref={lastBookElementRef}
-                    // />
-                  );
+
+
+
+
+                  )
                 } else {
                   return (
                     <AllPost
@@ -293,12 +301,20 @@ function HomePage(props) {
                   );
                 }
               })}
-              {/* {posts.posts.length > 1 && posts.isLoading === true && (<Spinner />)}
-              <p className="text-red-900 font-semibold">{posts.posts.length} {posts.isLoading.toString}</p> */}
+
             </section>
           )}
         </>
       </Card>
+      {posts.posts !== null && loadingPosts === true && (
+
+        <div className="loader flex justify-center p-5 mt-4 gap-4 delay-1000">
+          <div className="w-3 h-3 bg-gray-800 dark:bg-gray-200 rounded-full animate-bounce"></div>
+          <div className="w-3 h-3 bg-gray-800 dark:bg-gray-200 rounded-full animate-bounce"></div>
+          <div className="w-3 h-3 bg-gray-800 dark:bg-gray-200 rounded-full animate-bounce"></div>
+        </div>
+
+      )}
     </>
   );
 }
