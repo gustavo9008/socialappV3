@@ -5,7 +5,7 @@ import Error from 'next/error';
 
 // import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "../../context/state";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/ui/loaders/Spinner";
 import Head from "next/head";
 // import PostId from "../../models/post";
 // import Reply from "../../models/replies";

@@ -1,6 +1,6 @@
 import React from "react";
 import { appToastContext } from "../../../context/state";
-import Button, { useBtnState } from "@/components/ui/Button";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
 export function usePasswordInputState() {
   const newPasswordRef = React.useRef();

@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import { useRouter } from "next/router";
 import { appToastContext } from "../../../../context/state";
 
-import Button, { useBtnState } from "@/components/ui/Button";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
 export default function Settings(props) {
   const router = useRouter();

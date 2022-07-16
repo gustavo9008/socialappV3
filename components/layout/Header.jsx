@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 // import { useSession } from "next-auth/react";
 
-import NavDropdown from "@/components/ui/NavDropdown";
-import SearchBar from "../ui/SearchBar";
+import NavDropdown from "@/components/ui/headerUI/NavDropdown";
+import SearchBar from "../ui/headerUI/SearchBar";
 
 export default function Header() {
   const router = useRouter();

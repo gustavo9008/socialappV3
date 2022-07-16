@@ -5,8 +5,8 @@ import { appToastContext } from "context/state";
 import parse from "html-react-parser";
 import EditPostModal from "./EditPostModal";
 import Link from "next/link";
-import Button, { useBtnState } from "../ui/Button";
-import ProfileColorAvatar from "../ui/ProfileColorAvatar";
+import Button, { useBtnState } from "../ui/globalUI/Button";
+import ProfileColorAvatar from "../ui/globalUI/ProfileColorAvatar";
 import PostSideMenu from "./PostSideMenu";
 
 function Post(props) {
@@ -49,8 +49,8 @@ function Post(props) {
   }, [handleUpdatePost]);
 
   return (
-    <main className="Psm:m-0 main-container Psm:mt-3 Psm:flex-col-reverse mt-3 flex flex-row">
-      <article className="Psm:w-full Psm:rounded-none Psm:border-none main-article-card overflow-hidden rounded-lg border border-indigo-900 border-opacity-50 bg-gray-800">
+    <main className="main-container mt-3 flex flex-row Psm:m-0 Psm:mt-3 Psm:flex-col-reverse">
+      <article className="main-article-card overflow-hidden rounded-lg border border-indigo-900 border-opacity-50 bg-gray-800 Psm:w-full Psm:rounded-none Psm:border-none">
         {/* //===== bookmark btn ===== */}
 
         <div className="blog-content">

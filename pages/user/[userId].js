@@ -2,7 +2,7 @@ import React from "react";
 import { appToastContext } from "../../context/state";
 
 import UserProfile from "@/components/user/usersProfile/UserProfile";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/ui/loaders/Spinner";
 
 
 

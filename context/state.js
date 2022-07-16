@@ -1,5 +1,5 @@
 import React from "react";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import useFetch from "@/hooks/fetch";
 import { usePostsState } from "@/hooks/usePosts";
 import { signOut } from "next-auth/react";

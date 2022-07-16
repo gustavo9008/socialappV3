@@ -2,8 +2,8 @@ import React from "react";
 
 import Head from "next/head";
 
-import LoginForm from "@/components/ui/LoginForm";
-import Card from "@/components/ui/Container";
+import LoginForm from "@/components/ui/globalUI/LoginForm";
+import Card from "@/components/ui/globalUI/Container";
 
 export default function LoginPage({ csrfToken }) {
   return (

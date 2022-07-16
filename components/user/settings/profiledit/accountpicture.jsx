@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 // import useFetch from "@/hooks/fetch";
 import Compressor from "compressorjs";
-import Button, { useBtnState } from "@/components/ui/Button";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 import { appToastContext } from "../../../../context/state";
 
 export default function AccountPicture(props) {

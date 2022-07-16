@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { appToastContext } from "../../../../context/state";
-import Button, { useBtnState } from "@/components/ui/Button";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
 export default function UserAccount(props) {
   const {

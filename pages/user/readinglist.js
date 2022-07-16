@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from '@/components/ui/Container';
-import Spinner from '@/components/ui/Spinner';
+import Card from '@/components/ui/globalUI/Container';
+import Spinner from '@/components/ui/loaders/Spinner';
 import Link from 'next/link';
 import { appToastContext } from "@/context/state"
 
@@ -36,8 +36,6 @@ function ReadingList(Props) {
 
     React.useEffect(() => {
         let list = JSON.parse(localStorage.getItem("user_lists"));
-        // console.log(list.readingList.length);
-        // console.log(list.readingList.length);
         list.readingList.length > 0 && setList(list.readingList.reverse(), "array has value");
         !list.readingList.length && setList([], "array has no value");
 
@@ -51,7 +49,7 @@ function ReadingList(Props) {
                         <Spinner />
                     ) : (
                         <>
-                            {console.log(readingList)}
+
                             {!readingList.length ? (
                                 <h2 className="text-5xl text-center">
                                     Nothing to see here.

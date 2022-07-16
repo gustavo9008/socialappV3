@@ -3,14 +3,14 @@ import Head from "next/head";
 import { appToastContext } from "context/state";
 import User from "../../models/user";
 import dbConnect from "../../middleware/mongodb";
-import Card from "@/components/ui/Container";
+import Card from "@/components/ui/globalUI/Container";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   PasswordCheck,
   usePasswordInputState,
 } from "@/components/utils/inputs/PasswordInput";
-import Button, { useBtnState } from "@/components/ui/Button";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
 const ResetPasswordTokenPage = ({ valid, token }) => {
   const [

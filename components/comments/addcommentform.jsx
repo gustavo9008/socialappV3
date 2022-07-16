@@ -3,7 +3,7 @@ import React, { Fragment, useRef } from "react";
 import useFetch from "@/hooks/fetch";
 import { CommentContext } from "./commentsection";
 import { appToastContext } from "context/state";
-import Button, { useBtnState } from "../ui/Button";
+import Button, { useBtnState } from "../ui/globalUI/Button";
 // import { stopBtnAnimate } from "@/components/ui/Button";
 // import useBtnState from "@/hooks/useBtnState";
 

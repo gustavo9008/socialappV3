@@ -99,17 +99,17 @@ const EditPostModal = (props) => {
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-auto overflow-y-auto bg-black bg-opacity-70 outline-none focus:outline-none">
             <div className="sticky top-0 z-50 mx-auto w-auto max-w-3xl">
               {/*content*/}
-              <div className="post-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-900 outline-none focus:outline-none Psm:max-h-1/2">
+              <div className="post-modal flex flex-col overflow-scroll overscroll-x-contain rounded border-2 border-gray-500 bg-gray-100 outline-none focus:outline-none dark:bg-gray-900 Psm:max-h-1/2">
                 {/*header*/}
                 <div className="border-blueGray-200 flex items-start justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-3xl font-semibold text-gray-100">
-                    Edit Post
-                  </h3>
+                  {/* title */}
+                  <h3 className="text-3xl font-semibold">Edit Post</h3>
                   <button
                     className="float-right ml-auto border-0 p-1 text-3xl font-semibold leading-none"
                     onClick={() => props.setShowPostModal(false)}
                   >
-                    <span className="block h-6 w-6 text-2xl text-gray-400 outline-none hover:text-gray-100 focus:outline-none">
+                    {/* close */}
+                    <span className="block h-6 w-6 text-2xl  outline-none hover:text-red-800 focus:outline-none">
                       ×
                     </span>
                   </button>
@@ -121,7 +121,7 @@ const EditPostModal = (props) => {
                     <input
                       ref={titleRef}
                       defaultValue={props.post.title}
-                      className="mb-1 h-10 w-full appearance-none rounded bg-gray-700 py-2 px-3 leading-tight text-gray-300 focus:border-transparent focus:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="mb-1 h-10 w-full appearance-none rounded bg-gray-400 py-2 px-3 leading-tight text-gray-300 focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 focus:dark:bg-gray-900"
                       type="text"
                       name="title"
                       placeholder="title"

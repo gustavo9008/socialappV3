@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "@/components/user/settings/useraccountedit/DeleteModal";
-import Button, { useBtnState } from "@/components/ui/Button";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
 export default function DeleteAccount(props) {
   const [

@@ -1,5 +1,5 @@
 import React from "react";
-import CommentCard from "../ui/CommentCard";
+import CommentCard from "./CommentCard";
 import Link from "next/link";
 import { CommentContext } from "./commentsection";
 import AddReply from "./addreplyfrom";

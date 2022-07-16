@@ -2,7 +2,7 @@ import React, { useState, useRef, useTransition } from "react";
 import { appToastContext } from "@/context/state";
 import { useRouter } from "next/router";
 import parse from "html-react-parser";
-import ProfileColorAvatar from "@/components/ui/ProfileColorAvatar";
+import ProfileColorAvatar from "@/components/ui/globalUI/ProfileColorAvatar";
 import { useDetectOutsideClick } from "@/hooks/useDetectClick";
 
 function SearchBar(props) {

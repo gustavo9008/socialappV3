@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { appToastContext } from "context/state";
 import { getCookie, removeCookies } from "cookies-next";
-import Spinner from "./Spinner";
-import Button, { useBtnState } from "@/components/ui/Button";
+import Spinner from "../loaders/Spinner";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
 function LoginForm(props) {
   const [

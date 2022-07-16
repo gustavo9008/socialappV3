@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import ProfileColorAvatar from "../ui/ProfileColorAvatar";
+import ProfileColorAvatar from "../ui/globalUI/ProfileColorAvatar";
 
 const AllPosts = React.forwardRef(function Post(props, ref) {
   const router = useRouter();

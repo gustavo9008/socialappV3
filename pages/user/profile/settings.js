@@ -5,7 +5,7 @@ import Account from "@/components/user/settings/useraccountedit/AccountIndex";
 import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "context/state";
 import { useRouter } from "next/router";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/ui/loaders/Spinner";
 // import profile from "@/models/profile";
 
 export default function ProfilePage(props) {

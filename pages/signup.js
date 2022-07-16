@@ -7,7 +7,7 @@ import {
   PasswordCheck,
   usePasswordInputState,
 } from "@/components/utils/inputs/PasswordInput";
-import Button, { useBtnState } from "@/components/ui/Button";
+import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
 import Link from "next/link";
 

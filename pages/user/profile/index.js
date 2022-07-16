@@ -2,7 +2,7 @@ import React from "react";
 import Profile from "../../../components/user/profile";
 // import { useSession, getSession } from "next-auth/react";
 // import user from "@/models/user";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/ui/loaders/Spinner";
 import { appToastContext } from "@/context/state";
 
 

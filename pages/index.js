@@ -8,11 +8,11 @@ import {
 import Head from "next/head";
 // import { MongoClient } from "mongodb";
 import { appToastContext } from "context/state";
-import Card from "../components/ui/Container";
+import Card from "../components/ui/globalUI/Container";
 import AllPost from "../components/posts/AllPosts";
 import { useRouter } from "next/router";
-import Spinner from "@/components/ui/Spinner";
-import CardLoader from "@/components/ui/CardLoader";
+import Spinner from "@/components/ui/loaders/Spinner";
+import CardLoader from "@/components/ui/loaders/CardLoader";
 
 
 function HomePage(props) {

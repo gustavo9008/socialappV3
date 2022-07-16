@@ -6,8 +6,8 @@ import Head from "next/head";
 import parse from "html-react-parser";
 import EditPostModal from "./EditPostModal";
 import Link from "next/link";
-import Button, { useBtnState } from "../ui/Button";
-import ProfileColorAvatar from "../ui/ProfileColorAvatar";
+import Button, { useBtnState } from "../ui/globalUI/Button";
+import ProfileColorAvatar from "../ui/globalUI/ProfileColorAvatar";
 import PostSideMenu from "./PostSideMenu";
 import LoginModal from "./LoginModal";
 

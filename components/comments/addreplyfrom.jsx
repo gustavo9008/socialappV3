@@ -3,7 +3,7 @@ import useFetch from "@/hooks/fetch";
 import { getSession } from "next-auth/react";
 import { CommentContext } from "./commentsection";
 import { appToastContext } from "context/state";
-import Button, { useBtnState } from "../ui/Button";
+import Button, { useBtnState } from "../ui/globalUI/Button";
 
 export default function AddReply(props) {
   const { showToast } = React.useContext(appToastContext);
