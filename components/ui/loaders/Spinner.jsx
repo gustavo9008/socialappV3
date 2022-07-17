@@ -1,8 +1,8 @@
 import React from "react";
 
-function Spinner() {
+function Spinner(props) {
   return (
-    <div className="flex flex-row justify-center">
+    <div className={`${props?.marginTop} flex flex-row justify-center`}>
       {" "}
       <svg
         className="-ml-1 mr-3 h-20 w-20 animate-spin dark:text-white"

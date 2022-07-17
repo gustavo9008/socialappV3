@@ -1,12 +1,28 @@
-import React, { useState, useRef } from "react";
-import Settings from "../../../components/user/settings/profiledit/settings";
-import AccountPicture from "@/components/user/settings/profiledit/accountpicture";
-import Account from "@/components/user/settings/useraccountedit/AccountIndex";
+import React, { Suspense, useState, useRef } from "react";
+import dynamic from 'next/dynamic';
+// import Head from "next/head";
+// import Settings from "../../../components/user/settings/profiledit/settings";
+// import AccountPicture from "@/components/user/settings/profiledit/accountpicture";
+// import Account from "@/components/user/settings/useraccountedit/AccountIndex";
 import { useSession, getSession } from "next-auth/react";
 import { appToastContext } from "context/state";
 import { useRouter } from "next/router";
 import Spinner from "@/components/ui/loaders/Spinner";
+import Head from "next/head";
 // import profile from "@/models/profile";
+
+const Settings = dynamic(() => import("../../../components/user/settings/profiledit/settings"), {
+  suspense: true
+});
+
+const AccountPicture = dynamic(() => import("@/components/user/settings/profiledit/accountpicture"), { suspense: true });
+const Account = dynamic(() => import("@/components/user/settings/useraccountedit/AccountIndex"), { suspense: true });
+
+
+// const Settings = dynamic(() =>
+//   import("../../../components/user/settings/profiledit/settings").then((mod) => mod.Settings), { ssr: false }
+// )
+
 
 export default function ProfilePage(props) {
   const router = useRouter();
@@ -52,6 +68,12 @@ export default function ProfilePage(props) {
   // }, [userSession]);
   return (
     <>
+      <Head>
+        <title>Edit your profile</title>
+        <meta name="description" content="Dev.to edit profile" />
+        {/* <link rel="icon" href="/laptop.ico" /> */}
+      </Head>
+
       {userSession !== null ? (
         <main className="mx-auto flex max-w-screen-md Psm:flex-col">
           <div className="w-48 Psm:w-full">
@@ -129,25 +151,35 @@ export default function ProfilePage(props) {
           {showProfile && (
             <>
               <aside>
-                <Settings
-                  user={userSession.user || null}
-                  profile={userSession.user.profile || null}
-                  updateSession={updateSession}
+                <Suspense fallback={<Spinner marginTop={"mt-10"} />}>
+                  <Settings
+                    user={userSession.user || null}
+                    profile={userSession.user.profile || null}
+                    updateSession={updateSession}
 
-                />
-                <AccountPicture
-                  user={userSession.user || null}
-                  profile={userSession.user.profile || null}
-                  updateSession={updateSession}
-                />
+                  />
+                  <AccountPicture
+                    user={userSession.user || null}
+                    profile={userSession.user.profile || null}
+                    updateSession={updateSession}
+                  />
+                </Suspense>
+
+
               </aside>
             </>
           )}
-          {showAccount && <Account user={userSession.user} updateSession={updateSession} useAxiosFetch={useFetch} />}
+          <Suspense fallback={<Spinner marginTop={"mt-10"} />}>
+            {showAccount && <Account user={userSession.user} updateSession={updateSession} useAxiosFetch={useFetch} />}
+
+
+          </Suspense>
         </main>
       ) : (
         <Spinner />
       )}
+
+      {/* <Spinner marginTop={"mt-10"} /> */}
 
     </>
   );
