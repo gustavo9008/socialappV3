@@ -319,7 +319,7 @@ export default function NewPost(props) {
       )}
       {userSession === null && (
         <>
-          <p>You must best sign in.</p>
+          <p className="text-center font-semibold text-3xl p-10">You must best sign in.</p>
         </>
       )}
     </>

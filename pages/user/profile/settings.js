@@ -179,7 +179,11 @@ export default function ProfilePage(props) {
 
         </main>
       ) : (
-        <Spinner />
+        <>
+
+          <p className="text-center font-semibold text-3xl p-10">You must be login.</p>
+        </>
+
       )}
 
       {/* <Spinner marginTop={"mt-10"} /> */}
@@ -188,10 +192,10 @@ export default function ProfilePage(props) {
   );
 }
 
-export async function getServerSideProps(ctx) {
-  return {
-    props: {
-      session: await getSession(ctx),
-    },
-  };
-}
+// export async function getServerSideProps(ctx) {
+//   return {
+//     props: {
+//       session: await getSession(ctx),
+//     },
+//   };
+// }

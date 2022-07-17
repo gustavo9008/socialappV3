@@ -36,13 +36,18 @@ function ReadingList(Props) {
 
     React.useEffect(() => {
         let list = JSON.parse(localStorage.getItem("user_lists"));
-        list.readingList.length > 0 && setList(list.readingList.reverse(), "array has value");
-        !list.readingList.length && setList([], "array has no value");
+        if (list !== null) {
+            list.readingList.length > 0 && setList(list.readingList.reverse(), "array has value");
+        }
+        if (list === null) {
+            setList([], "array has no value");
+
+        }
 
     }, []);
     return (
         <Card>
-            <div>
+            {userSession !== null && (<div>
                 <p className="text-2xl">Reading List (<span className="px-1">{readingList !== null && readingList.length}</span>)</p>
                 {
                     isLoading ? (
@@ -87,7 +92,10 @@ function ReadingList(Props) {
                     )
                 }
 
-            </div>
+            </div>)}
+            {userSession === null && (
+                <p className="text-center font-semibold text-3xl p-10">You must be login.</p>
+            )}
         </Card>
 
     )
