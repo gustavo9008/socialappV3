@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, Suspense } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
@@ -6,10 +6,11 @@ import PictureUpload from "@/components/ui/PictureUpload";
 import { appToastContext } from "context/state";
 import Compressor from "compressorjs";
 import { useRouter } from "next/router";
+import Spinner from "@/components/ui/loaders/Spinner";
 
 const importJodit = () => import("jodit-react");
 const JoditEditor = dynamic(importJodit, {
-  ssr: false,
+  suspense: true,
 });
 
 export default function NewPost(props) {
@@ -271,14 +272,18 @@ export default function NewPost(props) {
 
             <div className="pt-6">
               <p className="text-lg opacity-60 pb-4">Write your post content below.</p>
-              <JoditEditor
-                ref={editor}
-                value={content}
-                config={configMemo}
-                tabIndex={1} // tabIndex of textarea
-                onBlur={(newContent) => setContent(newContent)}
-                onChange={(newContent) => { }}
-              />
+              <Suspense fallback={<Spinner marginTop={"mt-10 flex flex-row justify-center"} />}>
+
+                <JoditEditor
+                  ref={editor}
+                  value={content}
+                  config={configMemo}
+                  tabIndex={1} // tabIndex of textarea
+                  onBlur={(newContent) => setContent(newContent)}
+                  onChange={(newContent) => { }}
+                />
+              </Suspense>
+
 
             </div>
           </form>
