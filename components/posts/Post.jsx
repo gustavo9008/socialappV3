@@ -58,14 +58,14 @@ function Post(props) {
                   id="img"
                   className="m-auto object-cover"
                   src={post.image[0].url}
-                  alt="this is a picture"
+                  alt="picture"
                 />
               ) : (
                 <img
                   id="img"
                   className="m-auto object-cover"
                   src={post.imageUrl}
-                  alt="this is a picture"
+                  alt="picture"
                 />
               )}
             </div>

@@ -148,10 +148,12 @@ export default function ProfilePage(props) {
               </nav>
             </div>
           </div>
-          {showProfile && (
-            <>
-              <aside>
-                <Suspense fallback={<Spinner marginTop={"mt-10"} />}>
+          <aside className="w-full">
+
+
+            {showProfile && (
+              <>
+                <Suspense fallback={<Spinner marginTop={"mt-10 flex flex-row justify-center"} />}>
                   <Settings
                     user={userSession.user || null}
                     profile={userSession.user.profile || null}
@@ -166,14 +168,15 @@ export default function ProfilePage(props) {
                 </Suspense>
 
 
-              </aside>
-            </>
-          )}
-          <Suspense fallback={<Spinner marginTop={"mt-10"} />}>
-            {showAccount && <Account user={userSession.user} updateSession={updateSession} useAxiosFetch={useFetch} />}
+              </>
+            )}
+            <Suspense fallback={<Spinner marginTop={"mt-10 flex flex-row justify-center"} />}>
+              {showAccount && <Account user={userSession.user} updateSession={updateSession} useAxiosFetch={useFetch} />}
 
 
-          </Suspense>
+            </Suspense>
+          </aside>
+
         </main>
       ) : (
         <Spinner />

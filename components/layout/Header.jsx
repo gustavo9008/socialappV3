@@ -108,7 +108,7 @@ export default function Header() {
                   {createPostBtn && (
                     <Link href="/post/newpost">
                       <a
-                        className="mr-1.5 rounded bg-indigo-500 p-2 font-medium tracking-wide text-black hover:bg-indigo-600 Psm:mr-3"
+                        className="mr-1.5 rounded bg-blue-500 p-2 font-medium tracking-wide text-white hover:bg-blue-600 Psm:mr-3"
                         role="menuitem"
                         aria-label="Post and article or picture"
                       >

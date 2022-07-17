@@ -287,7 +287,7 @@ export default function NewPost(props) {
             onClick={handleNewPost}
             id="postBtn"
             type="button"
-            className="fixed bottom-7 right-4 z-50 inline-flex items-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-base font-medium leading-6 transition  duration-150 ease-in-out hover:bg-indigo-600"
+            className="fixed bottom-7 right-4 z-50 inline-flex items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-base font-medium leading-6 transition  duration-150 ease-in-out hover:bg-blue-600"
           >
             <svg
               id="svgSpin"
