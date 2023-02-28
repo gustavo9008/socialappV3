@@ -1,4 +1,5 @@
-import React, { useState, useRef, useMemo, Suspense } from "react";
+'use client';
+import React, { useState, useRef, useMemo, Suspense, createRef } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
@@ -8,9 +9,15 @@ import Compressor from "compressorjs";
 import { useRouter } from "next/router";
 import Spinner from "@/components/ui/loaders/Spinner";
 
+// import Editor from "@/components/posts/editor"
+// let Editor = dynamic(() => import('@/components/posts/editor'), {
+//   ssr: false,
+//   suspense: true,
+// });
 const importJodit = () => import("jodit-react");
 const JoditEditor = dynamic(importJodit, {
   suspense: true,
+  ssr: false,
 });
 
 export default function NewPost(props) {
@@ -19,7 +26,8 @@ export default function NewPost(props) {
     React.useContext(appToastContext);
   const [disable, setDisable] = React.useState(false);
   const sendNewPost = useFetch;
-  const postCustomImage = useRef();
+  // const postCustomImage = useRef();
+  const postCustomImage = createRef();
   const router = useRouter();
 
   //===== commented state below was for image conversion to blob webp, migth implented in future =====
@@ -33,9 +41,13 @@ export default function NewPost(props) {
       URL.revokeObjectURL(output.src); // free memory
     };
   };
+
+
   const titleRef = useRef();
   const imageRef = useRef();
-  const editor = useRef();
+  // const editor = useRef();
+  const editor = createRef();
+  // const [videoType, setVideotype] = React.useState("");
   const [content, setContent] = useState("");
 
 
@@ -51,80 +63,8 @@ export default function NewPost(props) {
       readonly: false, // all options from https://xdsoft.net/jodit/doc/
     }
   })
-
-  // const config = {
-  //   allowTabNavigation: false,
-
-  //   askBeforePasteFromWord: false,
-  //   askBeforePasteHTML: false,
-  //   minHeight: "400",
-  //   readonly: false, // all options from https://xdsoft.net/jodit/doc/
-  // };
   //===== submits new post =====
-  //===== commented code below is a experimental image convert to webp but stayed with compressor js =====
-  // const handleNewPost = async (e) => {
-  //   e.preventDefault();
-  //   // console.log(customImg);
-  //   let formData = new FormData();
-  //   // newPic(customImg)
-  //   //===== function test =====
 
-  //   //=====  =====
-  //   //===== animate spinner on button function =====
-  //   function btnAnimate() {
-  //     document.querySelector("#svgSpin").classList.add("animate-spin");
-  //     document.querySelector("#svgSpin").style.display = "inline-block";
-  //     document.querySelector("#postText").style.display = "none";
-  //     document.querySelector("#postingText").style.display = "inline";
-  //   }
-  //   //===== add title and image url data ref to form =====
-  //   function appendFormData() {
-  //     formData.append("title", titleRef.current.value);
-  //     formData.append("content", content);
-  //   }
-  //   //===== compression for new custom image =====
-  //   function newPic(customImg) {
-  //     setDisable(true);
-  //     btnAnimate();
-  //     // let postImage = postCustomImage.current.files[0];
-  //     new Compressor(customImg, {
-  //       quality: 0.4,
-  //       mimeType: 'image/webp',
-  //       success(result) {
-  //         let newImage = result;
-  //         newImage.name = `img${newImage.size.toString()}`
-  //         console.log(result);
-  //         formData.append("file", newImage, newImage.name);
-  //         // submitNewPost(formData);
-  //       },
-  //     });
-  //   }
-  //   //===== check input refs =====
-  //   if (!titleRef.current.value) {
-  //     //===== checks of title ref is empty =====
-  //     let err = "Title is required";
-  //     showToast("error", err);
-  //   } else {
-  //     //===== check if image ref are empty =====
-  //     if (customImg === undefined || null) {
-  //       // check if url image input is empty
-  //       if (!imageRef.current.value) {
-  //         let err =
-  //           "Please choose and image. It can either be an url or a custom image. ";
-  //         showToast("error", err);
-  //       } else {
-  //         setDisable(true);
-  //         btnAnimate();
-  //         appendFormData();
-  //         formData.append("imageUrl", imageRef.current.value);
-  //         submitNewPost(formData);
-  //       }
-  //     } else {
-  //       appendFormData();
-  //       newPic(customImg);
-  //     }
-  //   }
-  // };
   const handleNewPost = async (e) => {
     e.preventDefault();
 
@@ -164,12 +104,25 @@ export default function NewPost(props) {
         quality: 0.4,
         mimeType: mimeType,
         success(result) {
+          console.log(result);
           let newImage = result;
           formData.append("file", newImage, newImage.name);
           submitNewPost(formData);
         },
       });
     }
+
+    async function newVideo() {
+      setDisable(true);
+      btnAnimate();
+      let postImage = postCustomImage.current.files[0];
+      console.log(postImage);
+      formData.append("file", postImage, postImage.name);
+      submitNewPost(formData);
+
+    }
+    //===== beginning =====
+    //===== below code needs to be change , to many if statements =====
     //===== check input refs =====
     if (!titleRef.current.value) {
       //===== checks of title ref is empty =====
@@ -191,10 +144,14 @@ export default function NewPost(props) {
         }
       } else {
         appendFormData();
-        newPic();
+        postCustomImage.current.files[0].type.includes("image") && newPic();
+        postCustomImage.current.files[0].type.includes("video") && newVideo();
+
+        // newPic();
       }
     }
   };
+  //===== end =====
   const submitNewPost = async (formData) => {
     // const res = await fetch("/api/post/newpost", {
     //   method: "POST",
@@ -202,7 +159,7 @@ export default function NewPost(props) {
     // });
     // // Await for data for any desirable next steps
     // const data = await res.json();
-
+    console.log(formData);
     const res = await sendNewPost("POST", "/api/post/newpost", formData);
     if (res.data.success === true) {
       showToast("success", res.data.message);
@@ -265,7 +222,7 @@ export default function NewPost(props) {
               />
               <PictureUpload
                 loadUrlImage={loadImage}
-                postImageRef={postCustomImage}
+                ref={postCustomImage}
               // setCustomImg={setCustomImg}
               />
             </div>
@@ -282,6 +239,8 @@ export default function NewPost(props) {
                   onBlur={(newContent) => setContent(newContent)}
                   onChange={(newContent) => { }}
                 />
+                {/* <Editor ref={editor} value={content} onblur={setContent} /> */}
+                {/* {CustomEditor && <CustomEditor />} */}
               </Suspense>
 
 

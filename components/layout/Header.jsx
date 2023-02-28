@@ -23,7 +23,7 @@ export default function Header() {
   // no user button options
   const noUserBtns = (
     <aside className="flex flex-row gap-2">
-      <Link href="/login">
+      <Link legacyBehavior href="/login">
         <a
           className="rounded  bg-blue-600 p-2 font-semibold tracking-wide text-white antialiased hover:bg-blue-500 dark:bg-blue-400"
           role="menuitem"
@@ -33,7 +33,7 @@ export default function Header() {
         </a>
       </Link>
 
-      <Link href="/signup">
+      <Link legacyBehavior href="/signup">
         <a
           className="rounded bg-purple-600 p-2 font-semibold tracking-wide text-white hover:bg-purple-500 dark:bg-purple-400"
           role="menuitem"
@@ -65,7 +65,7 @@ export default function Header() {
           <div className="relative flex h-16 items-center justify-between">
             <div className="flex flex-1 ">
               <div className="flex">
-                <Link href="/">
+                <Link legacyBehavior href="/">
                   <a
                     className="gen rounded bg-gray-800 p-2 font-semibold text-white hover:bg-gray-600 dark:bg-gray-700"
                     role="menuitem"
@@ -106,7 +106,7 @@ export default function Header() {
               <div className="relative ml-3 flex Psm:ml-2">
                 <div className="flex items-center">
                   {createPostBtn && (
-                    <Link href="/post/newpost">
+                    <Link legacyBehavior href="/post/newpost">
                       <a
                         className="mr-1.5 rounded bg-blue-500 p-2 font-medium tracking-wide text-white hover:bg-blue-600 Psm:mr-3"
                         role="menuitem"

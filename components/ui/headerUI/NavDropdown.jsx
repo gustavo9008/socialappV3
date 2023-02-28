@@ -116,7 +116,7 @@ const NavDropdown = (props) => {
           } menu nav-dropdown-content absolute right-0 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-500 bg-gray-100 py-1 dark:bg-gray-900`}
         >
           <div onClick={toggleMenu}>
-            <Link href="/user/profile">
+            <Link legacyBehavior href="/user/profile">
               <a
                 className="block h-12 border-b border-gray-500 border-opacity-50 px-4 py-3 font-semibold tracking-wider opacity-90 hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"
@@ -125,7 +125,7 @@ const NavDropdown = (props) => {
                 {props.user ? props.user.name : null}
               </a>
             </Link>
-            <Link href="/post/newpost">
+            <Link legacyBehavior href="/post/newpost">
               <a
                 className="block px-4 py-2 font-semibold tracking-wider opacity-90  hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"
@@ -133,7 +133,7 @@ const NavDropdown = (props) => {
                 Write a post
               </a>
             </Link>
-            <Link href="/user/readinglist">
+            <Link legacyBehavior href="/user/readinglist">
               <a
                 className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"
@@ -142,7 +142,7 @@ const NavDropdown = (props) => {
               </a>
             </Link>
 
-            <Link href="/user/profile/settings">
+            <Link legacyBehavior href="/user/profile/settings">
               <a
                 className="block px-4 py-2 font-semibold tracking-wider opacity-90 hover:bg-gray-300 hover:dark:bg-gray-600"
                 role="menuitem"

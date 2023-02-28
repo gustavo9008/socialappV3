@@ -6,31 +6,58 @@ import Head from "next/head";
 import parse from "html-react-parser";
 import EditPostModal from "./EditPostModal";
 import Link from "next/link";
-import Button, { useBtnState } from "../ui/globalUI/Button";
+// import Button, { useBtnState } from "../ui/globalUI/Button";
 import ProfileColorAvatar from "../ui/globalUI/ProfileColorAvatar";
 import PostSideMenu from "./PostSideMenu";
 import LoginModal from "./LoginModal";
+import VideoPlayer from "../ui/VideoPlayer";
 
 function Post(props) {
   // console.log(props.post);
   //===== context imports =====
   const { userSession, showToast } = React.useContext(appToastContext);
   //===== btn imports =====
-  const [
-    btnDisabled,
-    setBtnDisabled,
-    stopBtnAnimate,
-    label,
-    setLabel,
-    btnColor,
-    setBtnColor,
-    btnVisibility,
-    setBtnVisibility,
-  ] = useBtnState(false, "", "", "");
+  // const [
+  //   btnDisabled,
+  //   setBtnDisabled,
+  //   stopBtnAnimate,
+  //   label,
+  //   setLabel,
+  //   btnColor,
+  //   setBtnColor,
+  //   btnVisibility,
+  //   setBtnVisibility,
+  // ] = useBtnState(false, "", "", "");
   //===== state variables =====
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [post, setPost] = React.useState(props.post);
   const [showLoginModal, setShowLoginModal] = React.useState(false);
+
+  const playerRef = React.useRef(null);
+  console.log(post.image[0].url);
+  const videoJsOptions = {
+    controls: true,
+    responsive: true,
+    fluid: true,
+    sources: [
+      {
+        src: post.image[0].url,
+      },
+    ],
+  };
+
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+
+    // You can handle player events here, for example:
+    player.on("waiting", () => {
+      videojs.log("player is waiting");
+    });
+
+    player.on("dispose", () => {
+      videojs.log("player will dispose");
+    });
+  };
   // React.useEffect(() => {
   //   const img = document.getElementById("img");
   //   // console.log(img.complete);
@@ -53,7 +80,26 @@ function Post(props) {
 
           <div className="blog-content">
             <div className="w-full">
-              {post.image[0] ? (
+              {post.image[0].type.includes("image") ? (
+                post.image[0] ? (
+                  <img
+                    id="img"
+                    className="m-auto object-cover"
+                    src={post.image[0].url}
+                    alt="picture"
+                  />
+                ) : (
+                  <img
+                    id="img"
+                    className="m-auto object-cover"
+                    src={post.imageUrl}
+                    alt="picture"
+                  />
+                )
+              ) : (
+                <VideoPlayer options={videoJsOptions} />
+              )}
+              {/* {post.image[0] ? (
                 <img
                   id="img"
                   className="m-auto object-cover"
@@ -67,7 +113,7 @@ function Post(props) {
                   src={post.imageUrl}
                   alt="picture"
                 />
-              )}
+              )} */}
             </div>
 
             <aside className="article-info flex justify-between p-4">
@@ -78,7 +124,7 @@ function Post(props) {
                 />
 
                 <div className="flex flex-col">
-                  <Link href={"/user/" + post.userProfile.id}>
+                  <Link legacyBehavior href={"/user/" + post.userProfile.id}>
                     <a className="clickable"> {post.userProfile.name} </a>
                   </Link>
                   <span className=" pt-1 text-center text-xs text-gray-600 dark:text-gray-400">
@@ -103,7 +149,7 @@ function Post(props) {
                 </h1>
               </div>
 
-              <div className="text-article text-base font-normal">
+              <div className="text-article text-xl text-gray-700 dark:text-gray-200">
                 <div id="postContent">{parse(post.body)}</div>
               </div>
             </section>

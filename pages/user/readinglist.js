@@ -68,7 +68,7 @@ function ReadingList(Props) {
                                                 {/* <h3 className="p-2 pl-6">Reading List</h3> */}
 
                                                 <div className="flex">
-                                                    <Link href={`/post/${article.postId}`}>
+                                                    <Link legacyBehavior href={`/post/${article.postId}`}>
                                                         <a className="w-full bg-gray-100 dark:bg-gray-800 hover:dark:bg-gray-600 hover:bg-gray-300 border-b border-gray-900 overflow-hidden p-4"> <h6>{article.title}  </h6></a>
                                                     </Link>
 

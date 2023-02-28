@@ -99,7 +99,7 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
           <>
             <p className="text-center text-4xl">This link is expired</p>
             <p className="mt-4 text-center">
-              <Link href="/forget-password">
+              <Link legacyBehavior href="/forget-password">
                 <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
                   Click here
                 </a>

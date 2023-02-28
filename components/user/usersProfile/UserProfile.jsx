@@ -258,7 +258,7 @@ export default function UserProfile(props) {
                 <h3 className="text-lg font-medium">{post.title}</h3>
                 <span className="text-sm text-gray-400">
                   {new Date(post.created).toDateString()}
-                  <Link href={`/post/${post._id}`}>
+                  <Link legacyBehavior href={`/post/${post._id}`}>
                     <a className="text-blue-500"> Read Post</a>
                   </Link>
                 </span>
@@ -272,7 +272,11 @@ export default function UserProfile(props) {
           <article className="profile-post-comment-containers mb-4 flex flex-auto flex-col flex-wrap self-start overflow-hidden rounded-md border border-gray-500 Psm:w-screen Psm:rounded-none Psm:border-l-0 Psm:border-r-0">
             <h3 className="border-b-2 p-2 pl-6"> Recent Comments</h3>
             {sortedCommentReplies.map((comment) => (
-              <Link key={comment._id} href={`${comment.postUrl.address}`}>
+              <Link
+                legacyBehavior
+                key={comment._id}
+                href={`${comment.postUrl.address}`}
+              >
                 <a
                   key={comment._id}
                   className="w-full overflow-hidden border-b border-gray-900 bg-gray-100 p-4 dark:bg-gray-800"

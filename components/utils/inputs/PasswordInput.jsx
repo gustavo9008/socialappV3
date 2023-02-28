@@ -18,9 +18,9 @@ export function usePasswordInputState() {
 }
 
 function PasswordInput(props, ref) {
-  const repeatPasswordRef = React.useRef();
-  const repeatPasswordCheck = React.useRef();
-  const containerWarning = React.useRef();
+  // const repeatPasswordRef = React.useRef();
+  // const repeatPasswordCheck = React.useRef();
+  // const containerWarning = React.useRef();
   const strengthBadge = React.useRef();
   const matchBadge = React.useRef();
   let timeout;
@@ -220,9 +220,6 @@ function PasswordInput(props, ref) {
           Password does not match.
         </span>
       </div>
-      {/* <p ref={strengthBadge} className="hidden">
-      Password CheckL@k0st0n321
-    </p> */}
     </div>
   );
 }

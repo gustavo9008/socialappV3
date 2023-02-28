@@ -1,3 +1,5 @@
+'use client';
+
 import { SessionProvider } from "next-auth/react";
 // import { useSession } from "next-auth/react";
 import React, { Fragment } from "react";

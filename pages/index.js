@@ -1,3 +1,5 @@
+'use client';
+
 import {
   useEffect,
   useRef,
@@ -49,7 +51,7 @@ function HomePage(props) {
   const transformPosts = useCallback(async (posts) => {
     let transformed = posts.map((posts) => ({
       title: posts.title,
-      image: posts.image[0] ? posts.image[0].url : null,
+      image: posts.image[0] ? posts.image[0] : null,
       imageUrl: posts.imageUrl ? posts.imageUrl : null,
       id: posts._id.toString(),
       userProfile: {
@@ -111,7 +113,7 @@ function HomePage(props) {
       const transformPosts = async (posts) => {
         let transformed = posts.map((posts) => ({
           title: posts.title,
-          image: posts.image[0] ? posts.image[0].url : null,
+          image: posts.image[0] ? posts.image[0] : null,
           imageUrl: posts.imageUrl ? posts.imageUrl : null,
           id: posts._id.toString(),
           userProfile: {

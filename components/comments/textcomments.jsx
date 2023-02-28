@@ -80,7 +80,10 @@ export default function TextComments(props) {
             <div className="comment-header flex justify-between pt-2">
               {/* user info */}
               <span className="comment-info self-center text-sm text-gray-600">
-                <Link href={"/user/" + commentReply.userProfile.id}>
+                <Link
+                  legacyBehavior
+                  href={"/user/" + commentReply.userProfile.id}
+                >
                   <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
                     {commentReply.userProfile.name}
                   </a>

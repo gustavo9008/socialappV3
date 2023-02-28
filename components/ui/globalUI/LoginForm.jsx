@@ -110,7 +110,7 @@ function LoginForm(props) {
           <div className="flex items-center justify-between  border-b-2 border-gray-500 px-4 py-2">
             <div className="flex flex-row justify-between">
               <span className="text-sm">Don&#39;t have an account?</span>
-              <Link href="/signup">
+              <Link legacyBehavior href="/signup">
                 <a className="pl-2 text-sm font-semibold text-blue-600 hover:text-blue-400">
                   Sign up
                 </a>
@@ -183,7 +183,7 @@ function LoginForm(props) {
                 />
                 <p>
                   Forgot password? &#160;
-                  <Link href="/forget-password">
+                  <Link legacyBehavior href="/forget-password">
                     <a className="text-sm font-semibold text-blue-600 hover:text-blue-400">
                       Click here
                     </a>

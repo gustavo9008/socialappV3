@@ -105,3 +105,6 @@ element {
   @apply bg-gray-700 !important;
   background-color: #374151 !important;
 }
+.jodit-container:not(.jodit_inline) .jodit-workplace {
+  background-color: inherit !important;
+}

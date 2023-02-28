@@ -18,7 +18,6 @@ handler.post(upload.single("file"), async (req, res) => {
       const user = await User.findById({ _id: session.user.id });
       await dbConnect();
       const { title, imageUrl, content } = req.body;
-
       // if (req.file) {
       //   let image = {
       //     url: req.file.path.replace("/upload", "/upload/w_798"),
@@ -66,8 +65,9 @@ handler.post(upload.single("file"), async (req, res) => {
       };
       if (req.file) {
         let image = {
-          url: req.file.path.replace("upload", "/upload/w_798"),
+          url: req.file.mimetype.includes("image") ? req.file.path.replace("upload", "upload/w_798") : req.file.path,
           filename: req.file.filename,
+          type: req.file.mimetype
         };
         newProcessedPost.image = image;
       }
@@ -99,6 +99,11 @@ handler.post(upload.single("file"), async (req, res) => {
   //===== check if user is log in =====
   const session = await getSession({ req });
   if (session) {
+    console.log(req.file);
+    // res.status(201).json({
+    //   message: "Your new post has been created!!",
+
+    // });
     // Signed in
     await createNewPost(session);
   } else {

@@ -78,7 +78,7 @@ function Post(props) {
               />
 
               <div className="flex flex-col">
-                <Link href={"/user/" + post.userProfile.id}>
+                <Link legacyBehavior href={"/user/" + post.userProfile.id}>
                   <a className="clickable"> {post.userProfile.name} </a>
                 </Link>
                 <span className=" pt-1 text-center text-xs text-gray-400">

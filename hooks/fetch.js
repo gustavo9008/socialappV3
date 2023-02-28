@@ -8,6 +8,9 @@ const useFetch = async (method, url, reqData, option) => {
       method: method,
       url: url,
       data: reqData,
+      headers: {
+        "sameSite": "Strict",
+      },
     });
     // console.log(response);
     return response;

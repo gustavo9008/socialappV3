@@ -93,7 +93,7 @@ const SignupPage = () => {
             <div className="flex items-center justify-between border-b-2 border-gray-600 dark:border-gray-600 px-4 py-2">
               <div>
                 <span className="text-sm">Already have an account?</span>
-                <Link href="/login">
+                <Link legacyBehavior href="/login">
                   <a className="text-sm font-semibold text-blue-300 hover:text-blue-400">
                     Sign in
                   </a>
