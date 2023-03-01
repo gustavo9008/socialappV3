@@ -5,7 +5,7 @@ import { MongoClient } from "mongodb";
 import { compare } from "bcryptjs";
 import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
-import { setCookies } from "cookies-next";
+import { setCookie } from "cookies-next";
 
 export const config = {
   api: {
@@ -94,9 +94,10 @@ export default async function auth(req, res) {
             likesList: user.profile.likesList || [],
             postLoaded: [],
           };
-          setCookies("user_lists", JSON.stringify(userList), {
+          setCookie("user_lists", JSON.stringify(userList), {
             req,
             res,
+            sameSite: "lax",
           });
         }
         user &&

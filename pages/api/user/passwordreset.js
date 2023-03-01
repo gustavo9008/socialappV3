@@ -45,6 +45,12 @@ const forgetpassword = async (req, res) => {
     //   .lean();
 
     const user = await User.findOne({ email: req.body.email });
+    console.log(user);
+    if (user === null) {
+      res.status(200).json({ success: false, message: "No user with that email found :(" });
+      res.end();
+      return;
+    }
     user.resetPasswordToken = randomId;
     user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();

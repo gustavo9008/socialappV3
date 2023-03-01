@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { appToastContext } from "context/state";
-import { getCookie, removeCookies } from "cookies-next";
+import { getCookie, deleteCookie } from "cookies-next";
 import Spinner from "../loaders/Spinner";
 import Button, { useBtnState } from "@/components/ui/globalUI/Button";
 
@@ -52,7 +52,7 @@ function LoginForm(props) {
           router.push("/");
         }
         showToast("success", `Welcome back`);
-        removeCookies("user_lists");
+        deleteCookie("user_lists");
       }
       if (status.error !== null) {
         showToast("error", status.error);

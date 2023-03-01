@@ -44,7 +44,7 @@ export default function UserAccount(props) {
   //===== fucntion to send user account update =====
   const updateAccountSubmit = async (e) => {
     e.preventDefault();
-    console.log("change account user name");
+    // console.log("change account user name");
     setBtnDisabled(true);
     setLabel("Updating...");
     const type = `EDIT_USER_ACCOUNT`;
@@ -59,7 +59,7 @@ export default function UserAccount(props) {
     };
     // console.log(data);
     const res = await sendAccountData("PUT", "/api/user/editaccount", data);
-    console.log(await res);
+    // console.log(await res);
     if (res.status === 201 || 200) {
       showToast(res.data.type, res.data.message);
       newEmailRef.current.value = "";

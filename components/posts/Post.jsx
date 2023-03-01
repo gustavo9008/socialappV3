@@ -34,14 +34,13 @@ function Post(props) {
   const [showLoginModal, setShowLoginModal] = React.useState(false);
 
   const playerRef = React.useRef(null);
-  console.log(post.image[0].url);
   const videoJsOptions = {
     controls: true,
     responsive: true,
     fluid: true,
     sources: [
       {
-        src: post.image[0].url,
+        src: post.image[0]?.url,
       },
     ],
   };
@@ -80,24 +79,22 @@ function Post(props) {
 
           <div className="blog-content">
             <div className="w-full">
-              {post.image[0].type.includes("image") ? (
-                post.image[0] ? (
-                  <img
-                    id="img"
-                    className="m-auto object-cover"
-                    src={post.image[0].url}
-                    alt="picture"
-                  />
-                ) : (
-                  <img
-                    id="img"
-                    className="m-auto object-cover"
-                    src={post.imageUrl}
-                    alt="picture"
-                  />
-                )
-              ) : (
+              {post.image[0]?.type?.includes("video") ? (
                 <VideoPlayer options={videoJsOptions} />
+              ) : post.image[0] ? (
+                <img
+                  id="img"
+                  className="m-auto object-cover"
+                  src={post.image[0].url}
+                  alt="picture"
+                />
+              ) : (
+                <img
+                  id="img"
+                  className="m-auto object-cover"
+                  src={post.imageUrl}
+                  alt="picture"
+                />
               )}
               {/* {post.image[0] ? (
                 <img

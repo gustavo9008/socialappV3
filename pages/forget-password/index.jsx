@@ -21,6 +21,9 @@ const ForgetPasswordPage = () => {
     if (res.data.success === true) {
       showToast("success", res.data.message);
     }
+    if (res.data.success === false) {
+      showToast("error", res.data.message);
+    }
   }
   const getUserSession = () => {
     if (userSession) {
