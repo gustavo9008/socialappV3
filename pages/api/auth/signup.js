@@ -77,7 +77,7 @@ async function signUpHandler(req, res) {
       //Send success response
 
       res.status(201).json({ created: true, message: "You have created an account succesfuly. " });
-
+      res.end();
     } catch (error) {
       //===== checks what kind of error occurs =====
       let errMessage;
@@ -85,6 +85,7 @@ async function signUpHandler(req, res) {
       error.keyPattern.name === 1 && (errMessage = `A user with given name ${error.keyValue.name} already exist. Please try different name.`)
       //===== error response =====
       res.status(200).json({ created: false, message: errMessage });
+      res.end();
 
     }
 

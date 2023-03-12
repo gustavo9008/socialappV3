@@ -26,7 +26,6 @@ const PictureUpload = React.forwardRef((props, ref) => {
   const loadFile = (event) => {
     const output = document.getElementById("output");
     const outputVideo = document.getElementById("outputVideo");
-    console.log(event.target.files[0].type);
     if (event.target.files[0].type.includes("video")) {
       // outputSource.src = "";
       // URL.revokeObjectURL(outputSource.src); // free memory
@@ -36,7 +35,6 @@ const PictureUpload = React.forwardRef((props, ref) => {
 
       URL.revokeObjectURL(outputVideo.src); // free memory
       URL.revokeObjectURL(output.src); // free memory
-      console.log(event.target.files[0]);
 
       outputVideo.src = URL.createObjectURL(event.target.files[0]);
       // outputVideo.load();
@@ -45,8 +43,6 @@ const PictureUpload = React.forwardRef((props, ref) => {
     }
 
     if (event.target.files[0].type.includes("image")) {
-      console.log(event.target.files[0]);
-
       output.src = URL.createObjectURL(event.target.files[0]);
       output.onload = function () {
         outputVideo.src = "";

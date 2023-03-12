@@ -17,7 +17,7 @@ export default function AddReply(props) {
     setBtnColor,
     btnVisibility,
     setBtnVisibility,
-  ] = useBtnState(true, "Reply", "", "block");
+  ] = useBtnState(true, "Submit", "bg-indigo-900 text-gray-400", "block");
 
   const addReply = useFetch;
   const { title, postId } = React.useContext(CommentContext);
@@ -33,13 +33,11 @@ export default function AddReply(props) {
     e.preventDefault();
     if (replyRef.current.value !== "") {
       setBtnDisabled(false);
-      setBtnColor(
-        "text-blue-500 hover:bg-blue-500 border-blue-500 hover:text-white"
-      );
+      setBtnColor("hover:bg-indigo-400 bg-indigo-500");
       return;
     } else {
       setBtnDisabled(true);
-      setBtnColor("");
+      setBtnColor("bg-indigo-900 text-gray-400");
       return;
     }
   };
@@ -68,7 +66,7 @@ export default function AddReply(props) {
 
     const res = await addReply("POST", "/api/comments/addcomment", data);
     if (res.data) {
-      setBtnDisabled(true), setBtnColor("bg-slate-700");
+      setBtnDisabled(true), setBtnColor("bg-indigo-900 text-gray-400");
       showToast("success", "Your reply has been added.");
       props.updateComment(res.data);
       replyRef.current.value = "";
@@ -100,7 +98,7 @@ export default function AddReply(props) {
       <div className="flex justify-between p-2 pt-2">
         <Button
           label={"Cancel"}
-          className={`reply-button rounded border border-gray-400 bg-white p-1.5 font-semibold shadow hover:bg-gray-100 hover:text-red-500 dark:bg-gray-800 hover:dark:bg-gray-900 hover:dark:text-red-600`}
+          className={`rounded p-1.5 font-semibold hover:bg-gray-200 dark:bg-gray-800 hover:dark:bg-gray-700 `}
           handleClick={openCloseCommentReply}
           disabled={false}
           idTag={"addReplyForm"}
@@ -115,7 +113,7 @@ export default function AddReply(props) {
         </button> */}
         <Button
           label={label}
-          className={`${btnVisibility} ${btnColor} reply-button rounded border border-gray-400 bg-white p-1.5 font-semibold shadow dark:bg-gray-800`}
+          className={`${btnVisibility} ${btnColor} rounded p-1.5 font-semibold`}
           handleClick={submitReplyHandler}
           disabled={btnDisabled}
           idTag={"addReplyForm"}

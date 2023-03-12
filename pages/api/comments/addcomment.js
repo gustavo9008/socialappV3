@@ -55,6 +55,7 @@ const postHandler = async (req, res) => {
     const replyCreated = await newReply.save();
     res.status(201).json(replyCreated);
   }
+
   async function addReply() {
     const { reply, userProfile, postUrl, postId, commentId, originalCommentId } = req.body;
     const originalReply = await Reply.findById(commentId);
@@ -142,45 +143,48 @@ const postHandler = async (req, res) => {
     if (session) {
       //===== add reply to comment =====
       req.body.type === "REPLY_COMMENT" &&
-        (await addReplyComment(session)) &&
-        res.end();
+        (await addReplyComment(session));
       //===== add comment to post =====
       req.body.type === "ADD_COMMENT" &&
-        (await addComment(session)) &&
-        res.end();
+        (await addComment(session));
       //===== add reply to reply comments =====
-      req.body.type === "ADD_REPLY" && (await addReply(session)) && res.end();
+      req.body.type === "ADD_REPLY" && (await addReply(session)) && (res.end())
       //===== edits any type of comment =====
       req.body.type === "EDIT_COMMENT" &&
-        (await updateComment(session)) &&
-        res.end();
+        (await updateComment(session));
       //===== deletes comment =====
       req.body.type === "DELETE_COMMENT" &&
-        (await deleteComment(session)) &&
-        res.end();
+        (await deleteComment(session));
     }
     // session && (await addComment(session)) && res.end();
     !session &&
       res
         .status(200)
         .json({ success: true, message: "oh no you must be logged in" }) &&
-      res.end();
+      (res.end())
   };
   switch (req.method) {
     case "POST":
-      checkSession();
+      await checkSession();
+      res.end()
       break;
     case "PUT":
-      checkSession();
+      await checkSession();
+      res.end();
+
       break;
     case "DELETE":
-      checkSession();
+      await checkSession();
+
+      res.end();
+
       break;
     default:
       res.status(500).json({ message: "Route not valid" });
       res.end();
       break;
   }
+
 };
 
 export default postHandler;

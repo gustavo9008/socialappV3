@@ -104,7 +104,6 @@ export default function NewPost(props) {
         quality: 0.4,
         mimeType: mimeType,
         success(result) {
-          console.log(result);
           let newImage = result;
           formData.append("file", newImage, newImage.name);
           submitNewPost(formData);
@@ -116,7 +115,6 @@ export default function NewPost(props) {
       setDisable(true);
       btnAnimate();
       let postImage = postCustomImage.current.files[0];
-      console.log(postImage);
       formData.append("file", postImage, postImage.name);
       submitNewPost(formData);
 
@@ -159,7 +157,6 @@ export default function NewPost(props) {
     // });
     // // Await for data for any desirable next steps
     // const data = await res.json();
-    console.log(formData);
     const res = await sendNewPost("POST", "/api/post/newpost", formData);
     if (res.data.success === true) {
       showToast("success", res.data.message);

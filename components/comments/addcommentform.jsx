@@ -19,7 +19,7 @@ function Comments(props) {
     setBtnColor,
     btnVisibility,
     setBtnVisibility,
-  ] = useBtnState(true, "Comment", "bg-blue-900", "block");
+  ] = useBtnState(true, "Comment", "bg-indigo-900 text-gray-400", "block");
   const { setPostComments } = React.useContext(CommentContext);
   const { showToast, userSession } = React.useContext(appToastContext);
   // console.log(props.context);
@@ -43,12 +43,12 @@ function Comments(props) {
     if (commentRef.current.value !== "") {
       // console.log(commentRef.current.value);
       setBtnDisabled(false);
-      setBtnColor("bg-blue-700 text-white hover:bg-blue-500");
+      setBtnColor("bg-indigo-500 text-white hover:bg-indigo-400");
       return;
     } else {
       // if(disabledBtn !== true)
       setBtnDisabled(true);
-      setBtnColor("bg-blue-900");
+      setBtnColor("bg-indigo-900 text-gray-400");
       return;
     }
   };
@@ -83,7 +83,7 @@ function Comments(props) {
       commentRef.current.value = "";
       setBtnDisabled(true);
       setLabel("Comment");
-      setBtnColor("bg-blue-700");
+      setBtnColor("bg-indigo-900 text-gray-400");
       stopBtnAnimate("mainAddCommentForm");
     }
     // console.log(res.data);
@@ -157,7 +157,7 @@ function Comments(props) {
 
           <Button
             label={label}
-            className={`${btnVisibility} ${btnColor} ml-2 mr-1.5 mt-2 mb-2 rounded p-2  text-white`}
+            className={`${btnVisibility} ${btnColor} ml-2 mr-1.5 mt-2 mb-2 rounded p-2 font-semibold`}
             disabled={btnDisabled}
             idTag={"mainAddCommentForm"}
             handleClick={handleCommentSubmit}

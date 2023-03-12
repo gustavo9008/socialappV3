@@ -26,7 +26,7 @@ const AllPosts = React.forwardRef(function Post(props, ref) {
   const userLinkHandle = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(e.target.pathname);
+    // console.log(e.target.pathname);
     router.push(e.target.pathname);
   };
   // console.log(post.image[0].url);

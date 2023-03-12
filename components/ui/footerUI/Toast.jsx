@@ -64,14 +64,14 @@ const Toast = (props) => {
   return (
     <>
       <div
-        className={`Psm:w-full Psm:bottom-1 Psm:right-[0px] ${styles.notificationContainer} ${classStyle}`}
+        className={`Psm:bottom-1 Psm:right-[0px] Psm:w-full ${styles.notificationContainer} ${classStyle}`}
       >
         {list.map((toast, i) => (
           <div
             key={i}
             id={toast.id}
             role="alert"
-            className={`Psm:ml-[5px] Psm:mr-[5px] flex flex-row items-center justify-between rounded text-white ${classStyle}`}
+            className={`mt-2 flex flex-row items-center justify-between rounded text-white Psm:ml-[5px] Psm:mr-[5px] ${classStyle}`}
             style={{ backgroundColor: toast.backgroundColor }}
           >
             <section className="flex flex-row py-4 pl-4">

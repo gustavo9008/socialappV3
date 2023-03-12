@@ -149,11 +149,11 @@ const updatePostHandler = async (req, res) => {
   switch (req.method) {
     case "PUT":
       //...
-      checkSession();
+      await checkSession();
       break;
     case "DELETE":
       //...
-      checkSession();
+      await checkSession();
       break;
     default:
       res.status(500).json({ message: "Route not valid" });

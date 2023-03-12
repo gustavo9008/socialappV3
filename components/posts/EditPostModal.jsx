@@ -4,20 +4,21 @@ import { appToastContext } from "context/state";
 import { useRouter } from "next/router";
 import Spinner from "@/components/ui/loaders/Spinner";
 
-const importJodit = () => import("jodit-react");
-const JoditEditor = dynamic(importJodit, {
-  ssr: false,
-});
+// const importJodit = () => import("jodit-react");
+// const JoditEditor = dynamic(importJodit, {
+//   ssr: false,
+// });
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const EditPostModal = (props) => {
   const router = useRouter();
-  // console.log(props.post);
   const { useFetch, showToast } = React.useContext(appToastContext);
   const sendPostUpdate = useFetch;
   const titleRef = React.useRef(props.post.title);
   // const imageRef = React.useRef();
   const editor = React.useRef(null);
   const [content, setContent] = React.useState(props.post.body);
+  const [deleteConfirm, setDeleteConfirm] = React.useState(false);
 
   const config = {
     allowTabNavigation: false,
@@ -26,6 +27,45 @@ const EditPostModal = (props) => {
     minHeight: "400",
     readonly: false, // all options from https://xdsoft.net/jodit/doc/
   };
+
+  //===== confirm delete modal =====
+  const ConfirmDeleteModal = (props) => {
+    return (
+      <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-auto overflow-y-auto bg-black bg-opacity-70 outline-none focus:outline-none">
+          <div className="sticky top-0 z-50 mx-auto w-auto max-w-3xl">
+            {/*content*/}
+            <div className="flex flex-col overscroll-x-contain rounded border-2 border-gray-500 bg-gray-100 p-4 outline-none focus:outline-none dark:bg-gray-900 Psm:max-h-1/2">
+              <p className="text-center text-lg">
+                Are you sure you want delete this post?
+              </p>
+              {/*footer*/}
+              <div className="border-blueGray-200 flex items-center justify-between p-4">
+                <button
+                  onClick={() => {
+                    setDeleteConfirm(!deleteConfirm);
+                  }}
+                  className="mr-1 mb-1 rounded px-5 py-2 font-semibold outline-none transition-all duration-150 ease-linear hover:bg-gray-300 focus:outline-none dark:hover:bg-gray-700 "
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={deletePostHandler}
+                  className="mr-1 mb-1 rounded bg-red-500 px-5 py-2 font-semibold outline-none transition-all duration-150 ease-linear hover:bg-red-400 hover:shadow-lg focus:outline-none"
+                  type="button"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
+      </>
+    );
+  };
+  //=====  =====
 
   // submit handler
   const submitEditHandler = async (e) => {
@@ -38,7 +78,6 @@ const EditPostModal = (props) => {
         props.post.image[0] !== undefined ? props.post.image[0].filename : null,
       type: "UPDATE_POST",
     };
-    // console.log(updatedPost);
 
     const res = await sendPostUpdate(
       "PUT",
@@ -50,23 +89,19 @@ const EditPostModal = (props) => {
       showToast("success", res.data.message);
       props.setPost(res.data.post);
     }
-    // console.log(res.data);
   };
 
   const deletePostHandler = async (e) => {
     e.preventDefault();
-    console.log("submit delete has been clicked");
     const cloudImage = props.post.image[0]
       ? props.post.image[0].filename
       : null;
 
-    // console.log(content);
     const deletePost = {
       postId: props.post._id,
       imageToDelete: cloudImage,
       type: "DELETE_POST",
     };
-    // console.log(updatedPost);
 
     const res = await sendPostUpdate(
       "DELETE",
@@ -78,12 +113,10 @@ const EditPostModal = (props) => {
       router.push(`/user/profile`);
     }
     // if (res.statusText === "OK") {
-    //   console.log(res.data);
     //   // props.setShowPostModal(false);
     //   showToast("success", res.data.message);
     //   // props.setPost(res.data.post);
     // }
-    // console.log(res.data);
   };
   return (
     <>
@@ -128,7 +161,7 @@ const EditPostModal = (props) => {
                       required
                     />
                   </div>
-                  {props.post.image[0] ? (
+                  {/* {props.post.image[0] ? (
                     <img
                       className="edit-post-modal m-auto object-cover"
                       src={props.post.image[0].url}
@@ -140,7 +173,7 @@ const EditPostModal = (props) => {
                       src={props.post.imageUrl}
                       alt="this is a picture"
                     />
-                  )}
+                  )} */}
                   <div className="pt-4">
                     <Suspense
                       fallback={
@@ -162,15 +195,17 @@ const EditPostModal = (props) => {
                 {/*footer*/}
                 <div className="border-blueGray-200 flex items-center justify-between rounded-b border-t border-solid p-4">
                   <button
-                    onClick={deletePostHandler}
-                    className="mr-1 mb-1 rounded bg-red-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                    onClick={() => {
+                      setDeleteConfirm(!deleteConfirm);
+                    }}
+                    className="mr-1 mb-1 rounded bg-red-600 px-5 py-2 font-semibold outline-none transition-all duration-150 ease-linear hover:bg-red-800 "
                     type="button"
                   >
                     Delete
                   </button>
                   <button
                     onClick={submitEditHandler}
-                    className="mr-1 mb-1 rounded bg-blue-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:bg-blue-600 hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                    className="mr-1 mb-1 rounded bg-indigo-500 px-5 py-2 font-semibold outline-none transition-all duration-150 ease-linear hover:bg-indigo-400"
                     type="button"
                   >
                     Update
@@ -182,6 +217,13 @@ const EditPostModal = (props) => {
           <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
         </>
       ) : null}
+
+      {deleteConfirm && (
+        <ConfirmDeleteModal
+          deleteConfirm={deleteConfirm}
+          setDeleteConfirm={setDeleteConfirm}
+        />
+      )}
     </>
   );
 };

@@ -72,18 +72,18 @@ export default function Modal(props) {
                 {/*footer*/}
                 <div className="border-blueGray-200 flex items-center justify-between rounded-b border-t border-solid p-4">
                   <button
-                    className="mr-1 mb-1 rounded bg-green-700 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                    className="hover:shadow-lgdark:bg-gray-800 mr-1 mb-1 rounded px-5 py-2 font-semibold outline-none transition-all duration-150 ease-linear hover:bg-gray-300 dark:hover:bg-gray-700"
                     type="button"
                     onClick={() => props.setShowDeleteModal(false)}
                   >
                     Cancel
                   </button>
                   <button
-                    className="mr-1 mb-1 rounded bg-red-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                    className="mr-1 mb-1 rounded bg-red-600 px-5 py-2 font-semibold outline-none transition-all duration-150 ease-linear hover:bg-red-700 hover:shadow-lg"
                     type="button"
                     onClick={deleteComment}
                   >
-                    Yes Delete
+                    Delete
                   </button>
                 </div>
               </div>

@@ -99,7 +99,6 @@ handler.post(upload.single("file"), async (req, res) => {
   //===== check if user is log in =====
   const session = await getSession({ req });
   if (session) {
-    console.log(req.file);
     // res.status(201).json({
     //   message: "Your new post has been created!!",
 

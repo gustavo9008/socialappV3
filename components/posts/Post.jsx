@@ -30,6 +30,7 @@ function Post(props) {
   // ] = useBtnState(false, "", "", "");
   //===== state variables =====
   const [showPostModal, setShowPostModal] = React.useState(false);
+
   const [post, setPost] = React.useState(props.post);
   const [showLoginModal, setShowLoginModal] = React.useState(false);
 

@@ -21,6 +21,7 @@ handler.put(upload.array("file"), async (req, res) => {
     }
     await dbConnect();
     const user = await User.findById(session.user.id);
+
     //===== updates user profile picture =====
     const updateUserProfilePic = async () => {
       const image = req.files.map((newImage) => ({
@@ -33,6 +34,7 @@ handler.put(upload.array("file"), async (req, res) => {
       user.profile.image.filename = image[0].filename;
       await user.save();
     };
+
     //===== updates color =====
     const updateUserColorPic = async () => {
       const newColorArray = JSON.parse(req.body.newColor);
@@ -49,11 +51,7 @@ handler.put(upload.array("file"), async (req, res) => {
       let postsLength = Object.keys(user.profile.posts);
 
       for (let i = 0; i < postsLength.length; i++) {
-        Post.findById(user.profile.posts[i], (err, post) => {
-          if (err) {
-            return;
-          }
-
+        Post.findById(user.profile.posts[i]).then((post) => {
           if (req.files[0]) {
             post.userProfile.profileImage = imageColor[0].url;
           }
@@ -63,6 +61,8 @@ handler.put(upload.array("file"), async (req, res) => {
             post.userProfile.profileGenericPic = imageColor;
           }
           post.save();
+        }).catch((err) => {
+          console.log(err);
         });
       }
     };

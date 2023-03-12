@@ -36,13 +36,17 @@ const updateuseraccounthandler = async (req, res) => {
             let postsLength = Object.keys(user.profile.posts);
             //===== loop to update post username =====
             for (let i = 0; i < postsLength.length; i++) {
-              Post.findById(user.profile.posts[i], (err, post) => {
-                if (err) {
-                  return;
-                }
+
+              Post.findById(user.profile.posts[i]).then((post) => {
+                // console.log(post);
 
                 post.userProfile.name = savedUser.name;
                 post.save();
+              }).catch((err) => {
+                console.log(err);
+                // if (err) {
+                //   return;
+                // }
               });
             }
           }
@@ -51,35 +55,38 @@ const updateuseraccounthandler = async (req, res) => {
 
             let commentLength = Object.keys(user.profile.comments);
             for (let i = 0; i < commentLength.length; i++) {
-              Comment.findById(user.profile.comments[i], (err, comment) => {
-                if (err) {
-                  return;
-                }
+              Comment.findById(user.profile.comments[i]).then((comment) => {
                 if (comment !== null) {
                   comment.userProfile.name = savedUser.name;
                   comment.save();
                 }
+              }).catch((err) => {
+                console.log(err);
               });
             }
           }
           if (user.profile.commentReplies) {
             let repliesLength = Object.keys(user.profile.commentReplies);
             for (let i = 0; i < repliesLength.length; i++) {
-              Reply.findById(user.profile.commentReplies[i], (err, reply) => {
-                if (err) {
-                  res.status(201).json({ type: "false", message: "Something went wrong try again later." });
-                }
+              Reply.findById(user.profile.commentReplies[i]).then((reply) => {
                 if (reply !== null) {
                   reply.userProfile.name = savedUser.name;
                   reply.save();
                 }
+              }).catch((err) => {
+                if (err) {
+                  res.status(201).json({ type: "false", message: "Something went wrong try again later." });
+                }
               });
             }
           }
+
+        }).then(() => {
           res.status(201).json({ type: "success", message: "your account has been updated" });
           res.end();
         })
         .catch((err) => {
+          console.log(err);
           if (err.keyPattern.name) {
             res
               .status(200)
@@ -192,11 +199,11 @@ const updateuseraccounthandler = async (req, res) => {
   switch (req.method) {
     case "PUT":
       //...
-      checkSession();
+      await checkSession();
       break;
     case "DELETE":
       //...
-      checkDeleteSession();
+      await checkDeleteSession();
       break;
     default:
       res.status(500).json({ message: "Route not valid!" });
