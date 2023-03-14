@@ -30,7 +30,6 @@ export default function ProfileColorAvatar(props) {
           )}
           {props.profile.url && (
             <pre className="user-profile-image">
-              {" "}
               <img
                 loading="lazy"
                 className="h-12 w-12 rounded-full"
@@ -55,7 +54,6 @@ export default function ProfileColorAvatar(props) {
           )}
           {props.profile.profileImage && (
             <pre className="user-profile-image">
-              {" "}
               <img
                 loading="lazy"
                 className="h-12 w-12 rounded-full"
