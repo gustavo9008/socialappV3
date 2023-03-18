@@ -188,7 +188,7 @@ export default function NewPost(props) {
         <title>Create Post</title>
       </Head>
       {userSession !== null && (
-        <main className="edit-card Psm:px-2">
+        <main className="edit-card flex flex-col Psm:px-2">
           <header>
             <h1 className="text-gray-500 text-3xl py-4">Create Post</h1>
 
@@ -242,13 +242,46 @@ export default function NewPost(props) {
 
 
             </div>
+            {/* <button
+              disabled={disable}
+              onClick={handleNewPost}
+              id="postBtn"
+              type="button"
+              className="justify-self-end z-50 inline-flex items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-base font-medium leading-6 transition  duration-150 ease-in-out hover:bg-blue-600"
+            >
+              <svg
+                id="svgSpin"
+                className="-ml-1 mr-3 h-5 w-5 text-white"
+                viewBox="0 0 24 24"
+                style={{ display: "none" }}
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <span id="postingText" style={{ display: "none" }}>
+                Posting
+              </span>
+
+              <span id="postText">Post</span>
+            </button> */}
           </form>
           <button
             disabled={disable}
             onClick={handleNewPost}
             id="postBtn"
             type="button"
-            className="fixed bottom-7 right-4 z-50 inline-flex items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-base font-medium leading-6 transition  duration-150 ease-in-out hover:bg-blue-600"
+            className="self-end mt-4 z-50 inline-flex items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-base font-medium leading-6 transition  duration-150 ease-in-out hover:bg-blue-600"
           >
             <svg
               id="svgSpin"

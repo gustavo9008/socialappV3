@@ -42,7 +42,6 @@ export default function EditCommentModal(props) {
 
   const editCommentSubmit = async (e) => {
     e.preventDefault();
-    console.log("editCommentSubmit");
     const updatedComment = {
       comment: commentRef.current.value,
       commentId: props.commentId,
@@ -54,11 +53,9 @@ export default function EditCommentModal(props) {
       "/api/comments/addcomment",
       updatedComment
     );
-    console.log(res);
     if (res.data.success === true) {
       showToast("success", res.data.message);
       props.setOpenCommentModal(false);
-      console.log(res.data.updatedComment);
       props.setCommentReply(res.data.updatedComment);
       // resFunctions();
     }
