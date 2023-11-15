@@ -63,6 +63,7 @@ handler.post(upload.single("file"), async (req, res) => {
         },
         likes: 0,
       };
+
       if (req.file) {
         let image = {
           url: req.file.mimetype.includes("image") ? req.file.path.replace("upload", "upload/w_798") : req.file.path,
@@ -74,12 +75,15 @@ handler.post(upload.single("file"), async (req, res) => {
       if (req.body.imageUrl) {
         newProcessedPost.imageUrl = req.body.imageUrl;
       }
+
+
       const newPost = new Post(newProcessedPost);
       // // const user = await User.findById(session.user.id);
       await user.profile.posts.push(newPost._id);
       await user.save();
 
       const postCreated = await newPost.save();
+      console.log(postCreated);
       // //Send success response
       res.status(201).json({
         success: true,
