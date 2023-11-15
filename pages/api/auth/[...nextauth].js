@@ -133,6 +133,7 @@ export default async function auth(req, res) {
         return token;
       },
       async session({ session, token }) {
+        console.log(session);
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.profile.image.url;
