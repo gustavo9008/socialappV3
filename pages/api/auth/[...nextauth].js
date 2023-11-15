@@ -83,7 +83,7 @@ export default async function auth(req, res) {
     },
     jwt: {
       // A secret to use for key generation (you should set this explicitly)
-      secret: process.env.SECRET,
+      // secret: process.env.SECRET,
     },
     callbacks: {
       async jwt({ token, user }) {

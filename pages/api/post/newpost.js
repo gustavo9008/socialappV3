@@ -112,7 +112,7 @@ handler.post(upload.single("file"), async (req, res) => {
     await createNewPost(session);
   } else {
     // Not Signed in
-    res.status(401).json({ message: "oh no you must be logged in" });
+    res.status(201).json({ message: session, error: true });
     res.end();
   }
 });
