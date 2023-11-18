@@ -1,5 +1,5 @@
-import { getSession } from "next-auth/react";
-
+import { getServerSession } from "next-auth/next";
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import Post from "../../../models/post";
 import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
@@ -74,8 +74,6 @@ const updateUserProfileHandler = async (req, res) => {
       //===== update info in user profile =====
       async function updateUserProfile() {
         const { about, location, links } = req.body;
-
-        // console.log(links);
         user.profile.about = about;
         user.profile.location = location;
         user.profile.links = links;
@@ -138,7 +136,9 @@ const updateUserProfileHandler = async (req, res) => {
   };
 
   //===== check if user is log in =====
-  const session = await getSession({ req });
+  // const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
+
   if (session) {
     // Signed in
     session && (await updateProfile(session)) && (res.end());

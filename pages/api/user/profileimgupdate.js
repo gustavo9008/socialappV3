@@ -1,5 +1,6 @@
-import { getSession } from "next-auth/react";
-
+// import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { storage, cloudinary } from "middleware/cloudinary";
 
 import Post from "../../../models/post";
@@ -7,22 +8,14 @@ import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
 
 const updateProfileImageHandler = async (req, res) => {
-  console.log("hello from updateprofileimage route");
-  // console.log(req.body);
-
   //===== create one post functionk =====
   const updateProfilePic = async (session) => {
     if (req.method === "PUT") {
       const upload = multer({ storage });
-      // console.log(req.body);
       const image = upload.array(req.body.profileImage);
       await dbConnect();
       const user = await User.findById(session.user.id);
-      // console.log(req.body);
       if (user._id == session.user.id) {
-        console.log(req.body);
-        // console.log("user does match found user");
-        console.log(user._id, session.user.id);
 
         // const updatedProfile = {
         //   about: about,
@@ -48,7 +41,9 @@ const updateProfileImageHandler = async (req, res) => {
   };
 
   //===== check if user is log in =====
-  const session = await getSession({ req });
+  // const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
+
 
   if (session) {
     // Signed in

@@ -1,9 +1,10 @@
-import { getSession } from "next-auth/react";
+// import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
 import nextConnect from "next-connect";
 import multer from "multer";
 import sanitizeHtml from "sanitize-html";
 // import { MongoClient } from "mongodb";
-
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import Post from "../../../models/post";
 import User from "../../../models/user";
 import dbConnect from "../../../middleware/mongodb";
@@ -83,7 +84,6 @@ handler.post(upload.single("file"), async (req, res) => {
       await user.save();
 
       const postCreated = await newPost.save();
-      console.log(postCreated);
       // //Send success response
       res.status(201).json({
         success: true,
@@ -101,8 +101,9 @@ handler.post(upload.single("file"), async (req, res) => {
   };
 
   //===== check if user is log in =====
-  const session = await getSession({ req });
-  console.log(session);
+  // const session = await getSession({ req });
+
+  const session = await getServerSession(req, res, authOptions);
   if (session) {
     // res.status(201).json({
     //   message: "Your new post has been created!!",
