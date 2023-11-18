@@ -1,7 +1,7 @@
 import nextConnect from "next-connect";
 import multer from "multer";
-
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 import Post from "../../../models/post";
 import User from "../../../models/user";
@@ -79,14 +79,15 @@ handler.put(upload.array("file"), async (req, res) => {
     res.status(201).json({ success: true, message: "Picture updated." });
   }
   //===== check if user is log in =====
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
+
 
   if (session) {
     // Signed in
     await saveImage(session);
   } else {
     // Not Signed in
-    res.status(401).json({ success: true, message: "oh no you must be logged in" });
+    res.status(201).json({ success: false, message: "oh no you must be logged in" });
   }
   res.end();
 });

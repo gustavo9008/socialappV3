@@ -1,4 +1,5 @@
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import Post from "../../../models/post";
 import Reply from "../../../models/replies";
 import Comment from "../../../models/comment";
@@ -121,8 +122,11 @@ const updatePostHandler = async (req, res) => {
   // check if user is logged in
   const checkSession = async () => {
     // console.log(req.body);
-    const session = await getSession({ req });
+    // const session = await getSession({ req });
     // console.log(session);
+
+    const session = await getServerSession(req, res, authOptions);
+
     if (session) {
       req.body.type === "UPDATE_POST" &&
         (await updatePost(session)) &&

@@ -1,6 +1,5 @@
-import { getSession } from "next-auth/react";
-// import { getCsrfToken } from "next-auth/react";
-// import { getToken } from "next-auth/jwt";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { compare, hash } from "bcryptjs";
 import Post from "../../../models/post";
 import User from "../../../models/user";
@@ -16,7 +15,7 @@ import { cloudinary } from "../../../middleware/cloudinary/postStorage";
 const updateuseraccounthandler = async (req, res) => {
   // const sendNewUser = useFetch;
 
-  //===== create one post functionk =====
+  //===== create one post function =====
   const updateAccount = async (session) => {
     //===== search user account =====
     await dbConnect();
@@ -132,6 +131,7 @@ const updateuseraccounthandler = async (req, res) => {
       req.body.type === "EDIT_USER_PASSWORD" &&
       (await editUserPassword(session));
   };
+  //===== delete account func =====
   const deleteAccount = async (session) => {
     await dbConnect();
     const user = await User.findById(session.user.id);
@@ -180,14 +180,16 @@ const updateuseraccounthandler = async (req, res) => {
   };
   //===== checks if user is logged in  =====
   const checkSession = async () => {
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, authOptions);
+
     session && (await updateAccount(session));
     !session &&
       res.status(401).json({ message: "oh no you must be logged in" });
     res.end();
   };
   const checkDeleteSession = async () => {
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, authOptions);
+
     session && (await deleteAccount(session));
     !session &&
       res.status(401).json({ message: "oh no you must be logged in" });

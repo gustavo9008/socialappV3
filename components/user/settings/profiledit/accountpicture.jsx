@@ -96,11 +96,14 @@ export default function AccountPicture(props) {
       formData
     );
     if ((await res.data.success) === true) {
+      console.log(res.data);
       showToast("success", "Picture updated.");
       setBtnColor("bg-gray-700");
       setBtnDisabled(true);
       stopBtnAnimate("sendNewColorBtn");
       props.updateSession();
+    } else {
+      console.log(res.data);
     }
   };
 
