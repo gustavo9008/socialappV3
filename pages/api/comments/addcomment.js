@@ -1,5 +1,5 @@
-import { getSession } from "next-auth/react";
-
+import { getServerSession } from "next-auth/next";
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import Post from "../../../models/post";
 import Reply from "../../../models/replies";
 import Comment from "../../../models/comment";
@@ -139,7 +139,8 @@ const postHandler = async (req, res) => {
 
   // }
   const checkSession = async () => {
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, authOptions);
+
     if (session) {
       //===== add reply to comment =====
       req.body.type === "REPLY_COMMENT" &&
