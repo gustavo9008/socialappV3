@@ -283,7 +283,7 @@ video {
   resize: none;
 }
 .comment-info {
-  width: 450px;
+  width: 100%;
 }
 .comment-options {
   width: 60px;

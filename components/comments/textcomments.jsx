@@ -31,6 +31,10 @@ export default function TextComments(props) {
   const [repliesComment, setRepliesComment] = React.useState(
     props.comment.repliesFound
   );
+  const [hideComment, setHideComment] = React.useState({
+    stateShow: props.replyCount >= 1 ? true : false,
+  });
+
   //===== form state and action =====
   const [displayReplyForm, setDisplayReplyFrom] = React.useState("none");
   const replyFormState = { display: `${displayReplyForm}` };
@@ -43,10 +47,11 @@ export default function TextComments(props) {
   //===== card size is use for a visual presentation for what is a reply of a comment  =====
   let cardSize = 100;
   if (props.cardSize) {
-    cardSize = props.cardSize - 3;
+    cardSize = props.cardSize;
   }
   //===== sorts comments by date =====
   let repliesSorted = repliesComment.slice().reverse();
+
   const updateCommentReplies = (newReply) => {
     setRepliesComment([...repliesComment, newReply]);
   };
@@ -71,7 +76,7 @@ export default function TextComments(props) {
   return (
     <>
       {commentReply !== null && (
-        <ul>
+        <ul id="topMainCommentContainer">
           <CommentCard
             commentReply={commentReply}
             cardStyle={props.cardStyle ? props.cardStyle : undefined}
@@ -229,16 +234,74 @@ export default function TextComments(props) {
         <TextComments comment={commentReply.repliesFound} />
       )} */}
           {/* recusive component */}
-          {repliesSorted.map((reply) => (
-            <TextComments
-              key={reply._id}
-              comment={reply}
-              originalCommentId={props.originalCommentId}
-              type={"ADD_REPLY"}
-              cardStyle={"reply-container"}
-              cardSize={cardSize}
-            />
-          ))}
+          {repliesSorted.length != 0 && (
+            <div
+              className="repliesContainer ml-auto  flex flex-row"
+              style={{ width: `${cardSize - 4}%` }}
+            >
+              {/* replies*/}
+              <div className="flex flex-col pb-4">
+                <button
+                  className="relative right-0.5 grow-0 "
+                  onClick={() => {
+                    setHideComment({ stateShow: !hideComment.stateShow });
+                  }}
+                >
+                  {!hideComment.stateShow && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  )}
+
+                  {hideComment.stateShow && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  )}
+                </button>
+                <div className="border-l-solid h-[100%] w-[5px] self-center border-l border-b border-white"></div>
+              </div>
+              <div className={`ml-auto flex w-[inherit] flex-col`}>
+                {hideComment.stateShow === true && <div>show more...</div>}
+                {hideComment.stateShow === false &&
+                  repliesSorted.map((reply) => (
+                    <TextComments
+                      key={reply._id}
+                      comment={reply}
+                      originalCommentId={props.originalCommentId}
+                      type={"ADD_REPLY"}
+                      cardStyle={"reply-container"}
+                      cardSize={cardSize}
+                      replyCount={
+                        props.type === "ADD_REPLY" ? props.replyCount + 1 : 1
+                      }
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
         </ul>
       )}
     </>

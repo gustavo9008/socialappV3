@@ -7,6 +7,34 @@ let ImageSchema = new Schema({
   filename: String,
   type: String,
 });
+let CommentSchema = new Schema(
+  {
+    comment: String,
+    userProfile: {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      name: String,
+      profileImage: String,
+      profileGenericPic: Array,
+    },
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Replies",
+      },
+    ],
+    repliesFound: [],
+    postUrl: {
+      address: String,
+      title: String,
+    },
+    originalPostId: String,
+    created: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+)
 
 // ImageSchema.virtual('thumbnail').get(function() {
 //   return this.url.replace('/upload', '/upload/w_798')
