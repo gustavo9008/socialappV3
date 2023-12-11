@@ -52,6 +52,8 @@ export default function TextComments(props) {
   //===== sorts comments by date =====
   let repliesSorted = repliesComment.slice().reverse();
 
+  console.log(repliesSorted.length);
+
   const updateCommentReplies = (newReply) => {
     setRepliesComment([...repliesComment, newReply]);
   };
@@ -242,7 +244,7 @@ export default function TextComments(props) {
               {/* replies*/}
               <div className="flex flex-col pb-4">
                 <button
-                  className="relative right-0.5 grow-0 "
+                  className="relative right-0.5 flex w-max grow-0 flex-row gap-2"
                   onClick={() => {
                     setHideComment({ stateShow: !hideComment.stateShow });
                   }}
@@ -280,11 +282,21 @@ export default function TextComments(props) {
                       />
                     </svg>
                   )}
+                  {hideComment.stateShow === true && (
+                    <div className="relative  bottom-1">
+                      {" "}
+                      {repliesSorted.length === 1
+                        ? `1 more reply`
+                        : `${repliesSorted.length} more replies`}
+                    </div>
+                  )}
                 </button>
-                <div className="border-l-solid h-[100%] w-[5px] self-center border-l border-b border-white"></div>
+                {hideComment.stateShow === false && (
+                  <div className="border-l-solid h-[100%] w-[5px] self-center border-l border-b border-white"></div>
+                )}
               </div>
               <div className={`ml-auto flex w-[inherit] flex-col`}>
-                {hideComment.stateShow === true && <div>show more...</div>}
+                {/* {hideComment.stateShow === true && <div>show more...</div>} */}
                 {hideComment.stateShow === false &&
                   repliesSorted.map((reply) => (
                     <TextComments
